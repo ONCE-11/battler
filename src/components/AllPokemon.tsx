@@ -1,15 +1,3 @@
-import stylex from "@stylexjs/stylex";
-
-const styles = stylex.create({
-  ul: {
-    padding: 0,
-    margin: 0,
-  },
-  li: {
-    listStyleType: "none",
-  },
-});
-
 type AllPokemonProps = {
   pokemon: string[];
   handleClick: React.MouseEventHandler;
@@ -18,11 +6,15 @@ type AllPokemonProps = {
 const AllPokemon = ({ pokemon, handleClick }: AllPokemonProps) => {
   return (
     <>
-      <h1>Entities</h1>
-      <ul {...stylex.props(styles.ul)}>
+      <h1 className="text-2xl font-bold mb-4">Entities</h1>
+      <ul>
         {pokemon.map((name, index: number) => (
-          <li key={index} {...stylex.props(styles.li)}>
-            <a href={`/pokemon/${name}`} onClick={handleClick}>
+          <li key={index}>
+            <a
+              href={`/pokemon/${name}`}
+              onClick={handleClick}
+              className="hover:underline text-indigo-600"
+            >
               {name}
             </a>
           </li>

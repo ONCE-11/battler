@@ -1,18 +1,22 @@
-body {
-  margin: 0;
-  /* padding: 0; */
-  /* background-color: #ccc; */
-  /* display: flex; */
-  /* place-items: center; */
-  /* min-width: 320px;
-  min-height: 100vh; */
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-:root {
+/* body {
   margin: 0;
   padding: 0;
   background-color: #ccc;
-}
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh; 
+} */
+
+/* :root {
+  margin: 0;
+  padding: 0;
+  background-color: #ccc;
+} */
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

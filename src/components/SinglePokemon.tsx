@@ -1,64 +1,3 @@
-import stylex from "@stylexjs/stylex";
-
-const styles = stylex.create({
-  image: {
-    width: "100%",
-    height: "300px",
-  },
-  card: {
-    padding: "1rem",
-    margin: "1rem 0",
-    borderRadius: ".25rem",
-    width: "300px",
-    transform: {
-      // default: "rotate(-5deg) scale(0.9)",
-      // ":hover": "rotate(0) scale(1)",
-    },
-    boxShadow: "0px 0px 4px 0px",
-    transition: "all .5s",
-    backgroundColor: "#efefef",
-  },
-  p: {
-    margin: 0,
-  },
-  name: {
-    margin: 0,
-    color: "green",
-    textTransform: "capitalize",
-  },
-  stats: {
-    margin: 0,
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  height: {
-    color: "magenta",
-  },
-  weight: {
-    color: "blue",
-  },
-  abilitiesList: {
-    padding: 0,
-    margin: 0,
-    textAlign: "right",
-  },
-  ability: {
-    listStyleType: "none",
-  },
-  backButton: {
-    marginLeft: 0,
-  },
-  footer: {
-    display: "flex",
-    justifyContent: "space-between",
-    borderTop: "1px solid #333",
-    paddingTop: "1rem",
-  },
-  header: {
-    padding: 0,
-  },
-});
-
 type SinglePokemonProps = {
   singlePokemon: {
     name: string;
@@ -75,28 +14,24 @@ const SinglePokemon = ({ singlePokemon, handleClick }: SinglePokemonProps) => {
 
   return (
     <>
-      <h1 {...stylex.props(styles.header)}>Entity</h1>
-      <div {...stylex.props(styles.card)}>
-        <p {...stylex.props(styles.stats)}>
-          <span {...stylex.props(styles.height)}>{height}</span>
-          <span {...stylex.props(styles.weight)}>{weight} </span>
+      <h1 className="text-2xl font-bold mb-4">Entity</h1>
+      <div className="p-4 my-4 rounded w-80 shadow-lg bg-slate-200">
+        <p className="flex justify-between">
+          <span className="text-purple-700">{height}</span>
+          <span className="text-blue-700">{weight} </span>
         </p>
-        <img src={image} {...stylex.props(styles.image)} />
-        <section {...stylex.props(styles.footer)}>
-          <h2 {...stylex.props(styles.name)}>{name}</h2>
+        <img src={image} />
+        <section className="flex justify-between border-l-0 border-r-0 border-b-0 border border-t-slate-500 border-solid pt-4">
+          <h2 className="text-green-700 capitalize text-xl">{name}</h2>
 
-          <ul {...stylex.props(styles.abilitiesList)}>
+          <ul className="text-right text-xs">
             {abilities.map((ability, index) => (
-              <li key={index} {...stylex.props(styles.ability)}>
-                {ability}
-              </li>
+              <li key={index}>{ability}</li>
             ))}
           </ul>
         </section>
       </div>
-      <button onClick={handleClick} {...stylex.props(styles.backButton)}>
-        Back
-      </button>
+      <button onClick={handleClick}>Back</button>
     </>
   );
 };

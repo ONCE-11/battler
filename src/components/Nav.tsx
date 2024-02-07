@@ -1,22 +1,12 @@
 import { Link } from "react-router-dom";
-import stylex from "@stylexjs/stylex";
-
-const styles = stylex.create({
-  navLink: {
-    marginRight: {
-      default: "0",
-      ":first-child": "1rem",
-    },
-  },
-});
 
 const Nav = () => {
   return (
     <nav>
-      <Link {...stylex.props(styles.navLink)} to={"/"}>
+      <Link to={"/"} className="m-0 ">
         Info
       </Link>
-      <Link {...stylex.props(styles.navLink)} to={"/fight"}>
+      <Link to={"/fight"} className="ml-4">
         Fight!
       </Link>
     </nav>

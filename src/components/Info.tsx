@@ -3,13 +3,6 @@ import axios from "axios";
 import _ from "lodash";
 import AllPokemon from "./AllPokemon";
 import SinglePokemon from "./SinglePokemon";
-import stylex from "@stylexjs/stylex";
-
-const styles = stylex.create({
-  app: {
-    backgroundColor: "#ccc",
-  },
-});
 
 type SinglePokemon = {
   name: string;
@@ -81,7 +74,7 @@ const Info = () => {
   };
 
   return (
-    <div {...stylex.props(styles.app)}>
+    <div>
       {_.isEqual(singlePokemon, emptyPokemon) ? (
         <AllPokemon pokemon={pokemonNames} handleClick={handleAnchorClick} />
       ) : (
