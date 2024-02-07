@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import _ from "lodash";
-import AllPokemon from "./components/AllPokemon";
-import SinglePokemon from "./components/SinglePokemon";
+import AllPokemon from "./AllPokemon";
+import SinglePokemon from "./SinglePokemon";
 import stylex from "@stylexjs/stylex";
 
 const styles = stylex.create({
@@ -29,7 +29,7 @@ const emptyPokemon = {
   abilities: [],
 };
 
-function App() {
+const Info = () => {
   const [pokemonNames, setPokemonNames] = useState<PokemonName[]>([]);
   const [singlePokemon, setSinglePokemon] =
     useState<SinglePokemon>(emptyPokemon);
@@ -92,6 +92,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
-export default App;
+export default Info;
