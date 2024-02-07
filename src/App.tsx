@@ -1,42 +1,59 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import _ from "lodash";
-import "./App.css";
 import AllPokemon from "./components/AllPokemon";
 import SinglePokemon from "./components/SinglePokemon";
+import stylex from "@stylexjs/stylex";
 
-interface SinglePokemonState {
-  name?: string;
-  height?: string;
-  weight?: string;
-  image?: string;
-  abilities?: Array<string>;
-}
+const styles = stylex.create({
+  app: {
+    backgroundColor: "#ccc",
+  },
+});
+
+type SinglePokemon = {
+  name: string;
+  height: string;
+  weight: string;
+  image: string;
+  abilities: string[];
+};
+
+type PokemonName = string;
+
+const emptyPokemon = {
+  name: "",
+  height: "",
+  weight: "",
+  image: "",
+  abilities: [],
+};
 
 function App() {
-  const [pokemon, setPokemon] = useState([]);
-  const [singlePokemon, setSinglePokemon] = useState<SinglePokemonState>({});
+  const [pokemonNames, setPokemonNames] = useState<PokemonName[]>([]);
+  const [singlePokemon, setSinglePokemon] =
+    useState<SinglePokemon>(emptyPokemon);
 
   useEffect(() => {
-    async function fetchPokemon() {
+    const fetchPokemon = async () => {
       try {
         const {
           data: { results },
         } = await axios.get("https://pokeapi.co/api/v2/pokemon/");
         console.log(results);
-        setPokemon(results);
+        setPokemonNames(results.map((result: { name: string }) => result.name));
       } catch (err) {
         console.error(err);
       }
-    }
+    };
 
     fetchPokemon();
   }, []);
 
-  async function handleClick(event: React.MouseEvent<HTMLAnchorElement>) {
+  const handleAnchorClick = async (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
     event.preventDefault();
-
-    // console.log(event.currentTarget.innerText);
 
     try {
       const {
@@ -45,7 +62,6 @@ function App() {
         `https://pokeapi.co/api/v2/pokemon/${event.currentTarget.innerText}`
       );
 
-      // console.log(data);
       setSinglePokemon({
         name,
         height,
@@ -58,23 +74,23 @@ function App() {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
-  function handleBackClick() {
-    setSinglePokemon({});
-  }
+  const handleBackClick = () => {
+    setSinglePokemon(emptyPokemon);
+  };
 
   return (
-    <>
-      {_.isEmpty(singlePokemon) ? (
-        <AllPokemon pokemon={pokemon} handleClick={handleClick} />
+    <div {...stylex.props(styles.app)}>
+      {_.isEqual(singlePokemon, emptyPokemon) ? (
+        <AllPokemon pokemon={pokemonNames} handleClick={handleAnchorClick} />
       ) : (
         <SinglePokemon
           singlePokemon={singlePokemon}
-          handleBackClick={handleBackClick}
+          handleClick={handleBackClick}
         />
       )}
-    </>
+    </div>
   );
 }
 
