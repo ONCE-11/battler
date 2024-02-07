@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import _ from "lodash";
 import AllPokemon from "./AllPokemon";
 import SinglePokemon from "./SinglePokemon";
 
@@ -26,6 +25,7 @@ const Info = () => {
   const [pokemonNames, setPokemonNames] = useState<PokemonName[]>([]);
   const [singlePokemon, setSinglePokemon] =
     useState<SinglePokemon>(emptyPokemon);
+  const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -64,6 +64,7 @@ const Info = () => {
           (ability: { ability: { name: string } }) => ability.ability.name
         ),
       });
+      setShowDetails(true);
     } catch (err) {
       console.error(err);
     }
@@ -71,11 +72,12 @@ const Info = () => {
 
   const handleBackClick = () => {
     setSinglePokemon(emptyPokemon);
+    setShowDetails(false);
   };
 
   return (
     <div>
-      {_.isEqual(singlePokemon, emptyPokemon) ? (
+      {showDetails ? (
         <AllPokemon pokemon={pokemonNames} handleClick={handleAnchorClick} />
       ) : (
         <SinglePokemon
