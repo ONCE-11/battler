@@ -7,11 +7,11 @@ const styles = stylex.create({
   },
   card: {
     padding: "1rem",
-    margin: "1rem",
+    margin: "1rem 0",
     borderRadius: ".25rem",
     width: "300px",
     transform: {
-      default: "rotate(-5deg) scale(0.9)",
+      // default: "rotate(-5deg) scale(0.9)",
       // ":hover": "rotate(0) scale(1)",
     },
     boxShadow: "0px 0px 4px 0px",
@@ -46,7 +46,7 @@ const styles = stylex.create({
     listStyleType: "none",
   },
   backButton: {
-    marginLeft: "1rem",
+    marginLeft: 0,
   },
   footer: {
     display: "flex",
@@ -55,7 +55,7 @@ const styles = stylex.create({
     paddingTop: "1rem",
   },
   header: {
-    padding: "0 1rem",
+    padding: 0,
   },
 });
 
