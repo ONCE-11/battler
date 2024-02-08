@@ -1,12 +1,7 @@
+import { CharacterData } from "./types";
+
 interface CharacterProps {
-  character: {
-    name: string;
-    hp: number | null;
-    attack: number | null;
-    defense: number | null;
-    image: string;
-    abilities: string[];
-  };
+  character: CharacterData;
   playerOne?: boolean;
 }
 
@@ -25,8 +20,8 @@ const Character = ({ character, playerOne }: CharacterProps) => {
         <h2 className="text-green-700 capitalize text-2xl">{name}</h2>
 
         <ul className="text-right text-lg">
-          {abilities.map((ability, index) => (
-            <li key={index}>{ability}</li>
+          {abilities.map(({ name }, index) => (
+            <li key={index}>{name}</li>
           ))}
         </ul>
       </section>

@@ -2,15 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import AllCharacters from "./AllCharacters";
 import Fighter from "./Character";
-
-interface CharacterData {
-  name: string;
-  hp: number | null;
-  attack: number | null;
-  defense: number | null;
-  image: string;
-  abilities: string[];
-}
+import { CharacterData } from "./types";
 
 type CharacterName = string;
 type CharacterIndex = number | null;
@@ -64,9 +56,10 @@ const Info = () => {
         attack: Number(stats[1].base_stat),
         defense: Number(stats[2].base_stat),
         image: sprites.other["official-artwork"]["front_default"],
-        abilities: abilities.map(
-          (ability: { ability: { name: string } }) => ability.ability.name
-        ),
+        abilities: abilities.map((ability: { ability: { name: string } }) => ({
+          name: ability.ability.name,
+          type: "damage",
+        })),
       });
       setShowDetails(true);
       setActiveCharacterIndex(characterIndex);
