@@ -1,7 +1,6 @@
 type AllPokemonProps = {
   pokemon: string[];
   activePokemonId: number | null;
-  // handleClick: React.MouseEventHandler;
   handleClick: (
     event: React.MouseEvent<HTMLAnchorElement>,
     index: number
@@ -14,13 +13,13 @@ const AllPokemon = ({
   handleClick,
 }: AllPokemonProps) => {
   return (
-    <ul>
+    <ul className="leading-10">
       {pokemon.map((name, index: number) => (
         <li key={index}>
           <a
             href={`/pokemon/${name}`}
             onClick={(e) => handleClick(e, index)}
-            className={`hover:text-green-700 text-indigo-600 ${
+            className={`text-4xl hover:text-green-700 text-indigo-600 ${
               index === activePokemonId && "text-green-700 underline"
             }`}
           >

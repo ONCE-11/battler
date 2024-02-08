@@ -1,4 +1,4 @@
-type SinglePokemonProps = {
+interface SinglePokemonProps {
   singlePokemon: {
     name: string;
     height: string;
@@ -6,7 +6,7 @@ type SinglePokemonProps = {
     image: string;
     abilities: string[];
   };
-};
+}
 
 const SinglePokemon = ({ singlePokemon }: SinglePokemonProps) => {
   const { name, height, weight, image, abilities } = singlePokemon;

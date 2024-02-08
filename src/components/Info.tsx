@@ -3,29 +3,25 @@ import axios from "axios";
 import AllPokemon from "./AllPokemon";
 import SinglePokemon from "./SinglePokemon";
 
-type SinglePokemon = {
+interface SinglePokemonData {
   name: string;
   height: string;
   weight: string;
   image: string;
   abilities: string[];
-};
+}
 
-type PokemonName = string;
 type PokemonId = number | null;
 
-const emptyPokemon = {
-  name: "",
-  height: "",
-  weight: "",
-  image: "",
-  abilities: [],
-};
-
 const Info = () => {
-  const [pokemonNames, setPokemonNames] = useState<PokemonName[]>([]);
-  const [singlePokemon, setSinglePokemon] =
-    useState<SinglePokemon>(emptyPokemon);
+  const [pokemonList, setPokemonNames] = useState<string[]>([]);
+  const [singlePokemon, setSinglePokemon] = useState<SinglePokemonData>({
+    name: "",
+    height: "",
+    weight: "",
+    image: "",
+    abilities: [],
+  });
   const [showDetails, setShowDetails] = useState(false);
   const [activePokemonId, setActivePokemonId] = useState<PokemonId>(null);
 
@@ -76,10 +72,10 @@ const Info = () => {
 
   return (
     <>
-      <h1 className="text-2xl font-bold mb-4">Entities</h1>
+      <h1 className="text-6xl font-bold mb-4 mt-8">Entities</h1>
       <div className="flex items-start">
         <AllPokemon
-          pokemon={pokemonNames}
+          pokemon={pokemonList}
           activePokemonId={activePokemonId}
           handleClick={handleAnchorClick}
         />

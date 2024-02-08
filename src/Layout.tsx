@@ -5,7 +5,7 @@ const Layout = () => {
   return (
     <>
       <header className="flex justify-between m-4">
-        <span>Battler</span>
+        <span className="text-4xl">Battler</span>
         <Nav />
       </header>
       <main className="m-4">
