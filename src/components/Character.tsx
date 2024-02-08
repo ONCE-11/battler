@@ -1,5 +1,5 @@
-interface SinglePokemonProps {
-  singlePokemon: {
+interface CharacterProps {
+  character: {
     name: string;
     hp: number | null;
     attack: number | null;
@@ -9,8 +9,8 @@ interface SinglePokemonProps {
   };
 }
 
-const SinglePokemon = ({ singlePokemon }: SinglePokemonProps) => {
-  const { name, hp, attack, defense, image, abilities } = singlePokemon;
+const Character = ({ character }: CharacterProps) => {
+  const { name, hp, attack, defense, image, abilities } = character;
 
   return (
     <div className="p-4 rounded shadow-lg bg-slate-200">
@@ -33,4 +33,4 @@ const SinglePokemon = ({ singlePokemon }: SinglePokemonProps) => {
   );
 };
 
-export default SinglePokemon;
+export default Character;

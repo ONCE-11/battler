@@ -1,26 +1,26 @@
-type AllPokemonProps = {
-  pokemon: string[];
-  activePokemonId: number | null;
+type AllCharactersProps = {
+  characters: string[];
+  currentCharacterIndex: number | null;
   handleClick: (
     event: React.MouseEvent<HTMLAnchorElement>,
     index: number
   ) => void;
 };
 
-const AllPokemon = ({
-  pokemon,
-  activePokemonId,
+const AllCharacters = ({
+  characters,
+  currentCharacterIndex,
   handleClick,
-}: AllPokemonProps) => {
+}: AllCharactersProps) => {
   return (
     <ul className="leading-10">
-      {pokemon.map((name, index: number) => (
+      {characters.map((name, index: number) => (
         <li key={index}>
           <a
-            href={`/pokemon/${name}`}
+            href={`/character/${name}`}
             onClick={(e) => handleClick(e, index)}
             className={`text-4xl hover:text-green-700 text-indigo-600 ${
-              index === activePokemonId && "text-green-700 underline"
+              index === currentCharacterIndex && "text-green-700 underline"
             }`}
           >
             {name}
@@ -31,4 +31,4 @@ const AllPokemon = ({
   );
 };
 
-export default AllPokemon;
+export default AllCharacters;

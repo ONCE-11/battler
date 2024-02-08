@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import AllPokemon from "./AllPokemon";
-import SinglePokemon from "./SinglePokemon";
+import AllCharacters from "./AllCharacters";
+import Fighter from "./Character";
 
-interface SinglePokemonData {
+interface CharacterData {
   name: string;
   hp: number | null;
   attack: number | null;
@@ -12,11 +12,12 @@ interface SinglePokemonData {
   abilities: string[];
 }
 
-type PokemonId = number | null;
+type CharacterName = string;
+type CharacterIndex = number | null;
 
 const Info = () => {
-  const [pokemonList, setPokemonNames] = useState<string[]>([]);
-  const [singlePokemon, setSinglePokemon] = useState<SinglePokemonData>({
+  const [characters, setCharacters] = useState<CharacterName[]>([]);
+  const [currentCharacter, setCurrentCharacter] = useState<CharacterData>({
     name: "",
     hp: null,
     attack: null,
@@ -25,7 +26,8 @@ const Info = () => {
     abilities: [],
   });
   const [showDetails, setShowDetails] = useState(false);
-  const [activePokemonId, setActivePokemonId] = useState<PokemonId>(null);
+  const [activeCharacterIndex, setActiveCharacterIndex] =
+    useState<CharacterIndex>(null);
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -34,7 +36,7 @@ const Info = () => {
           data: { results },
         } = await axios.get("https://pokeapi.co/api/v2/pokemon/");
         console.log(results);
-        setPokemonNames(results.map((result: { name: string }) => result.name));
+        setCharacters(results.map((result: { name: string }) => result.name));
       } catch (err) {
         console.error(err);
       }
@@ -45,7 +47,7 @@ const Info = () => {
 
   const handleAnchorClick = async (
     event: React.MouseEvent<HTMLAnchorElement>,
-    pokemonIndex: number
+    characterIndex: number
   ) => {
     event.preventDefault();
 
@@ -56,7 +58,7 @@ const Info = () => {
         `https://pokeapi.co/api/v2/pokemon/${event.currentTarget.innerText}`
       );
 
-      setSinglePokemon({
+      setCurrentCharacter({
         name,
         hp: Number(stats[0].base_stat),
         attack: Number(stats[1].base_stat),
@@ -67,7 +69,7 @@ const Info = () => {
         ),
       });
       setShowDetails(true);
-      setActivePokemonId(pokemonIndex);
+      setActiveCharacterIndex(characterIndex);
     } catch (err) {
       console.error(err);
     }
@@ -75,18 +77,18 @@ const Info = () => {
 
   return (
     <>
-      <h1 className="text-6xl font-bold mb-4 mt-8">Entities</h1>
+      <h1 className="text-6xl font-bold mb-4 mt-8">Characters</h1>
       <div className="flex items-start">
         <section>
-          <AllPokemon
-            pokemon={pokemonList}
-            activePokemonId={activePokemonId}
+          <AllCharacters
+            characters={characters}
+            currentCharacterIndex={activeCharacterIndex}
             handleClick={handleAnchorClick}
           />
         </section>
         {showDetails && (
           <section className="ml-14">
-            <SinglePokemon singlePokemon={singlePokemon} />
+            <Fighter character={currentCharacter} />
           </section>
         )}
       </div>
