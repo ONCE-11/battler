@@ -5,8 +5,9 @@ import SinglePokemon from "./SinglePokemon";
 
 interface SinglePokemonData {
   name: string;
-  height: string;
-  weight: string;
+  hp: number | null;
+  attack: number | null;
+  defense: number | null;
   image: string;
   abilities: string[];
 }
@@ -17,8 +18,9 @@ const Info = () => {
   const [pokemonList, setPokemonNames] = useState<string[]>([]);
   const [singlePokemon, setSinglePokemon] = useState<SinglePokemonData>({
     name: "",
-    height: "",
-    weight: "",
+    hp: null,
+    attack: null,
+    defense: null,
     image: "",
     abilities: [],
   });
@@ -49,15 +51,16 @@ const Info = () => {
 
     try {
       const {
-        data: { name, height, weight, sprites, abilities },
+        data: { name, sprites, abilities, stats },
       } = await axios.get(
         `https://pokeapi.co/api/v2/pokemon/${event.currentTarget.innerText}`
       );
 
       setSinglePokemon({
         name,
-        height,
-        weight,
+        hp: Number(stats[0].base_stat),
+        attack: Number(stats[1].base_stat),
+        defense: Number(stats[2].base_stat),
         image: sprites.other["official-artwork"]["front_default"],
         abilities: abilities.map(
           (ability: { ability: { name: string } }) => ability.ability.name
@@ -74,12 +77,18 @@ const Info = () => {
     <>
       <h1 className="text-6xl font-bold mb-4 mt-8">Entities</h1>
       <div className="flex items-start">
-        <AllPokemon
-          pokemon={pokemonList}
-          activePokemonId={activePokemonId}
-          handleClick={handleAnchorClick}
-        />
-        {showDetails && <SinglePokemon singlePokemon={singlePokemon} />}
+        <section>
+          <AllPokemon
+            pokemon={pokemonList}
+            activePokemonId={activePokemonId}
+            handleClick={handleAnchorClick}
+          />
+        </section>
+        {showDetails && (
+          <section className="ml-14">
+            <SinglePokemon singlePokemon={singlePokemon} />
+          </section>
+        )}
       </div>
     </>
   );

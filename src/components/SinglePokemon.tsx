@@ -1,21 +1,23 @@
 interface SinglePokemonProps {
   singlePokemon: {
     name: string;
-    height: string;
-    weight: string;
+    hp: number | null;
+    attack: number | null;
+    defense: number | null;
     image: string;
     abilities: string[];
   };
 }
 
 const SinglePokemon = ({ singlePokemon }: SinglePokemonProps) => {
-  const { name, height, weight, image, abilities } = singlePokemon;
+  const { name, hp, attack, defense, image, abilities } = singlePokemon;
 
   return (
-    <div className="p-4 rounded shadow-lg bg-slate-200 ml-14">
+    <div className="p-4 rounded shadow-lg bg-slate-200">
       <p className="flex justify-between">
-        <span className="text-purple-700 text-2xl">{height}</span>
-        <span className="text-blue-700 text-2xl">{weight} </span>
+        <span className="text-purple-700 text-2xl">{hp}</span>
+        <span className="text-blue-700 text-2xl">{attack} </span>
+        <span className="text-red-700 text-2xl">{defense}</span>
       </p>
       <img src={image} />
       <section className="flex justify-between border-l-0 border-r-0 border-b-0 border border-t-slate-500 border-solid pt-4">
