@@ -12,7 +12,7 @@ const SinglePokemon = ({ singlePokemon }: SinglePokemonProps) => {
   const { name, height, weight, image, abilities } = singlePokemon;
 
   return (
-    <div className="p-4 rounded w-1/2 shadow-lg bg-slate-200 ml-14">
+    <div className="p-4 rounded shadow-lg bg-slate-200 ml-14">
       <p className="flex justify-between">
         <span className="text-purple-700 text-2xl">{height}</span>
         <span className="text-blue-700 text-2xl">{weight} </span>
