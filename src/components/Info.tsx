@@ -12,6 +12,7 @@ type SinglePokemon = {
 };
 
 type PokemonName = string;
+type PokemonId = number | null;
 
 const emptyPokemon = {
   name: "",
@@ -26,6 +27,7 @@ const Info = () => {
   const [singlePokemon, setSinglePokemon] =
     useState<SinglePokemon>(emptyPokemon);
   const [showDetails, setShowDetails] = useState(false);
+  const [activePokemonId, setActivePokemonId] = useState<PokemonId>(null);
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -44,7 +46,8 @@ const Info = () => {
   }, []);
 
   const handleAnchorClick = async (
-    event: React.MouseEvent<HTMLAnchorElement>
+    event: React.MouseEvent<HTMLAnchorElement>,
+    pokemonIndex: number
   ) => {
     event.preventDefault();
 
@@ -65,27 +68,24 @@ const Info = () => {
         ),
       });
       setShowDetails(true);
+      setActivePokemonId(pokemonIndex);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleBackClick = () => {
-    setSinglePokemon(emptyPokemon);
-    setShowDetails(false);
-  };
-
   return (
-    <div>
-      {showDetails ? (
-        <AllPokemon pokemon={pokemonNames} handleClick={handleAnchorClick} />
-      ) : (
-        <SinglePokemon
-          singlePokemon={singlePokemon}
-          handleClick={handleBackClick}
+    <>
+      <h1 className="text-2xl font-bold mb-4">Entities</h1>
+      <div className="flex items-start">
+        <AllPokemon
+          pokemon={pokemonNames}
+          activePokemonId={activePokemonId}
+          handleClick={handleAnchorClick}
         />
-      )}
-    </div>
+        {showDetails && <SinglePokemon singlePokemon={singlePokemon} />}
+      </div>
+    </>
   );
 };
 

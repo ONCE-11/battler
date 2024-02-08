@@ -1,26 +1,34 @@
 type AllPokemonProps = {
   pokemon: string[];
-  handleClick: React.MouseEventHandler;
+  activePokemonId: number | null;
+  // handleClick: React.MouseEventHandler;
+  handleClick: (
+    event: React.MouseEvent<HTMLAnchorElement>,
+    index: number
+  ) => void;
 };
 
-const AllPokemon = ({ pokemon, handleClick }: AllPokemonProps) => {
+const AllPokemon = ({
+  pokemon,
+  activePokemonId,
+  handleClick,
+}: AllPokemonProps) => {
   return (
-    <>
-      <h1 className="text-2xl font-bold mb-4">Entities</h1>
-      <ul>
-        {pokemon.map((name, index: number) => (
-          <li key={index}>
-            <a
-              href={`/pokemon/${name}`}
-              onClick={handleClick}
-              className="hover:underline text-indigo-600"
-            >
-              {name}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </>
+    <ul>
+      {pokemon.map((name, index: number) => (
+        <li key={index}>
+          <a
+            href={`/pokemon/${name}`}
+            onClick={(e) => handleClick(e, index)}
+            className={`hover:text-green-700 text-indigo-600 ${
+              index === activePokemonId && "text-green-700 underline"
+            }`}
+          >
+            {name}
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 };
 
