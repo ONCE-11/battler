@@ -3,6 +3,7 @@ import axios from "axios";
 import AllCharacters from "./AllCharacters";
 import Character from "./Character";
 import { CharacterData } from "./types";
+import Title from "./Title";
 
 type CharacterName = string;
 type CharacterIndex = number | null;
@@ -70,7 +71,7 @@ const Info = () => {
 
   return (
     <>
-      <h1 className="text-6xl font-bold mb-4 mt-8">Characters</h1>
+      <Title text="Characters" />
       <div className="flex items-start">
         <section>
           <AllCharacters

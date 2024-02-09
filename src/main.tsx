@@ -5,11 +5,17 @@ import "./index.css";
 import Fight from "./components/Fight.tsx";
 import Info from "./components/Info.tsx";
 import Layout from "./Layout.tsx";
+import LoginForm from "./components/Login.tsx";
+import { AuthProvider } from "./components/AuthContext.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout />,
+    element: (
+      <AuthProvider>
+        <Layout />
+      </AuthProvider>
+    ),
     children: [
       {
         index: true,
@@ -18,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "/fight",
         element: <Fight />,
+      },
+      {
+        path: "/login",
+        element: <LoginForm />,
       },
     ],
   },

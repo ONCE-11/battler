@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
+import { useAuthContext } from "./AuthContext";
 
 const Nav = () => {
+  const { loggedIn, logout } = useAuthContext()!;
+
   const sharedCssClasses = "m-0 text-3xl hover:underline";
+
+  const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    logout();
+  };
 
   return (
     <nav>
@@ -11,6 +19,19 @@ const Nav = () => {
       <Link to={"/fight"} className={`ml-4 ${sharedCssClasses}`}>
         Fight!
       </Link>
+      {!loggedIn ? (
+        <Link to={"/login"} className={`ml-4 ${sharedCssClasses}`}>
+          Login
+        </Link>
+      ) : (
+        <Link
+          to={"/logout"}
+          className={`ml-4 ${sharedCssClasses}`}
+          onClick={handleLogoutClick}
+        >
+          Logout
+        </Link>
+      )}
     </nav>
   );
 };
