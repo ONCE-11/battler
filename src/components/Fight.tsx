@@ -32,11 +32,14 @@ const Battler = () => {
 
   const [fightLog, setFightLog] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState(false);
+  const [attacking, setAttacking] = useState(false);
+  const [opponentDefeated, setOpponentDefeated] = useState(false);
 
   const handleClick = (
     _: React.MouseEvent<HTMLButtonElement>,
     ability: Ability
   ) => {
+    setAttacking(true);
     let action = "";
 
     if (ability.type === "heal") {
@@ -48,6 +51,7 @@ const Battler = () => {
 
       if (newHP < 0) {
         newHP = 0;
+        setOpponentDefeated(true);
         setGameOver(true);
         action = "The game is now over";
       } else {
@@ -55,6 +59,8 @@ const Battler = () => {
         setOpponent({ ...opponent, hp: newHP });
       }
     }
+
+    setTimeout(() => setAttacking(false), 500);
 
     setFightLog([...fightLog, action]);
   };
@@ -64,11 +70,15 @@ const Battler = () => {
       <h1 className="text-6xl font-bold mb-4 mt-8">Fight!</h1>
       <div className="flex justify-between">
         <section>
-          <Character character={opponent} playerOne={true} />
+          <Character
+            character={opponent}
+            playerOne={true}
+            defeated={opponentDefeated}
+          />
         </section>
         <section className="self-center font-bold text-8xl">VS</section>
         <section>
-          <Character character={player} />
+          <Character character={player} attacking={attacking} />
         </section>
       </div>
       <div className="mt-10">
@@ -86,7 +96,7 @@ const Battler = () => {
         </section>
       </div>
       <div className="mt-10 text-xl">Fight Log</div>
-      <ul className="mt-6">
+      <ul className="mt-6 leading-loose overflow-y-scroll h-72">
         {fightLog.map((action) => (
           <li>{action}</li>
         ))}
