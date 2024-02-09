@@ -49,7 +49,7 @@ const Battler = () => {
     } else {
       let newHP = opponent.hp - 10;
 
-      if (newHP < 0) {
+      if (newHP <= 0) {
         newHP = 0;
         setOpponentDefeated(true);
         setGameOver(true);
@@ -68,7 +68,12 @@ const Battler = () => {
   return (
     <>
       <h1 className="text-6xl font-bold mb-4 mt-8">Fight!</h1>
-      <div className="flex justify-between">
+      <div className="flex justify-between relative">
+        {gameOver && (
+          <p className="absolute text-9xl -rotate-12 text-red-600 z-10 top-32 left-12">
+            GAME OVER
+          </p>
+        )}
         <section>
           <Character
             character={opponent}
@@ -96,7 +101,7 @@ const Battler = () => {
         </section>
       </div>
       <div className="mt-10 text-xl">Fight Log</div>
-      <ul className="mt-6 leading-loose overflow-y-scroll h-72">
+      <ul className="mt-6 leading-loose overflow-y-auto h-72">
         {fightLog.map((action) => (
           <li>{action}</li>
         ))}
