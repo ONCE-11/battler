@@ -5,9 +5,9 @@ export interface Ability {
 
 export interface CharacterData {
   name: string;
-  hp: number | null;
-  attack: number | null;
-  defense: number | null;
+  hp: number;
+  attack: number;
+  defense: number;
   image: string;
   abilities: Ability[];
 }

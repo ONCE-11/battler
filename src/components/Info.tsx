@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import AllCharacters from "./AllCharacters";
-import Fighter from "./Character";
+import Character from "./Character";
 import { CharacterData } from "./types";
 
 type CharacterName = string;
@@ -11,9 +11,9 @@ const Info = () => {
   const [characters, setCharacters] = useState<CharacterName[]>([]);
   const [currentCharacter, setCurrentCharacter] = useState<CharacterData>({
     name: "",
-    hp: null,
-    attack: null,
-    defense: null,
+    hp: 0,
+    attack: 0,
+    defense: 0,
     image: "",
     abilities: [],
   });
@@ -81,7 +81,7 @@ const Info = () => {
         </section>
         {showDetails && (
           <section className="ml-14">
-            <Fighter character={currentCharacter} />
+            <Character character={currentCharacter} />
           </section>
         )}
       </div>
