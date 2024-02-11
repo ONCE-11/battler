@@ -3,27 +3,35 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Fight from "./components/Fight.tsx";
-import Info from "./components/Info.tsx";
+import CharacterInfo from "./components/CharacterInfo.tsx";
 import Layout from "./Layout.tsx";
 import LoginForm from "./components/Login.tsx";
-import { AuthProvider } from "./components/AuthContext.tsx";
+import { AuthProvider } from "./components/context/AuthContext.tsx";
+import { ErrorProvider } from "./components/context/MessageContext.tsx";
+import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <AuthProvider>
-        <Layout />
-      </AuthProvider>
+      <ErrorProvider>
+        <AuthProvider>
+          <Layout />
+        </AuthProvider>
+      </ErrorProvider>
     ),
     children: [
       {
         index: true,
-        element: <Info />,
+        element: <CharacterInfo />,
       },
       {
         path: "/fight",
-        element: <Fight />,
+        element: (
+          <ProtectedRoute>
+            <Fight />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/login",

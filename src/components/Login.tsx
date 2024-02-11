@@ -1,18 +1,15 @@
 import { useState } from "react";
 import Button from "./Button";
 import Title from "./Title";
-import { useAuthContext } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuthContext()!;
-  const navigate = useNavigate();
+  const { login } = useAuth()!;
 
   const handleClick = async () => {
-    await login(email, password);
-    navigate("/");
+    login(email, password);
   };
 
   return (

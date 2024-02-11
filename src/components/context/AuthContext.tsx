@@ -1,7 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "./utilities";
+import { supabase } from "../utilities";
 import { User } from "@supabase/supabase-js";
 import { PropsWithChildren } from "react";
+import { useMessage } from "./MessageContext";
+import { useNavigate } from "react-router-dom";
+import { MessageData } from "./MessageContext";
 
 export interface AuthContextData {
   loggedIn: boolean;
@@ -10,11 +13,13 @@ export interface AuthContextData {
   logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextData | null>(null);
+const AuthContext = createContext<AuthContextData | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const { setMessage } = useMessage()!;
+  const navigate = useNavigate();
 
   const fetchSession = async () => {
     const {
@@ -22,10 +27,9 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       error,
     } = await supabase.auth.getSession();
 
-    // console.log(supabaseSession?.user);
-
     if (error) {
-      console.error(error);
+      setMessage({ type: "error", text: error.message });
+      console.error(error.message);
     }
 
     if (supabaseSession) {
@@ -41,10 +45,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     });
 
     if (error) {
-      console.error(error);
+      setMessage({ type: "error", text: error.message });
+      console.error(error.message);
     } else {
       fetchSession();
+      setMessage({ type: "info", text: "You have logged in successfully" });
       console.log("logged in");
+      navigate("/");
     }
   };
 
@@ -52,9 +59,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const { error } = await supabase.auth.signOut();
 
     if (error) {
-      console.error(error);
+      setMessage({ type: "error", text: error.message });
+      console.error(error.message);
     } else {
       console.log("logged out");
+      setMessage({ type: "info", text: "You have logged out successfully" });
       setLoggedIn(false);
     }
   };
@@ -70,4 +79,4 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const useAuthContext = () => useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);
