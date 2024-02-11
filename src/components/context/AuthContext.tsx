@@ -4,7 +4,6 @@ import { User } from "@supabase/supabase-js";
 import { PropsWithChildren } from "react";
 import { useMessage } from "./MessageContext";
 import { useNavigate } from "react-router-dom";
-import { MessageData } from "./MessageContext";
 
 export interface AuthContextData {
   loggedIn: boolean;
