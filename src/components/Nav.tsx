@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuthContext } from "./AuthContext";
 
 const Nav = () => {
-  const { loggedIn, logout } = useAuthContext()!;
+  const { loggedIn, currentUser, logout } = useAuthContext()!;
 
   const sharedCssClasses = "m-0 text-3xl hover:underline";
 
@@ -29,7 +29,7 @@ const Nav = () => {
           className={`ml-4 ${sharedCssClasses}`}
           onClick={handleLogoutClick}
         >
-          Logout
+          Logout {`${currentUser?.email}`}
         </Link>
       )}
     </nav>

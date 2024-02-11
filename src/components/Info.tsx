@@ -28,7 +28,6 @@ const Info = () => {
         const {
           data: { results },
         } = await axios.get("https://pokeapi.co/api/v2/pokemon/");
-        console.log(results);
         setCharacters(results.map((result: { name: string }) => result.name));
       } catch (err) {
         console.error(err);
