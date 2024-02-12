@@ -20,23 +20,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const { setMessage } = useMessage()!;
   const navigate = useNavigate();
 
-  const fetchSession = async () => {
-    const {
-      data: { session: supabaseSession },
-      error,
-    } = await supabase.auth.getSession();
-
-    if (error) {
-      setMessage({ type: "error", text: error.message });
-      console.error(error.message);
-    }
-
-    if (supabaseSession) {
-      setLoggedIn(true);
-      setCurrentUser(supabaseSession.user);
-    }
-  };
-
   const login = async (email: string, password: string) => {
     const { error, data } = await supabase.auth.signInWithPassword({
       email,
