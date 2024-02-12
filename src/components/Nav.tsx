@@ -1,14 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
 const Nav = () => {
   const { loggedIn, currentUser, logout } = useAuth()!;
+  const navigate = useNavigate();
 
   const sharedCssClasses = "m-0 text-3xl hover:underline inline-block";
 
   const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     logout();
+    navigate("/");
   };
 
   return (

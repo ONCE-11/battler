@@ -4,10 +4,10 @@ import { PropsWithChildren } from "react";
 import { useMessage } from "./context/MessageContext";
 
 export const ProtectedRoute = ({ children }: PropsWithChildren) => {
-  const { loggedIn } = useAuth()!;
+  const { currentUser } = useAuth()!;
   const { setMessage } = useMessage()!;
 
-  if (!loggedIn) {
+  if (!currentUser) {
     setMessage({
       type: "error",
       text: "You must be logged in to access this page",

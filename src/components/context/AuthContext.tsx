@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   const login = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { error, data } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -47,9 +47,10 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       setMessage({ type: "error", text: error.message });
       console.error(error.message);
     } else {
-      fetchSession();
       setMessage({ type: "info", text: "You have logged in successfully" });
-      console.log("logged in");
+      console.log("logged in", data);
+      setLoggedIn(true);
+      setCurrentUser(data.user);
       navigate("/");
     }
   };
@@ -68,7 +69,32 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    fetchSession();
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session);
+
+      if (session?.user) {
+        console.log("session retreived");
+        setCurrentUser(session.user);
+        setLoggedIn(true);
+      }
+
+      // if (event === "SIGNED_OUT") {
+      // }
+
+      // if (event === 'INITIAL_SESSION') {
+      //   // handle initial session
+      // } else if (event === 'SIGNED_IN') {
+      //   // handle sign in event
+      // } else if (event === 'SIGNED_OUT') {
+      //   // handle sign out event
+      // } else if (event === 'PASSWORD_RECOVERY') {
+      //   // handle password recovery event
+      // } else if (event === 'TOKEN_REFRESHED') {
+      //   // handle token refreshed event
+      // } else if (event === 'USER_UPDATED') {
+      //   // handle user updated event
+      // }
+    });
   }, []);
 
   return (

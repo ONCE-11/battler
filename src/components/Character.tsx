@@ -19,6 +19,7 @@ const Character = ({
     <div
       className={`p-4 rounded shadow-lg bg-slate-200 w-80 ${
         attacking ? "animate-bounce" : ""
+        // ${playerOne ? "skew-x-3 ml-4" : "-skew-x-3 mr-4"}
       }`}
     >
       <p className="flex justify-between">
