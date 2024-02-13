@@ -9,16 +9,22 @@ import LoginForm from "./components/Login.tsx";
 import { AuthProvider } from "./components/context/AuthContext.tsx";
 import { ErrorProvider } from "./components/context/MessageContext.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+import Shop from "./components/Shop.tsx";
+import Equipment from "./components/Equipment.tsx";
+import Fights from "./components/Fights.tsx";
+import { LoadingProvider } from "./components/context/LoadingContext.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <ErrorProvider>
-        <AuthProvider>
-          <Layout />
-        </AuthProvider>
-      </ErrorProvider>
+      <LoadingProvider>
+        <ErrorProvider>
+          <AuthProvider>
+            <Layout />
+          </AuthProvider>
+        </ErrorProvider>
+      </LoadingProvider>
     ),
     children: [
       {
@@ -36,6 +42,30 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginForm />,
+      },
+      {
+        path: "/shop",
+        element: (
+          <ProtectedRoute>
+            <Shop />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/equipment",
+        element: (
+          <ProtectedRoute>
+            <Equipment />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/fights",
+        element: (
+          <ProtectedRoute>
+            <Fights />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

@@ -2,10 +2,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 
 const Nav = () => {
-  const { loggedIn, currentUser, logout } = useAuth()!;
+  const { loggedIn, logout } = useAuth()!;
   const navigate = useNavigate();
 
-  const sharedCssClasses = "m-0 text-3xl hover:underline inline-block";
+  const sharedCssClasses = "m-0 text-2xl hover:underline inline-block";
 
   const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -20,15 +20,24 @@ const Nav = () => {
       </Link>
       {loggedIn ? (
         <>
+          <Link to={"/fights"} className={`ml-4 ${sharedCssClasses}`}>
+            Fights
+          </Link>
           <Link to={"/fight"} className={`ml-4 ${sharedCssClasses}`}>
             Fight!
           </Link>
+          <Link to={"/shop"} className={`ml-4 ${sharedCssClasses}`}>
+            Shop
+          </Link>
+          <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
+            Equipment
+          </Link>
           <Link
             to={"/logout"}
-            className={`ml-4 b-truncate w-52 ${sharedCssClasses}`}
+            className={`ml-4  ${sharedCssClasses}`}
             onClick={handleLogoutClick}
           >
-            Logout {`${currentUser?.email}`}
+            Logout
           </Link>
         </>
       ) : (
