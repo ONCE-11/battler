@@ -13,7 +13,7 @@ const Character = ({
   attacking,
   defeated,
 }: CharacterProps) => {
-  const { name, hp, attack, defense, image, abilities } = character;
+  const { name, image, abilities } = character;
 
   return (
     <div
