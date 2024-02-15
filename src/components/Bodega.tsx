@@ -58,11 +58,11 @@ const Bodega = () => {
 
   const handleClick = async (
     _: React.MouseEvent<HTMLButtonElement>,
-    itemId: number
+    itemId: string
   ) => {
     if (!currentUser) return;
 
-    console.log("lick");
+    console.log(itemId);
 
     const { data, error } = await supabase.functions.invoke("buyItem", {
       body: { userId: currentUser.id, itemId: itemId },
@@ -99,10 +99,7 @@ const Bodega = () => {
               <td>{description}</td>
               <td>{price} P</td>
               <td>
-                <Button
-                  text="Buy"
-                  handleClick={(e) => handleClick(e, Number(id))}
-                />
+                <Button text="Buy" handleClick={(e) => handleClick(e, id)} />
               </td>
             </tr>
           ))}
