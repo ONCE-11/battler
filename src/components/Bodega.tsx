@@ -84,7 +84,10 @@ const Bodega = () => {
         table: "profiles",
         // filter: 'body=eq.hey',
       },
-      ({ new: { pesos } }) => setPesos(pesos)
+      ({ new: { pesos } }): void => {
+        console.log(pesos);
+        setPesos(pesos);
+      }
     )
     .subscribe();
 
