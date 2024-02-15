@@ -1,6 +1,6 @@
 import Character from "./Character";
 import Title from "./Title";
-import { Ability, CharacterData } from "./types";
+import { Ability, CharacterData } from "../types/custom";
 import { useState } from "react";
 
 const Battler = () => {

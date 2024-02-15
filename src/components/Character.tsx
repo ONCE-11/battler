@@ -1,4 +1,4 @@
-import { CharacterData } from "./types";
+import { CharacterData } from "../types/custom";
 
 interface CharacterProps {
   character: CharacterData;

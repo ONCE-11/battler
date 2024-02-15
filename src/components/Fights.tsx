@@ -1,4 +1,6 @@
-// import { supabase } from "./utilities";
+import { supabase } from "../utilities";
+
+import { useEffect } from "react";
 
 const Fights = () => {
   // const changes = supabase
@@ -22,6 +24,18 @@ const Fights = () => {
   //   console.log(response);
   // };
   // return <button onClick={handleClick}>Test Function</button>;
+
+  useEffect(() => {
+    const fetchHello = async () => {
+      const response = await supabase.functions.invoke("hello", {
+        body: { foo: "bar" },
+      });
+      console.log(response);
+    };
+
+    fetchHello();
+  }, []);
+
   return "Fights";
 };
 

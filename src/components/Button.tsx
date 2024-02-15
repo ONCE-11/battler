@@ -1,6 +1,6 @@
 interface ButtonProps {
   text: string;
-  handleClick?: () => void;
+  handleClick?: (e: any, extraParam?: any) => void;
   additionalCssClasses?: string[];
   type?: "button" | "submit";
 }

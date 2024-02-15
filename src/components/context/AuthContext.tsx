@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { supabase } from "../utilities";
+import { supabase } from "../../utilities";
 import { User } from "@supabase/supabase-js";
 import { PropsWithChildren } from "react";
 import { useMessage } from "./MessageContext";

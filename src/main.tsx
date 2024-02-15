@@ -9,7 +9,7 @@ import LoginForm from "./components/Login.tsx";
 import { AuthProvider } from "./components/context/AuthContext.tsx";
 import { ErrorProvider } from "./components/context/MessageContext.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
-import Shop from "./components/Shop.tsx";
+import Bodega from "./components/Bodega.tsx";
 import Equipment from "./components/Equipment.tsx";
 import Fights from "./components/Fights.tsx";
 import { LoadingProvider } from "./components/context/LoadingContext.tsx";
@@ -47,7 +47,7 @@ const router = createBrowserRouter([
         path: "/shop",
         element: (
           <ProtectedRoute>
-            <Shop />
+            <Bodega />
           </ProtectedRoute>
         ),
       },

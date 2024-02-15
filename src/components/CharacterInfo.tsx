@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import AllCharacters from "./AllCharacters";
 import Character from "./Character";
-import { CharacterData } from "./types";
+import { CharacterData } from "../types/custom";
 import Title from "./Title";
 
 type CharacterName = string;
