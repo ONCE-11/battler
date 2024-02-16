@@ -12,6 +12,9 @@ const Bodega = () => {
   >([]);
   const [pesos, setPesos] =
     useState<Database["public"]["Tables"]["profiles"]["Row"]["pesos"]>(0);
+
+  const [characterId, setCharacterId] =
+    useState<Database["public"]["Tables"]["characters"]["Row"]["id"]>("");
   const { setMessage } = useMessage()!;
   const { currentUser } = useAuth()!;
 
@@ -25,7 +28,7 @@ const Bodega = () => {
         return;
       }
 
-      console.log({ data });
+      // console.log({ data });
 
       setItems(data);
     };
@@ -35,6 +38,30 @@ const Bodega = () => {
 
       const { data, error } = await supabase
         .from("profiles")
+        .select("pesos")
+        .eq("user_id", currentUser.id)
+        .single();
+
+      if (error) {
+        console.error(error);
+        setMessage({ type: "error", text: error.message });
+        return;
+      }
+
+      // console.log({ data });
+
+      // console.log({ currentUser });
+
+      setPesos(data.pesos);
+    };
+
+    const fetchCharacter = async () => {
+      if (currentUser === null) return;
+
+      console.log({ currentUserId: currentUser.id });
+
+      const { data, error } = await supabase
+        .from("characters")
         .select()
         .eq("user_id", currentUser.id)
         .single();
@@ -47,13 +74,12 @@ const Bodega = () => {
 
       console.log({ data });
 
-      console.log({ currentUser });
-
-      setPesos(data.pesos);
+      setCharacterId(data.id);
     };
 
     fetchItems();
     fetchProfile();
+    fetchCharacter();
   }, []);
 
   const handleClick = async (
@@ -62,10 +88,10 @@ const Bodega = () => {
   ) => {
     if (!currentUser) return;
 
-    console.log(itemId);
+    // console.log(itemId);
 
     const { data, error } = await supabase.functions.invoke("buyItem", {
-      body: { userId: currentUser.id, itemId: itemId },
+      body: { characterId, itemId, userId: currentUser.id },
     });
     console.log(data);
 
@@ -85,7 +111,7 @@ const Bodega = () => {
         // filter: 'body=eq.hey',
       },
       ({ new: { pesos } }): void => {
-        console.log(pesos);
+        // console.log(pesos);
         setPesos(pesos);
       }
     )
