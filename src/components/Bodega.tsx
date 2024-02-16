@@ -90,32 +90,22 @@ const Bodega = () => {
 
     // console.log(itemId);
 
-    const { data, error } = await supabase.functions.invoke("buyItem", {
+    const {
+      data: { remainingPesos },
+      error,
+    } = await supabase.functions.invoke("buyItem", {
       body: { characterId, itemId, userId: currentUser.id },
     });
-    console.log(data);
+
+    console.log(remainingPesos);
 
     if (error) {
       setMessage({ type: "error", text: error.message });
+      return;
     }
-  };
 
-  supabase
-    .channel("changes")
-    .on(
-      "postgres_changes",
-      {
-        event: "UPDATE",
-        schema: "public",
-        table: "profiles",
-        // filter: 'body=eq.hey',
-      },
-      ({ new: { pesos } }): void => {
-        // console.log(pesos);
-        setPesos(pesos);
-      }
-    )
-    .subscribe();
+    setPesos(remainingPesos);
+  };
 
   return (
     <>
