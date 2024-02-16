@@ -66,6 +66,7 @@ const Bodega = () => {
 
     const { data, error } = await supabase.functions.invoke("buyItem", {
       body: { userId: currentUser.id, itemId: itemId },
+      headers: { "x-region": "us-west-1" },
     });
     console.log(data);
 
