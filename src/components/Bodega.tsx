@@ -15,6 +15,8 @@ const Bodega = () => {
 
   const [characterId, setCharacterId] =
     useState<Database["public"]["Tables"]["characters"]["Row"]["id"]>("");
+  const [counts, setCounts] = useState<number[]>([]);
+  const [total, setTotal] = useState(0);
   const { setMessage } = useMessage()!;
   const { currentUser } = useAuth()!;
 
@@ -31,6 +33,7 @@ const Bodega = () => {
       // console.log({ data });
 
       setItems(data);
+      setCounts(new Array(data.length).fill(0));
     };
 
     const fetchProfile = async () => {
@@ -58,7 +61,7 @@ const Bodega = () => {
     const fetchCharacter = async () => {
       if (currentUser === null) return;
 
-      console.log({ currentUserId: currentUser.id });
+      // console.log({ currentUserId: currentUser.id });
 
       const { data, error } = await supabase
         .from("characters")
@@ -72,7 +75,7 @@ const Bodega = () => {
         return;
       }
 
-      console.log({ data });
+      // console.log({ data });
 
       setCharacterId(data.id);
     };
@@ -97,7 +100,7 @@ const Bodega = () => {
       body: { characterId, itemId, userId: currentUser.id },
     });
 
-    console.log(remainingPesos);
+    // console.log(remainingPesos);
 
     if (error) {
       setMessage({ type: "error", text: error.message });
@@ -117,14 +120,20 @@ const Bodega = () => {
               <td className="capitalize">{name}</td>
               <td>{description}</td>
               <td>{price} P</td>
-              <td>
-                <Button text="Buy" handleClick={(e) => handleClick(e, id)} />
+              <td className="text-right">
+                {/* <Button text="Buy" handleClick={(e) => handleClick(e, id)} /> */}
+                <Button text="+" />
+                {counts[index]}
+                <Button text="-" />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="border-t-black border-t mt-4 pt-4">PESOS: {pesos}</div>
+      <div className="border-t-black border-t mt-4 pt-4 flex justify-between">
+        <div>PESOS: {pesos}</div>
+        <div>TOTAL: {total}</div>
+      </div>
     </>
   );
 };
