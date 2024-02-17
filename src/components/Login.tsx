@@ -1,7 +1,7 @@
 import Button from "./Button";
 import Title from "./Title";
 import useAuth from "./hooks/useAuth";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { messageAtom } from "../main";
 
@@ -33,8 +33,8 @@ const LoginForm = () => {
       text: "You are already logged in",
     });
 
-    // user is not authenticated
-    return <Navigate to="/" />;
+    // user is already authenticated
+    navigate("/");
   }
 
   return (
