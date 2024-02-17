@@ -1,26 +1,32 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import AllCharacters from "./AllCharacters";
 import Character from "./Character";
 import { CharacterData } from "../types/custom";
 import Title from "./Title";
+import { useAtom, atom } from "jotai";
 
 type CharacterName = string;
 type CharacterIndex = number | null;
 
+const charactersAtom = atom<CharacterName[]>([]);
+const currentCharacterAtom = atom<CharacterData>({
+  name: "",
+  hp: 0,
+  attack: 0,
+  defense: 0,
+  image: "",
+  abilities: [],
+});
+const showDetailsAtom = atom(false);
+const activeCharacterIndexAtom = atom<CharacterIndex>(null);
+
 const Info = () => {
-  const [characters, setCharacters] = useState<CharacterName[]>([]);
-  const [currentCharacter, setCurrentCharacter] = useState<CharacterData>({
-    name: "",
-    hp: 0,
-    attack: 0,
-    defense: 0,
-    image: "",
-    abilities: [],
-  });
-  const [showDetails, setShowDetails] = useState(false);
+  const [characters, setCharacters] = useAtom(charactersAtom);
+  const [currentCharacter, setCurrentCharacter] = useAtom(currentCharacterAtom);
+  const [showDetails, setShowDetails] = useAtom(showDetailsAtom);
   const [activeCharacterIndex, setActiveCharacterIndex] =
-    useState<CharacterIndex>(null);
+    useAtom(activeCharacterIndexAtom);
 
   useEffect(() => {
     const fetchPokemon = async () => {
