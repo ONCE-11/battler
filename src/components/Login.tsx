@@ -1,9 +1,9 @@
 import Button from "./Button";
 import Title from "./Title";
-// import { useAuth } from "./context/AuthContext";
 import useAuth from "./hooks/useAuth";
-import { useLocation, useNavigate } from "react-router-dom";
-import { atom, useAtom } from "jotai";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import { atom, useAtom, useSetAtom } from "jotai";
+import { messageAtom } from "../main";
 
 const emailAtom = atom("");
 const passwordAtom = atom("");
@@ -11,7 +11,8 @@ const passwordAtom = atom("");
 const LoginForm = () => {
   const [email, setEmail] = useAtom(emailAtom);
   const [password, setPassword] = useAtom(passwordAtom);
-  const { login } = useAuth();
+  const setMessage = useSetAtom(messageAtom);
+  const { login, loggedIn } = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
 
@@ -25,6 +26,16 @@ const LoginForm = () => {
       login(email, password, () => navigate("/"));
     }
   };
+
+  if (loggedIn) {
+    setMessage({
+      type: "error",
+      text: "You are already logged in",
+    });
+
+    // user is not authenticated
+    return <Navigate to="/" />;
+  }
 
   return (
     <>
