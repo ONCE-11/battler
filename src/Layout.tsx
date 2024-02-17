@@ -2,13 +2,12 @@ import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
 import { useMessage } from "./components/context/MessageContext";
-import { useLoading } from "./components/context/LoadingContext";
+import { useAtomValue } from "jotai";
+import { loadingAtom } from "./main";
 
 const Layout = () => {
   const { message, setMessage } = useMessage()!;
-  const { loading } = useLoading()!;
-
-  // console.log("layout", { loading });
+  const loading = useAtomValue(loadingAtom);
 
   return (
     <div style={{ width: "1000px", margin: "0 auto" }}>

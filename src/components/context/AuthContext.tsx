@@ -3,7 +3,8 @@ import { supabase } from "../../utilities";
 import { User } from "@supabase/supabase-js";
 import { PropsWithChildren } from "react";
 import { useMessage } from "./MessageContext";
-import { useLoading } from "./LoadingContext";
+import { useSetAtom } from "jotai";
+import { loadingAtom } from "../../main";
 
 type LoginFunction = (
   email: string,
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const { setMessage } = useMessage()!;
-  const { setLoading } = useLoading()!;
+  const setLoading = useSetAtom(loadingAtom);
 
   const login = async (
     email: string,

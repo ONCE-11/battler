@@ -12,19 +12,24 @@ import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 import Bodega from "./components/Bodega.tsx";
 import Equipment from "./components/Equipment.tsx";
 import Fights from "./components/Fights.tsx";
-import { LoadingProvider } from "./components/context/LoadingContext.tsx";
+import { Provider, atom } from "jotai";
+
+export interface MessageType {
+  type?: "info" | "error";
+  text?: string;
+}
+
+export const loadingAtom = atom(false);
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <LoadingProvider>
-        <ErrorProvider>
-          <AuthProvider>
-            <Layout />
-          </AuthProvider>
-        </ErrorProvider>
-      </LoadingProvider>
+      <ErrorProvider>
+        <AuthProvider>
+          <Layout />
+        </AuthProvider>
+      </ErrorProvider>
     ),
     children: [
       {
@@ -73,6 +78,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
