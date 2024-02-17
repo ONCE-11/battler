@@ -26,8 +26,8 @@ const Nav = () => {
           <Link to={"/fight"} className={`ml-4 ${sharedCssClasses}`}>
             Fight!
           </Link>
-          <Link to={"/shop"} className={`ml-4 ${sharedCssClasses}`}>
-            Shop
+          <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
+            Bodega
           </Link>
           <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
             Equipment

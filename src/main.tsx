@@ -42,7 +42,7 @@ const router = createBrowserRouter([
         element: <LoginForm />,
       },
       {
-        path: "/shop",
+        path: "/bodega",
         element: (
           <ProtectedRoute>
             <Bodega />
