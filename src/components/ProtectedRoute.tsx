@@ -1,14 +1,14 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
+// import { useAuth } from "./context/AuthContext";
+import useAuth from "./hooks/useAuth";
 import { PropsWithChildren } from "react";
-import { useMessage } from "./context/MessageContext";
+import { useSetAtom } from "jotai";
+import { messageAtom } from "../main";
 
 export const ProtectedRoute = ({ children }: PropsWithChildren) => {
-  const { loggedIn } = useAuth()!;
-  const { setMessage } = useMessage()!;
+  const { loggedIn } = useAuth();
+  const setMessage = useSetAtom(messageAtom);
   const location = useLocation();
-
-  // console.log("protected route: ", { loading, loggedIn, currentUser });
 
   if (!loggedIn) {
     setMessage({

@@ -1,13 +1,19 @@
 import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
-import { useMessage } from "./components/context/MessageContext";
 import { useAtomValue } from "jotai";
-import { loadingAtom } from "./main";
+import { loadingAtom, messageAtom } from "./main";
+import useAuth from "./components/hooks/useAuth";
+import { useEffect } from "react";
 
 const Layout = () => {
-  const { message, setMessage } = useMessage()!;
   const loading = useAtomValue(loadingAtom);
+  const message = useAtomValue(messageAtom);
+  const { fetchSession } = useAuth();
+
+  useEffect(() => {
+    fetchSession();
+  }, []);
 
   return (
     <div style={{ width: "1000px", margin: "0 auto" }}>
@@ -16,13 +22,16 @@ const Layout = () => {
         <Nav />
       </header>
 
+      {message?.type && (
+        <main className="m-4">
+          <GlobalMessage />
+        </main>
+      )}
+
       {loading ? (
         "LOADING"
       ) : (
         <main className="m-4">
-          {message?.type && (
-            <GlobalMessage message={message} setMessage={setMessage} />
-          )}
           <Outlet />
         </main>
       )}

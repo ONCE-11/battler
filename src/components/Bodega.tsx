@@ -1,22 +1,24 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { supabase } from "../utilities";
 import { Database } from "../types/supabase";
 import Title from "./Title";
-import { useMessage } from "./context/MessageContext";
 import Button from "./Button";
-import { useAuth } from "./context/AuthContext";
+import useAuth from "./hooks/useAuth";
+import { atom, useAtom, useSetAtom } from "jotai";
+import { messageAtom } from "../main";
+
+const itemsAtom = atom<Database["public"]["Tables"]["items"]["Row"][]>([]);
+const pesosAtom =
+  atom<Database["public"]["Tables"]["profiles"]["Row"]["pesos"]>(0);
+const characterIdAtom =
+  atom<Database["public"]["Tables"]["characters"]["Row"]["id"]>("");
 
 const Bodega = () => {
-  const [items, setItems] = useState<
-    Database["public"]["Tables"]["items"]["Row"][]
-  >([]);
-  const [pesos, setPesos] =
-    useState<Database["public"]["Tables"]["profiles"]["Row"]["pesos"]>(0);
-
-  const [characterId, setCharacterId] =
-    useState<Database["public"]["Tables"]["characters"]["Row"]["id"]>("");
-  const { setMessage } = useMessage()!;
-  const { currentUser } = useAuth()!;
+  const [items, setItems] = useAtom(itemsAtom);
+  const [pesos, setPesos] = useAtom(pesosAtom);
+  const [characterId, setCharacterId] = useAtom(characterIdAtom);
+  const setMessage = useSetAtom(messageAtom);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -28,13 +30,13 @@ const Bodega = () => {
         return;
       }
 
-      // console.log({ data });
-
       setItems(data);
     };
 
     const fetchProfile = async () => {
       if (currentUser === null) return;
+
+      console.log({ currentUser });
 
       const { data, error } = await supabase
         .from("profiles")
@@ -48,22 +50,16 @@ const Bodega = () => {
         return;
       }
 
-      // console.log({ data });
-
-      // console.log({ currentUser });
-
       setPesos(data.pesos);
     };
 
     const fetchCharacter = async () => {
-      if (currentUser === null) return;
-
-      console.log({ currentUserId: currentUser.id });
+      console.log({ currentUserId: currentUser!.id });
 
       const { data, error } = await supabase
         .from("characters")
         .select()
-        .eq("user_id", currentUser.id)
+        .eq("user_id", currentUser!.id)
         .single();
 
       if (error) {

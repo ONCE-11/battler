@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
+// import { useAuth } from "./context/AuthContext";
+import useAuth from "./hooks/useAuth";
 
 const Nav = () => {
-  const { loggedIn, logout } = useAuth()!;
+  const { loggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
   const sharedCssClasses = "m-0 text-2xl hover:underline inline-block";

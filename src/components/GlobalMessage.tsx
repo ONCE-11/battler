@@ -1,11 +1,9 @@
-import { MessageData } from "./context/MessageContext";
+import { useAtom } from "jotai";
+import { messageAtom } from "../main";
 
-interface ErrorProps {
-  message: MessageData;
-  setMessage: React.Dispatch<React.SetStateAction<MessageData>>;
-}
+const GlobalMessage = () => {
+  const [{ type, text }, setMessage] = useAtom(messageAtom);
 
-const Error = ({ message: { text, type }, setMessage }: ErrorProps) => {
   const handleClick = () => {
     setMessage({});
   };
@@ -26,4 +24,4 @@ const Error = ({ message: { text, type }, setMessage }: ErrorProps) => {
   );
 };
 
-export default Error;
+export default GlobalMessage;

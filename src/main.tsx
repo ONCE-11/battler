@@ -6,8 +6,6 @@ import Fight from "./components/Fight.tsx";
 import CharacterInfo from "./components/CharacterInfo.tsx";
 import Layout from "./Layout.tsx";
 import LoginForm from "./components/Login.tsx";
-import { AuthProvider } from "./components/context/AuthContext.tsx";
-import { ErrorProvider } from "./components/context/MessageContext.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 import Bodega from "./components/Bodega.tsx";
 import Equipment from "./components/Equipment.tsx";
@@ -19,18 +17,13 @@ export interface MessageType {
   text?: string;
 }
 
-export const loadingAtom = atom(false);
+export const loadingAtom = atom(true);
+export const messageAtom = atom<MessageType>({});
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <ErrorProvider>
-        <AuthProvider>
-          <Layout />
-        </AuthProvider>
-      </ErrorProvider>
-    ),
+    element: <Layout />,
     children: [
       {
         index: true,

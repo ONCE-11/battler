@@ -1,6 +1,7 @@
 import Button from "./Button";
 import Title from "./Title";
-import { useAuth } from "./context/AuthContext";
+// import { useAuth } from "./context/AuthContext";
+import useAuth from "./hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { atom, useAtom } from "jotai";
 
@@ -10,13 +11,13 @@ const passwordAtom = atom("");
 const LoginForm = () => {
   const [email, setEmail] = useAtom(emailAtom);
   const [password, setPassword] = useAtom(passwordAtom);
-  const { login } = useAuth()!;
+  const { login } = useAuth();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  console.log({ state });
-
   const handleClick = async () => {
+    console.log({ state });
+
     // choose where to go after login with callback
     if (state?.redirectPath) {
       login(email, password, () => navigate(state.redirectPath));
