@@ -1,40 +1,48 @@
 import Character from "./Character";
 import Title from "./Title";
 import { Ability, CharacterData } from "../types/custom";
-import { useState } from "react";
+import { useAtom, atom } from "jotai";
+
+const opponentAtom = atom<CharacterData>({
+  name: "Bison",
+  hp: 20,
+  attack: 5,
+  defense: 22,
+  abilities: [
+    { name: "throw poop", type: "damage" },
+    { name: "eat", type: "heal" },
+    { name: "shower", type: "heal" },
+  ],
+  image: "https://fightersgeneration.com/characters/bison-rev.jpg",
+});
+
+const playerAtom = atom<CharacterData>({
+  name: "Guile",
+  hp: 10,
+  attack: 50,
+  defense: 56,
+  abilities: [
+    { name: "throw poop", type: "damage" },
+    { name: "eat", type: "heal" },
+    { name: "shower", type: "heal" },
+  ],
+  image:
+    "https://www.fightersgeneration.com/np2/char2/char/guile-sfa3-side.jpg",
+});
+
+const fightLogAtom = atom<string[]>([]);
+const gameOverAtom = atom(false);
+const attackingAtom = atom(false);
+const opponentDefeatedAtom = atom(false);
 
 const Battler = () => {
-  const [opponent, setOpponent] = useState<CharacterData>({
-    name: "Bison",
-    hp: 20,
-    attack: 5,
-    defense: 22,
-    abilities: [
-      { name: "throw poop", type: "damage" },
-      { name: "eat", type: "heal" },
-      { name: "shower", type: "heal" },
-    ],
-    image: "https://fightersgeneration.com/characters/bison-rev.jpg",
-  });
+  const [opponent, setOpponent] = useAtom(opponentAtom);
+  const [player, setPlayer] = useAtom(playerAtom);
 
-  const [player, setPlayer] = useState<CharacterData>({
-    name: "Guile",
-    hp: 10,
-    attack: 50,
-    defense: 56,
-    abilities: [
-      { name: "throw poop", type: "damage" },
-      { name: "eat", type: "heal" },
-      { name: "shower", type: "heal" },
-    ],
-    image:
-      "https://www.fightersgeneration.com/np2/char2/char/guile-sfa3-side.jpg",
-  });
-
-  const [fightLog, setFightLog] = useState<string[]>([]);
-  const [gameOver, setGameOver] = useState(false);
-  const [attacking, setAttacking] = useState(false);
-  const [opponentDefeated, setOpponentDefeated] = useState(false);
+  const [fightLog, setFightLog] = useAtom(fightLogAtom);
+  const [gameOver, setGameOver] = useAtom(gameOverAtom);
+  const [attacking, setAttacking] = useAtom(attackingAtom);
+  const [opponentDefeated, setOpponentDefeated] = useAtom(opponentDefeatedAtom);
 
   const handleClick = (
     _: React.MouseEvent<HTMLButtonElement>,
