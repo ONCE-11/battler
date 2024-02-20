@@ -14,38 +14,44 @@ const Nav = () => {
   };
 
   return (
-    <nav>
-      <Link to={"/"} className={`m-0 ${sharedCssClasses}`}>
-        Info
-      </Link>
-      {loggedIn ? (
-        <>
-          <Link to={"/fights"} className={`ml-4 ${sharedCssClasses}`}>
-            Fights
+    <>
+      <nav className="flex justify-between items-baseline">
+        <div>
+          <Link to={"/"} className="text-4xl">
+            Battler
           </Link>
-          <Link to={"/fight"} className={`ml-4 ${sharedCssClasses}`}>
-            Fight!
-          </Link>
-          <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
-            Bodega
-          </Link>
-          <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
-            Equipment
-          </Link>
-          <Link
-            to={"/logout"}
-            className={`ml-4  ${sharedCssClasses}`}
-            onClick={handleLogoutClick}
-          >
-            Logout
-          </Link>
-        </>
-      ) : (
-        <Link to={"/login"} className={`ml-4 ${sharedCssClasses}`}>
-          Login
-        </Link>
-      )}
-    </nav>
+        </div>
+        <div>
+          {loggedIn ? (
+            <>
+              <Link to={"/fights"} className={`m-0 ${sharedCssClasses}`}>
+                Fights
+              </Link>
+              <Link to={"/fight"} className={`ml-4 ${sharedCssClasses}`}>
+                Fight!
+              </Link>
+              <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
+                Bodega
+              </Link>
+              <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
+                Equipment
+              </Link>
+              <Link
+                to={"/logout"}
+                className={`ml-4  ${sharedCssClasses}`}
+                onClick={handleLogoutClick}
+              >
+                Logout
+              </Link>
+            </>
+          ) : (
+            <Link to={"/login"} className={`ml-4 ${sharedCssClasses}`}>
+              Login
+            </Link>
+          )}
+        </div>
+      </nav>
+    </>
   );
 };
 

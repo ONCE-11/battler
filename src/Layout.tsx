@@ -17,8 +17,7 @@ const Layout = () => {
 
   return (
     <div style={{ width: "1000px", margin: "0 auto" }}>
-      <header className="m-4 flex justify-between">
-        <span className="text-4xl">Battler</span>
+      <header className="m-4">
         <Nav />
       </header>
 
