@@ -1,5 +1,7 @@
+import Title from "./Title";
+
 const Equipment = () => {
-  return "Equipment";
+  return <Title text="Equipment" />;
 };
 
 export default Equipment;

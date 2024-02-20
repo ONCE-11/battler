@@ -1,5 +1,7 @@
+import Title from "./Title";
+
 const Fights = () => {
-  return "Fights";
+  return <Title text="Fights" />;
 };
 
 export default Fights;

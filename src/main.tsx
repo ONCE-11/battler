@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Fight from "./components/Fight.tsx";
-import CharacterInfo from "./components/CharacterInfo.tsx";
 import Layout from "./Layout.tsx";
 import LoginForm from "./components/Login.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
@@ -11,6 +10,7 @@ import Bodega from "./components/Bodega.tsx";
 import Equipment from "./components/Equipment.tsx";
 import Fights from "./components/Fights.tsx";
 import { Provider, atom } from "jotai";
+import Home from "./components/Home.tsx";
 
 export interface MessageType {
   type?: "info" | "error";
@@ -27,7 +27,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <CharacterInfo />,
+        element: <Home />,
       },
       {
         path: "/fight",
