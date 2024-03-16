@@ -17,8 +17,6 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const handleClick = async () => {
-    console.log({ state });
-
     // choose where to go after login with callback
     if (state?.redirectPath) {
       login(email, password, () => navigate(state.redirectPath));

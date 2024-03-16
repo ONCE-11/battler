@@ -39,8 +39,10 @@ export interface Database {
           ability_2_id: string | null;
           ability_3_id: string | null;
           accessory_item_id: string | null;
+          alive: boolean;
           attack: number;
           attack_item_id: string | null;
+          avatar_url: string;
           consumable_id: string | null;
           created_at: string;
           current_health: number;
@@ -55,8 +57,10 @@ export interface Database {
           ability_2_id?: string | null;
           ability_3_id?: string | null;
           accessory_item_id?: string | null;
+          alive?: boolean;
           attack: number;
           attack_item_id?: string | null;
+          avatar_url: string;
           consumable_id?: string | null;
           created_at?: string;
           current_health: number;
@@ -71,8 +75,10 @@ export interface Database {
           ability_2_id?: string | null;
           ability_3_id?: string | null;
           accessory_item_id?: string | null;
+          alive?: boolean;
           attack?: number;
           attack_item_id?: string | null;
+          avatar_url?: string;
           consumable_id?: string | null;
           created_at?: string;
           current_health?: number;
@@ -230,7 +236,7 @@ export interface Database {
           item_type: Database["public"]["Enums"]["item_type"];
           metadata?: Json | null;
           name: string;
-          price: number;
+          price?: number;
         };
         Update: {
           created_at?: string;

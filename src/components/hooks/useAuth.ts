@@ -29,7 +29,10 @@ export const useAuth = () => {
       setMessage({ type: "info", text: "You have logged in successfully" });
       setLoggedIn(true);
       setCurrentUser(data.user);
-      callback && callback();
+
+      if (callback) {
+        callback();
+      }
     }
   };
 
@@ -51,18 +54,14 @@ export const useAuth = () => {
       error,
     } = await supabase.auth.getSession();
 
-    console.log({ session });
-
     if (error) {
       console.error(error);
       return;
     }
 
     if (!session) {
-      console.log("no session");
       setLoggedIn(false);
     } else {
-      console.log("yes session");
       setCurrentUser(session.user);
       setLoggedIn(true);
     }

@@ -11,6 +11,7 @@ import Equipment from "./components/Equipment.tsx";
 import Fights from "./components/Fights.tsx";
 import { Provider, atom } from "jotai";
 import Home from "./components/Home.tsx";
+import New from "./components/New.tsx";
 
 export interface MessageType {
   type?: "info" | "error";
@@ -62,6 +63,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Fights />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/new",
+        element: (
+          <ProtectedRoute>
+            <New />
           </ProtectedRoute>
         ),
       },
