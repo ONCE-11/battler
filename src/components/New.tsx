@@ -26,15 +26,16 @@ const New = () => {
   const [currentCharacter, setCurrentCharacter] = useAtom(currentCharacterAtom);
 
   const handleClick = async () => {
-    const {
-      data: { character },
-    } = await supabase.functions.invoke("createCharacter", {
-      body: { userId: currentUser!.id },
-    });
-
-    setCurrentCharacter(character);
+    const { data: character } = await supabase.functions.invoke(
+      "createCharacter",
+      {
+        body: { userId: currentUser!.id },
+      }
+    );
 
     console.log(character);
+
+    setCurrentCharacter(character);
   };
 
   useEffect(() => {
