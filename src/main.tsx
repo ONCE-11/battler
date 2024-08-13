@@ -11,7 +11,7 @@ import Equipment from "./components/Equipment.tsx";
 import Fights from "./components/Fights.tsx";
 import { Provider, atom } from "jotai";
 import Home from "./components/Home.tsx";
-import New from "./components/New.tsx";
+import CurrentCharacter from "./components/CurrentCharacter.tsx";
 
 export interface MessageType {
   type?: "info" | "error";
@@ -67,10 +67,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/new",
+        path: "/current-character",
         element: (
           <ProtectedRoute>
-            <New />
+            <CurrentCharacter />
           </ProtectedRoute>
         ),
       },

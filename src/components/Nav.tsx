@@ -24,7 +24,10 @@ const Nav = () => {
         <div>
           {loggedIn ? (
             <>
-              <Link to={"/new"} className={`m-0 ${sharedCssClasses}`}>
+              <Link
+                to={"/current-character"}
+                className={`m-0 ${sharedCssClasses}`}
+              >
                 New
               </Link>
               <Link to={"/fights"} className={`ml-4 ${sharedCssClasses}`}>
