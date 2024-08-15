@@ -28,7 +28,7 @@ const Nav = () => {
                 to={"/current-character"}
                 className={`m-0 ${sharedCssClasses}`}
               >
-                New
+                Current
               </Link>
               <Link to={"/fights"} className={`ml-4 ${sharedCssClasses}`}>
                 Fights

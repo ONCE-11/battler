@@ -52,20 +52,17 @@ const New = () => {
           .eq("alive", true)
           .single();
 
+      if (!character) {
+        return;
+      }
+
+      if (error) {
+        console.error(error);
+      }
+
       console.log(character);
 
-      setCurrentCharacter({
-        id: character!.id,
-        attack: character!.attack,
-        defense: character!.defense,
-        maxHealth: character!.maxHealth,
-        currentHealth: character!.currentHealth,
-        avatarUrl: character!.avatarUrl,
-        createdAt: character!.createdAt,
-        ability1: character!.ability1,
-        ability2: character!.ability2,
-        ability3: character!.ability3,
-      });
+      setCurrentCharacter(character);
     };
 
     // Try changing 'abilities' to one of the following: 'abilities!characters_ability_1_id_fkey', 'abilities!characters_ability_2_id_fkey', 'abilities!characters_ability_3_id_fkey'. Find the desired relationship in the 'details' key.
