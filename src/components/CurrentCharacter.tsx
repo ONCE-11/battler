@@ -41,16 +41,19 @@ const New = () => {
   };
 
   useEffect(() => {
+    // TODO: fix the type for error (look at docs for module to get type from)
     const fetchCurrentCharacter = async () => {
-      const { data: character, error }: { data: CreatedCharacterOrNull } =
-        await supabase
-          .from("characters")
-          .select(
-            "id, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
-          )
-          .eq("user_id", currentUser!.id)
-          .eq("alive", true)
-          .single();
+      const {
+        data: character,
+        error,
+      }: { data: CreatedCharacterOrNull; error: object | null } = await supabase
+        .from("characters")
+        .select(
+          "id, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
+        )
+        .eq("user_id", currentUser!.id)
+        .eq("alive", true)
+        .single();
 
       if (!character) {
         return;
