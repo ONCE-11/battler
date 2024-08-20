@@ -13,18 +13,22 @@ const Character = ({
   attacking,
   defeated,
 }: CharacterProps) => {
-  const { name, image, abilities } = character;
+  const { name, avatarUrl, healthPercentage, ability1, ability2, ability3 } =
+    character;
 
   return (
     <div
-      className={`p-4 rounded-lg border-4 border-black w-80 ${
+      className={`bg-white p-4 rounded-lg border-4 border-black w-80 ${
         attacking ? "animate-bounce" : ""
         // ${playerOne ? "skew-x-3 ml-4" : "-skew-x-3 mr-4"}
       }`}
     >
       <div className="">
         <div className="w-full">
-          <div className="w-full bg-black rounded h-2"></div>
+          <div
+            className="w-full bg-black rounded h-2"
+            style={{ width: `${healthPercentage}%` }}
+          ></div>
         </div>
         {/* <span className="text-purple-700 text-2xl">{hp}</span> */}
         {/* <progress
@@ -41,16 +45,16 @@ const Character = ({
           className={`${playerOne && "-scale-x-100"} ${
             defeated ? "sepia" : "grayscale"
           }`}
-          src={image}
+          src={avatarUrl}
         />
       </div>
       <section className="flex justify-between border-solid pt-4">
         <h2 className="text-green-700 capitalize text-2xl">{name}</h2>
 
         <ul className="text-right text-lg">
-          {abilities.map(({ name }, index) => (
-            <li key={index}>{name}</li>
-          ))}
+          <li>{ability1.name}</li>
+          <li>{ability2.name}</li>
+          <li>{ability3.name}</li>
         </ul>
       </section>
     </div>

@@ -7,11 +7,15 @@ export interface Ability {
 
 export interface CharacterData {
   name: string;
-  hp: number;
   attack: number;
   defense: number;
-  image: string;
-  abilities: Ability[];
+  avatarUrl: string;
+  ability1: Ability;
+  ability2: Ability;
+  ability3: Ability;
+  maxHealth: number;
+  currentHealth: number;
+  healthPercentage: number;
 }
 
 export interface CreatedCharacter {

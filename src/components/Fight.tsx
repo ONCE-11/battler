@@ -4,36 +4,36 @@ import { Ability, CharacterData } from "../types/custom";
 import { useAtom, atom } from "jotai";
 import { supabase } from "../utilities";
 import { currentCharacterAtom } from "../state";
-// import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 import { atomEffect } from "jotai-effect";
 import useCharacter from "./hooks/useCharacter";
+import AbilityButton from "./AbilityButton";
 
 const opponentAtom = atom<CharacterData>({
   name: "Bison",
-  hp: 20,
   attack: 5,
   defense: 22,
-  abilities: [
-    { name: "throw poop", type: "damage" },
-    { name: "eat", type: "heal" },
-    { name: "shower", type: "heal" },
-  ],
-  image: "https://fightersgeneration.com/characters/bison-rev.jpg",
+  ability1: { name: "throw poop", type: "damage" },
+  ability2: { name: "eat", type: "heal" },
+  ability3: { name: "shower", type: "heal" },
+  avatarUrl: "https://fightersgeneration.com/characters/bison-rev.jpg",
+  maxHealth: 150,
+  currentHealth: 150,
+  healthPercentage: 100,
 });
 
 const playerAtom = atom<CharacterData>({
   name: "Guile",
-  hp: 10,
   attack: 50,
   defense: 56,
-  abilities: [
-    { name: "throw poop", type: "damage" },
-    { name: "eat", type: "heal" },
-    { name: "shower", type: "heal" },
-  ],
-  image:
+  ability1: { name: "throw poop", type: "damage" },
+  ability2: { name: "eat", type: "heal" },
+  ability3: { name: "shower", type: "heal" },
+  avatarUrl:
     "https://www.fightersgeneration.com/np2/char2/char/guile-sfa3-side.jpg",
+  maxHealth: 150,
+  currentHealth: 150,
+  healthPercentage: 100,
 });
 
 const fightLogAtom = atom<string[]>([]);
@@ -61,7 +61,7 @@ const currentCharacterEffect = atomEffect((get) => {
     .subscribe();
 });
 
-const Battler = () => {
+const Fight = () => {
   const [opponent, setOpponent] = useAtom(opponentAtom);
   const [player, setPlayer] = useAtom(playerAtom);
   const [fightLog, setFightLog] = useAtom(fightLogAtom);
@@ -84,22 +84,30 @@ const Battler = () => {
     let action = "";
 
     if (ability.type === "heal") {
-      action = `${player.name} has just used ${ability.name} and healed themselves for ${player.attack} hp`;
+      action = `${player.name} has just used ${ability.name} and healed themselves for ${player.attack} health`;
 
-      setPlayer({ ...player, hp: player.hp + 10 });
+      setPlayer({ ...player, currentHealth: player.currentHealth + 10 });
     } else {
-      let newHP = opponent.hp - 10;
+      let newHealth = opponent.currentHealth - player.attack;
+      let healthPercentage;
 
-      if (newHP <= 0) {
-        newHP = 0;
+      if (newHealth <= 0) {
+        newHealth = 0;
+        healthPercentage = 0;
         setOpponentDefeated(true);
         setGameOver(true);
         action = "The game is now over";
       } else {
-        action = `${player.name} has just used ${ability.name} and damaged ${opponent.name} for ${player.attack} hp`;
+        healthPercentage = (newHealth / opponent.maxHealth) * 100;
+        console.log({ healthPercentage });
+        action = `${player.name} has just used ${ability.name} and damaged ${opponent.name} for ${player.attack} health`;
       }
 
-      setOpponent({ ...opponent, hp: newHP });
+      setOpponent({
+        ...opponent,
+        currentHealth: newHealth,
+        healthPercentage,
+      });
     }
 
     setTimeout(() => setAttacking(false), 500);
@@ -118,29 +126,34 @@ const Battler = () => {
         )}
         <section>
           <Character
-            character={opponent}
+            character={player}
+            attacking={attacking}
             playerOne={true}
-            defeated={opponentDefeated}
           />
         </section>
         <section className="self-center font-bold text-8xl">VS</section>
         <section>
-          <Character character={player} attacking={attacking} />
+          <Character character={opponent} defeated={opponentDefeated} />
         </section>
       </div>
       <div className="mt-10">
         <h2 className="text-xl">Choose an ability</h2>
         <section className="mt-6">
-          {player.abilities.map((ability, index) => (
-            <button
-              className={`first:ml-0 ml-10 bg-slate-500 py-2 px-4 text-white rounded active:shadow-inner active:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-slate-600`}
-              disabled={gameOver}
-              onClick={(e) => handleClick(e, ability)}
-              key={index}
-            >
-              {ability.name}
-            </button>
-          ))}
+          <AbilityButton
+            disabled={gameOver}
+            ability={player.ability1}
+            handleClick={handleClick}
+          />
+          <AbilityButton
+            disabled={gameOver}
+            ability={player.ability2}
+            handleClick={handleClick}
+          />
+          <AbilityButton
+            disabled={gameOver}
+            ability={player.ability3}
+            handleClick={handleClick}
+          />
         </section>
       </div>
       <div className="mt-10 text-xl">Fight Log</div>
@@ -153,4 +166,4 @@ const Battler = () => {
   );
 };
 
-export default Battler;
+export default Fight;
