@@ -2,7 +2,7 @@ import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import { loadingAtom, messageAtom } from "./main";
+import { loadingAtom, messageAtom } from "./state";
 import useAuth from "./components/hooks/useAuth";
 import { useEffect } from "react";
 
@@ -12,7 +12,11 @@ const Layout = () => {
   const { fetchSession } = useAuth();
 
   useEffect(() => {
-    fetchSession();
+    const fetchData = async () => {
+      await fetchSession();
+    };
+
+    fetchData();
   }, []);
 
   return (

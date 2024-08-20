@@ -1,5 +1,5 @@
 import { useAtom } from "jotai";
-import { messageAtom } from "../main";
+import { messageAtom } from "../state";
 
 const GlobalMessage = () => {
   const [{ type, text }, setMessage] = useAtom(messageAtom);

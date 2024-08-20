@@ -1,14 +1,15 @@
 import { supabase } from "../../utilities";
-import { User } from "@supabase/supabase-js";
-import { useSetAtom, atom, useAtom } from "jotai";
-import { loadingAtom, messageAtom } from "../../main";
+import { useSetAtom } from "jotai";
+import {
+  loadingAtom,
+  messageAtom,
+  loggedInAtom,
+  currentUserAtom,
+} from "../../state";
 
-const loggedInAtom = atom(false);
-const currentUserAtom = atom<User | null>(null);
-
-export const useAuth = () => {
-  const [loggedIn, setLoggedIn] = useAtom(loggedInAtom);
-  const [currentUser, setCurrentUser] = useAtom(currentUserAtom);
+const useAuth = () => {
+  const setLoggedIn = useSetAtom(loggedInAtom);
+  const setCurrentUser = useSetAtom(currentUserAtom);
   const setMessage = useSetAtom(messageAtom);
   const setLoading = useSetAtom(loadingAtom);
 
@@ -69,7 +70,7 @@ export const useAuth = () => {
     setLoading(false);
   };
 
-  return { logout, login, loggedIn, currentUser, fetchSession };
+  return { logout, login, fetchSession };
 };
 
 export default useAuth;

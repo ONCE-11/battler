@@ -9,17 +9,9 @@ import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 import Bodega from "./components/Bodega.tsx";
 import Equipment from "./components/Equipment.tsx";
 import Fights from "./components/Fights.tsx";
-import { Provider, atom } from "jotai";
+import { Provider } from "jotai";
 import Home from "./components/Home.tsx";
 import CurrentCharacter from "./components/CurrentCharacter.tsx";
-
-export interface MessageType {
-  type?: "info" | "error";
-  text?: string;
-}
-
-export const loadingAtom = atom(true);
-export const messageAtom = atom<MessageType>({});
 
 const router = createBrowserRouter([
   {

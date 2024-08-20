@@ -2,6 +2,11 @@ import Character from "./Character";
 import Title from "./Title";
 import { Ability, CharacterData } from "../types/custom";
 import { useAtom, atom } from "jotai";
+import { supabase } from "../utilities";
+// import { currentCharacterAtom } from "../state";
+// import { useAtomValue } from "jotai";
+import { useEffect } from "react";
+import useCharacter from "./hooks/useCharacter";
 
 const opponentAtom = atom<CharacterData>({
   name: "Bison",
@@ -38,11 +43,36 @@ const opponentDefeatedAtom = atom(false);
 const Battler = () => {
   const [opponent, setOpponent] = useAtom(opponentAtom);
   const [player, setPlayer] = useAtom(playerAtom);
-
   const [fightLog, setFightLog] = useAtom(fightLogAtom);
   const [gameOver, setGameOver] = useAtom(gameOverAtom);
   const [attacking, setAttacking] = useAtom(attackingAtom);
   const [opponentDefeated, setOpponentDefeated] = useAtom(opponentDefeatedAtom);
+  // const currentCharacter = useAtomValue(currentCharacterAtom);
+  const { fetchCurrentCharacter } = useCharacter();
+
+  useEffect(() => {
+    const syncData = async () => {
+      const currentCharacter = await fetchCurrentCharacter();
+
+      await supabase
+        .channel("attacks")
+        .on(
+          "postgres_changes",
+          {
+            event: "UPDATE",
+            schema: "public",
+            table: "characters",
+            filter: `id=eq.${currentCharacter?.id}`,
+          },
+          (payload) => console.log(payload)
+        )
+        .subscribe();
+
+      console.log(currentCharacter);
+    };
+
+    syncData();
+  }, []);
 
   const handleClick = (
     _: React.MouseEvent<HTMLButtonElement>,
@@ -99,11 +129,12 @@ const Battler = () => {
       <div className="mt-10">
         <h2 className="text-xl">Choose an ability</h2>
         <section className="mt-6">
-          {player.abilities.map((ability) => (
+          {player.abilities.map((ability, index) => (
             <button
               className={`first:ml-0 ml-10 bg-slate-500 py-2 px-4 text-white rounded active:shadow-inner active:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-slate-600`}
               disabled={gameOver}
               onClick={(e) => handleClick(e, ability)}
+              key={index}
             >
               {ability.name}
             </button>
@@ -112,8 +143,8 @@ const Battler = () => {
       </div>
       <div className="mt-10 text-xl">Fight Log</div>
       <ul className="mt-6 leading-loose overflow-y-auto h-72">
-        {fightLog.map((action) => (
-          <li>{action}</li>
+        {fightLog.map((action, index) => (
+          <li key={index}>{action}</li>
         ))}
       </ul>
     </>

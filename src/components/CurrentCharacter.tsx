@@ -1,75 +1,15 @@
-import { supabase } from "../utilities";
 import Button from "./Button";
 import Title from "./Title";
-import useAuth from "./hooks/useAuth";
-import { useAtom, atom } from "jotai";
-import { Tables } from "../types/supabase";
+import { useAtomValue } from "jotai";
 import { useEffect } from "react";
-
-interface CreatedCharacter {
-  id: Tables<"characters">["id"];
-  attack: Tables<"characters">["attack"];
-  defense: Tables<"characters">["defense"];
-  maxHealth: Tables<"characters">["max_health"];
-  currentHealth: Tables<"characters">["current_health"];
-  avatarUrl: Tables<"characters">["avatar_url"];
-  createdAt: Tables<"characters">["created_at"];
-  ability1: Tables<"abilities">; // TODO: correct these types at some point
-  ability2: Tables<"abilities">;
-  ability3: Tables<"abilities">;
-}
-
-type CreatedCharacterOrNull = CreatedCharacter | null;
-
-const currentCharacterAtom = atom<CreatedCharacterOrNull>(null);
+import { currentCharacterAtom } from "../state";
+import useCharacter from "./hooks/useCharacter";
 
 const New = () => {
-  const { currentUser } = useAuth();
-  const [currentCharacter, setCurrentCharacter] = useAtom(currentCharacterAtom);
-
-  const handleClick = async () => {
-    const { data: character } = await supabase.functions.invoke(
-      "createCharacter",
-      {
-        body: { userId: currentUser!.id },
-      }
-    );
-
-    console.log(character);
-
-    setCurrentCharacter(character);
-  };
+  const currentCharacter = useAtomValue(currentCharacterAtom);
+  const { fetchCurrentCharacter, createCharacter } = useCharacter();
 
   useEffect(() => {
-    // TODO: fix the type for error (look at docs for module to get type from)
-    const fetchCurrentCharacter = async () => {
-      const {
-        data: character,
-        error,
-      }: { data: CreatedCharacterOrNull; error: object | null } = await supabase
-        .from("characters")
-        .select(
-          "id, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
-        )
-        .eq("user_id", currentUser!.id)
-        .eq("alive", true)
-        .single();
-
-      if (!character) {
-        return;
-      }
-
-      if (error) {
-        console.error(error);
-      }
-
-      console.log(character);
-
-      setCurrentCharacter(character);
-    };
-
-    // Try changing 'abilities' to one of the following: 'abilities!characters_ability_1_id_fkey', 'abilities!characters_ability_2_id_fkey', 'abilities!characters_ability_3_id_fkey'. Find the desired relationship in the 'details' key.
-
     fetchCurrentCharacter();
   }, []);
 
@@ -99,7 +39,7 @@ const New = () => {
           <Button
             text="Go"
             additionalCssClasses={["mt-4"]}
-            handleClick={handleClick}
+            handleClick={createCharacter}
           />
         </>
       )}

@@ -3,9 +3,8 @@ import { supabase } from "../utilities";
 import { Database } from "../types/supabase";
 import Title from "./Title";
 import Button from "./Button";
-import useAuth from "./hooks/useAuth";
-import { atom, useAtom, useSetAtom } from "jotai";
-import { messageAtom } from "../main";
+import { atom, useAtom, useSetAtom, useAtomValue } from "jotai";
+import { currentUserAtom, messageAtom } from "../state";
 
 const itemsAtom = atom<Database["public"]["Tables"]["items"]["Row"][]>([]);
 const pesosAtom =
@@ -18,7 +17,7 @@ const Bodega = () => {
   const [pesos, setPesos] = useAtom(pesosAtom);
   const [characterId, setCharacterId] = useAtom(characterIdAtom);
   const setMessage = useSetAtom(messageAtom);
-  const { currentUser } = useAuth();
+  const currentUser = useAtomValue(currentUserAtom);
 
   useEffect(() => {
     const fetchItems = async () => {

@@ -2,8 +2,8 @@ import Button from "./Button";
 import Title from "./Title";
 import useAuth from "./hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
-import { atom, useAtom, useSetAtom } from "jotai";
-import { messageAtom } from "../main";
+import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
+import { messageAtom, loggedInAtom } from "../state";
 
 const emailAtom = atom("");
 const passwordAtom = atom("");
@@ -12,7 +12,8 @@ const LoginForm = () => {
   const [email, setEmail] = useAtom(emailAtom);
   const [password, setPassword] = useAtom(passwordAtom);
   const setMessage = useSetAtom(messageAtom);
-  const { login, loggedIn } = useAuth();
+  const { login } = useAuth();
+  const loggedIn = useAtomValue(loggedInAtom);
   const { state } = useLocation();
   const navigate = useNavigate();
 
