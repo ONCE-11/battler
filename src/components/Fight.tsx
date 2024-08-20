@@ -3,9 +3,10 @@ import Title from "./Title";
 import { Ability, CharacterData } from "../types/custom";
 import { useAtom, atom } from "jotai";
 import { supabase } from "../utilities";
-// import { currentCharacterAtom } from "../state";
+import { currentCharacterAtom } from "../state";
 // import { useAtomValue } from "jotai";
 import { useEffect } from "react";
+import { atomEffect } from "jotai-effect";
 import useCharacter from "./hooks/useCharacter";
 
 const opponentAtom = atom<CharacterData>({
@@ -40,6 +41,26 @@ const gameOverAtom = atom(false);
 const attackingAtom = atom(false);
 const opponentDefeatedAtom = atom(false);
 
+const currentCharacterEffect = atomEffect((get) => {
+  const currentCharacter = get(currentCharacterAtom);
+
+  console.log("The current character is: ", currentCharacter);
+
+  supabase
+    .channel("attacks")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "characters",
+        filter: `id=eq.${currentCharacter?.id}`,
+      },
+      (payload) => console.log(payload)
+    )
+    .subscribe();
+});
+
 const Battler = () => {
   const [opponent, setOpponent] = useAtom(opponentAtom);
   const [player, setPlayer] = useAtom(playerAtom);
@@ -47,32 +68,13 @@ const Battler = () => {
   const [gameOver, setGameOver] = useAtom(gameOverAtom);
   const [attacking, setAttacking] = useAtom(attackingAtom);
   const [opponentDefeated, setOpponentDefeated] = useAtom(opponentDefeatedAtom);
-  // const currentCharacter = useAtomValue(currentCharacterAtom);
   const { fetchCurrentCharacter } = useCharacter();
 
   useEffect(() => {
-    const syncData = async () => {
-      const currentCharacter = await fetchCurrentCharacter();
-
-      await supabase
-        .channel("attacks")
-        .on(
-          "postgres_changes",
-          {
-            event: "UPDATE",
-            schema: "public",
-            table: "characters",
-            filter: `id=eq.${currentCharacter?.id}`,
-          },
-          (payload) => console.log(payload)
-        )
-        .subscribe();
-
-      console.log(currentCharacter);
-    };
-
-    syncData();
+    fetchCurrentCharacter();
   }, []);
+
+  useAtom(currentCharacterEffect);
 
   const handleClick = (
     _: React.MouseEvent<HTMLButtonElement>,
