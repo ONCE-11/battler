@@ -168,12 +168,12 @@ const Fight = () => {
     setAttacking(true);
     let action = "";
 
-    if (player?.id) {
+    if (player && opponent) {
       const { data, error } = await supabase.functions.invoke("useAbility", {
         body: {
           abilityNumber: abilitySlot,
           playerId: player.id,
-          opponentId: "72894403-0559-4308-aa13-95b42a77130f",
+          opponentId: opponent.id,
         },
       });
 
