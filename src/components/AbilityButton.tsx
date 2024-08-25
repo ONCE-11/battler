@@ -1,27 +1,32 @@
-import { Ability } from "../types/custom";
+import {
+  Ability,
+  AbilitySlot,
+  AbilityButtonHandleClick,
+} from "../types/custom";
 
 interface AbilityButtonProps {
   disabled: boolean;
-  ability: Ability;
-  handleClick: (
-    event: React.MouseEvent<HTMLButtonElement>,
-    ability: Ability
-  ) => void;
+  ability?: Ability;
+  abilitySlot: AbilitySlot;
+  handleClick: AbilityButtonHandleClick;
 }
 
 const AbilityButton = ({
   disabled,
   ability,
+  abilitySlot,
   handleClick,
 }: AbilityButtonProps) => {
   return (
-    <button
-      className={`first:ml-0 ml-10 bg-slate-500 py-2 px-4 text-white rounded active:shadow-inner active:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-slate-600`}
-      disabled={disabled}
-      onClick={(e) => handleClick(e, ability)}
-    >
-      {ability.name}
-    </button>
+    ability && (
+      <button
+        className={`first:ml-0 ml-10 bg-slate-500 py-2 px-4 text-white rounded active:shadow-inner active:bg-slate-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-slate-600`}
+        disabled={disabled}
+        onClick={(e) => handleClick(e, ability, abilitySlot)}
+      >
+        {ability.name}
+      </button>
+    )
   );
 };
 

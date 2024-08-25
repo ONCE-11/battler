@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/fight",
+        path: "/fights/:fightId",
         element: (
           <ProtectedRoute>
             <Fight />

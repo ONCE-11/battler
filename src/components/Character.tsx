@@ -1,20 +1,29 @@
-import { CharacterData } from "../types/custom";
+import { Tables } from "../types/supabase";
 
 interface CharacterProps {
-  character: CharacterData;
+  character: Tables<"characters">;
   attacking?: boolean;
-  playerOne?: boolean;
+  reverse?: boolean;
   defeated?: boolean;
+  name: string;
+  healthPercentage: number;
+  ability1?: Tables<"abilities">;
+  ability2?: Tables<"abilities">;
+  ability3?: Tables<"abilities">;
 }
 
 const Character = ({
   character,
-  playerOne,
+  reverse,
   attacking,
   defeated,
+  name,
+  healthPercentage,
+  ability1,
+  ability2,
+  ability3,
 }: CharacterProps) => {
-  const { name, avatarUrl, healthPercentage, ability1, ability2, ability3 } =
-    character;
+  const { avatar_url, max_health, current_health, attack, defense } = character;
 
   return (
     <div
@@ -29,6 +38,12 @@ const Character = ({
             className="w-full bg-black rounded h-2"
             style={{ width: `${healthPercentage}%` }}
           ></div>
+          <ul>
+            <li>max health = {max_health}</li>
+            <li>current_health = {current_health}</li>
+            <li>attack = {attack}</li>
+            <li>defense = {defense}</li>
+          </ul>
         </div>
         {/* <span className="text-purple-700 text-2xl">{hp}</span> */}
         {/* <progress
@@ -40,21 +55,21 @@ const Character = ({
         {/* <span className="text-blue-700 text-2xl">{attack} </span>
         <span className="text-red-700 text-2xl">{defense}</span> */}
       </div>
-      <div className="overflow-clip h-64 rounded-lg mt-4">
+      <div className="overflow-clip rounded-lg mt-4">
         <img
-          className={`${playerOne && "-scale-x-100"} ${
+          className={`${reverse ? "-scale-x-100 " : ""}${
             defeated ? "sepia" : "grayscale"
-          }`}
-          src={avatarUrl}
+          } w-full`}
+          src={avatar_url}
         />
       </div>
       <section className="flex justify-between border-solid pt-4">
         <h2 className="text-green-700 capitalize text-2xl">{name}</h2>
 
         <ul className="text-right text-lg">
-          <li>{ability1.name}</li>
-          <li>{ability2.name}</li>
-          <li>{ability3.name}</li>
+          <li>{ability1?.name}</li>
+          <li>{ability2?.name}</li>
+          <li>{ability3?.name}</li>
         </ul>
       </section>
     </div>

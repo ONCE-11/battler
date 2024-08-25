@@ -1,4 +1,4 @@
-import { supabase } from "../../utilities";
+import { supabase } from "../../utils";
 import { useSetAtom } from "jotai";
 import {
   loadingAtom,

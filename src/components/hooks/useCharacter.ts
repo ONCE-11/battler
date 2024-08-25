@@ -1,4 +1,4 @@
-import { supabase } from "../../utilities";
+import { supabase } from "../../utils";
 import { useSetAtom, useAtomValue } from "jotai";
 import { currentUserAtom, currentCharacterAtom } from "../../state";
 import { CreatedCharacter } from "../../types/custom";
@@ -8,12 +8,14 @@ const useCharacter = () => {
   const currentUser = useAtomValue(currentUserAtom);
 
   const createCharacter = async () => {
-    const { data: character } = await supabase.functions.invoke(
+    const { data: character, error } = await supabase.functions.invoke(
       "createCharacter",
       {
         body: { userId: currentUser!.id },
       }
     );
+
+    if (error) console.error(error);
 
     console.log(character);
 
@@ -52,7 +54,25 @@ const useCharacter = () => {
     return character;
   };
 
-  return { createCharacter, fetchCurrentCharacter };
+  const fetchCharacter = async (id: string) => {
+    const {
+      data: character,
+      error,
+    }: { data: CreatedCharacter | null; error: object | null } = await supabase
+      .from("characters")
+      .select(
+        "id, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
+      )
+      .eq("user_id", id)
+      .eq("alive", true)
+      .single();
+
+    if (error) console.error(error);
+
+    return character;
+  };
+
+  return { createCharacter, fetchCurrentCharacter, fetchCharacter };
 };
 
 export default useCharacter;

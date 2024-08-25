@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { supabase } from "../utilities";
+import { supabase } from "../utils";
 import { Database } from "../types/supabase";
 import Title from "./Title";
 import Button from "./Button";
@@ -33,7 +33,7 @@ const Bodega = () => {
     };
 
     const fetchProfile = async () => {
-      if (currentUser === null) return;
+      if (!currentUser) return;
 
       console.log({ currentUser });
 
