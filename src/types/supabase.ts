@@ -182,6 +182,7 @@ export type Database = {
           id: string;
           player1_id: string;
           player2_id: string;
+          turn: number;
           winner: Database["public"]["Enums"]["player_slot"] | null;
         };
         Insert: {
@@ -190,6 +191,7 @@ export type Database = {
           id?: string;
           player1_id: string;
           player2_id: string;
+          turn?: number;
           winner?: Database["public"]["Enums"]["player_slot"] | null;
         };
         Update: {
@@ -198,6 +200,7 @@ export type Database = {
           id?: string;
           player1_id?: string;
           player2_id?: string;
+          turn?: number;
           winner?: Database["public"]["Enums"]["player_slot"] | null;
         };
         Relationships: [
