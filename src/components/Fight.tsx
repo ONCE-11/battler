@@ -152,7 +152,7 @@ const Fight = () => {
               table: "characters",
               filter: `id=eq.${player1.id}`,
             },
-            (payload) => {
+            async (payload) => {
               console.log(
                 // payload,
                 // currentPlayer,
@@ -161,6 +161,17 @@ const Fight = () => {
               );
               // const player1Data = payload.new as Tables<"characters">;
               setPlayer(payload.new as Tables<"characters">);
+
+              const { data: currentFight, error } = await supabase
+                .from("fights")
+                .select("*")
+                .eq("id", fightId!)
+                .returns<Tables<"fights">[]>()
+                .single();
+
+              if (error) throw error;
+
+              setGameOver(currentFight.game_over);
 
               // setPlayer2Attacking(true);
               // setTimeout(() => setPlayer2Attacking(false), 500);
@@ -178,7 +189,7 @@ const Fight = () => {
               table: "characters",
               filter: `id=eq.${player2.id}`,
             },
-            (payload) => {
+            async (payload) => {
               console.log(
                 // payload,
                 payload.new
@@ -186,6 +197,17 @@ const Fight = () => {
                 // currentPlayer === payload.new
               );
               setOpponent(payload.new as Tables<"characters">);
+
+              const { data: currentFight, error } = await supabase
+                .from("fights")
+                .select("*")
+                .eq("id", fightId!)
+                .returns<Tables<"fights">[]>()
+                .single();
+
+              if (error) throw error;
+
+              setGameOver(currentFight.game_over);
 
               // setPlayer1Attacking(true);
               // setTimeout(() => setPlayer1Attacking(false), 500);
@@ -221,71 +243,11 @@ const Fight = () => {
         abilityNumber: abilitySlot,
         playerId: initiator.id,
         opponentId: receiver.id,
+        fightId,
       },
     });
 
     console.log({ data, error });
-    // if (ability.metadata.type === "heal") {
-    //   action = `Guile has just used ${ability.name} and healed themselves for ${player.attack} health`;
-
-    //   setPlayer({ ...player, currentHealth: player.currentHealth + 10 });
-    // } else {
-
-    // let newOpponentHealth = opponent.currentHealth;
-    // let newPlayerHealth = player.currentHealth;
-    // let opponentHealthPercentage = 100;
-    // let playerHealthPercentage = 100;
-
-    // console.log("metadata: ", ability.metadata);
-
-    // if (ability.metadata?.attack) {
-    //   newOpponentHealth =
-    //     opponent.currentHealth - player.attack * ability.metadata.attack;
-    // } else if (_.isEmpty(ability.metadata)) {
-    //   newOpponentHealth = opponent.currentHealth - player.attack;
-    // }
-
-    // if (ability.metadata?.health) {
-    //   newPlayerHealth = Math.min(
-    //     player.currentHealth + ability.metadata.health,
-    //     player.maxHealth
-    //   );
-    // }
-
-    // calculate opponent health
-    // if (newOpponentHealth <= 0) {
-    //   newOpponentHealth = 0;
-    //   opponentHealthPercentage = 0;
-    //   setOpponentDefeated(true);
-    //   setGameOver(true);
-    //   action = "The game is now over";
-    // } else {
-    //   opponentHealthPercentage = calculateHealthPercentage(
-    //     newOpponentHealth,
-    //     opponent.maxHealth
-    //   );
-    //   console.log({ opponentHealthPercentage: opponentHealthPercentage });
-    //   action = `Guile has just used ${ability.name} and damaged Bison for ${player.attack} health`;
-    // }
-
-    // calculate player health
-    // playerHealthPercentage = calculateHealthPercentage(
-    //   newPlayerHealth,
-    //   player.maxHealth
-    // );
-    // console.log({ playerHealthPercentage: playerHealthPercentage });
-
-    // setOpponent({
-    //   ...opponent,
-    //   currentHealth: newOpponentHealth,
-    //   healthPercentage: opponentHealthPercentage,
-    // });
-
-    // setPlayer({
-    //   ...player,
-    //   currentHealth: newPlayerHealth,
-    // });
-    // }
 
     action = `Guile has just used ${ability.name}.`;
 
