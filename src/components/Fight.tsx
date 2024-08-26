@@ -297,7 +297,6 @@ const Fight = () => {
         <section>
           {player && (
             <Character
-              name={"Guile"}
               character={player}
               attacking={player1Attacking}
               ability1={player1Abilities[0]}
@@ -313,7 +312,6 @@ const Fight = () => {
         <section>
           {opponent && (
             <Character
-              name={"Bison"}
               character={opponent}
               attacking={player2Attacking}
               reverse={true}

@@ -4,7 +4,6 @@ interface CharacterProps {
   character: Tables<"characters">;
   attacking?: boolean;
   reverse?: boolean;
-  name: string;
   healthPercentage: number;
   isCurrentPlayer: boolean;
   ability1?: Tables<"abilities">;
@@ -16,15 +15,21 @@ const Character = ({
   character,
   reverse,
   attacking,
-  name,
   healthPercentage,
   ability1,
   ability2,
   ability3,
   isCurrentPlayer,
 }: CharacterProps) => {
-  const { avatar_url, max_health, current_health, attack, defense, alive } =
-    character;
+  const {
+    avatar_url,
+    max_health,
+    current_health,
+    attack,
+    defense,
+    alive,
+    name,
+  } = character;
 
   return (
     <>
