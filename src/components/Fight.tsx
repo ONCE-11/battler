@@ -26,9 +26,11 @@ const player2AbilitiesAtom = atom<
 >([]);
 const fightLogAtom = atom<string[]>([]);
 const gameOverAtom = atom(false);
-const attackingAtom = atom(false);
-const opponentDefeatedAtom = atom(false);
-const winnerAtom = atom<number>();
+const player1AttackingAtom = atom(false);
+const player2AttackingAtom = atom(false);
+// const opponentDefeatedAtom = atom(false);
+// const winnerAtom = atom<number>();
+const currentPlayerAtom = atom<Tables<"characters">>();
 
 // const calculateHealthPercentage = (health: number, maxHealth: number) => {
 //   return (health / maxHealth) * 100;
@@ -40,13 +42,15 @@ const Fight = () => {
   const [fightLog, setFightLog] = useAtom(fightLogAtom);
   // const [gameOver, setGameOver] = useAtom(gameOverAtom);
   const gameOver = useAtomValue(gameOverAtom);
-  const [attacking, setAttacking] = useAtom(attackingAtom);
+  const [player1Attacking, setPlayer1Attacking] = useAtom(player1AttackingAtom);
+  const [player2Attacking, setPlayer2Attacking] = useAtom(player2AttackingAtom);
   // const [opponentDefeated, setOpponentDefeated] = useAtom(opponentDefeatedAtom);
-  const opponentDefeated = useAtomValue(opponentDefeatedAtom);
+  // const opponentDefeated = useAtomValue(opponentDefeatedAtom);
   const [player1Abilities, setPlayer1Abilities] = useAtom(player1AbilitiesAtom);
   const [player2Abilities, setPlayer2Abilities] = useAtom(player2AbilitiesAtom);
   const currentUser = useAtomValue(currentUserAtom);
-  const winner = useAtomValue(winnerAtom);
+  // const winner = useAtomValue(winnerAtom);
+  const [currentPlayer, setCurrentPlayer] = useAtom(currentPlayerAtom);
   const { fightId } = useParams();
 
   useEffect(() => {
@@ -114,7 +118,20 @@ const Fight = () => {
         delete player2.ability_2;
         delete player2.ability_3;
 
-        console.log({ data, fightId, player1Id, player2Id, player1, player2 });
+        if (player1.user_id === currentUser.id) {
+          setCurrentPlayer(player1);
+        } else {
+          setCurrentPlayer(player2);
+        }
+
+        console.log({
+          data,
+          fightId,
+          player1Id,
+          player2Id,
+          player1,
+          player2,
+        });
 
         // subscribe to live updates from characters table
         supabase
@@ -128,7 +145,13 @@ const Fight = () => {
               filter: `id=eq.${player1.id}`,
             },
             (payload) => {
-              console.log(payload);
+              console.log(
+                // payload,
+                // currentPlayer,
+                payload.new
+                // currentPlayer === payload.new
+              );
+              // const player1Data = payload.new as Tables<"characters">;
               setPlayer(payload.new as Tables<"characters">);
             }
           )
@@ -145,7 +168,12 @@ const Fight = () => {
               filter: `id=eq.${player2.id}`,
             },
             (payload) => {
-              console.log(payload);
+              console.log(
+                // payload,
+                payload.new
+                // currentPlayer,
+                // currentPlayer === payload.new
+              );
               setOpponent(payload.new as Tables<"characters">);
             }
           )
@@ -162,22 +190,27 @@ const Fight = () => {
   const handleClick: AbilityButtonHandleClick = async (
     _button,
     ability,
-    abilitySlot
+    abilitySlot,
+    initiator,
+    receiver
   ) => {
-    setAttacking(true);
+    if (initiator.id === player?.id) {
+      setPlayer1Attacking(true);
+    } else {
+      setPlayer2Attacking(true);
+    }
+
     let action = "";
 
-    if (player && opponent) {
-      const { data, error } = await supabase.functions.invoke("useAbility", {
-        body: {
-          abilityNumber: abilitySlot,
-          playerId: player.id,
-          opponentId: opponent.id,
-        },
-      });
+    const { data, error } = await supabase.functions.invoke("useAbility", {
+      body: {
+        abilityNumber: abilitySlot,
+        playerId: initiator.id,
+        opponentId: receiver.id,
+      },
+    });
 
-      console.log({ data, error });
-    }
+    console.log({ data, error });
     // if (ability.metadata.type === "heal") {
     //   action = `Guile has just used ${ability.name} and healed themselves for ${player.attack} health`;
 
@@ -242,10 +275,15 @@ const Fight = () => {
 
     action = `Guile has just used ${ability.name}.`;
 
-    setTimeout(() => setAttacking(false), 500);
+    setTimeout(() => {
+      setPlayer1Attacking(false);
+      setPlayer2Attacking(false);
+    }, 500);
 
     setFightLog([...fightLog, action]);
   };
+
+  console.log(currentPlayer, opponent, currentPlayer?.id === opponent?.id);
 
   return (
     <>
@@ -261,11 +299,11 @@ const Fight = () => {
             <Character
               name={"Guile"}
               character={player}
-              attacking={attacking}
+              attacking={player1Attacking}
               ability1={player1Abilities[0]}
               ability2={player1Abilities[1]}
               ability3={player1Abilities[2]}
-              // reverse={true}
+              isCurrentPlayer={currentPlayer?.id === player?.id}
               healthPercentage={100}
             />
           )}
@@ -276,9 +314,11 @@ const Fight = () => {
             <Character
               name={"Bison"}
               character={opponent}
+              attacking={player2Attacking}
               defeated={true}
               reverse={true}
               healthPercentage={100}
+              isCurrentPlayer={currentPlayer?.id === opponent?.id}
               ability1={player2Abilities[0]}
               ability2={player2Abilities[1]}
               ability3={player2Abilities[2]}
@@ -287,27 +327,71 @@ const Fight = () => {
         </section>
       </div>
       <div className="mt-10">
-        <h2 className="text-xl">Choose an ability</h2>
-        <section className="mt-6">
-          {player && (
+        <h2
+          className={`text-xl${
+            currentPlayer?.id === opponent?.id ? " text-right" : ""
+          }`}
+        >
+          Choose an ability
+        </h2>
+        <section
+          className={`mt-6${
+            currentPlayer?.id === opponent?.id ? " text-right" : ""
+          }`}
+        >
+          {currentPlayer?.id === player?.id && (
             <>
               <AbilityButton
                 disabled={gameOver}
                 ability={player1Abilities[0]}
                 handleClick={handleClick}
                 abilitySlot={1}
+                initiator={player!}
+                receiver={opponent!}
               />
               <AbilityButton
                 disabled={gameOver}
                 ability={player1Abilities[1]}
                 handleClick={handleClick}
                 abilitySlot={2}
+                initiator={player!}
+                receiver={opponent!}
               />
               <AbilityButton
                 disabled={gameOver}
                 ability={player1Abilities[2]}
                 handleClick={handleClick}
                 abilitySlot={3}
+                initiator={player!}
+                receiver={opponent!}
+              />
+            </>
+          )}
+          {currentPlayer?.id === opponent?.id && (
+            <>
+              <AbilityButton
+                disabled={gameOver}
+                ability={player2Abilities[0]}
+                handleClick={handleClick}
+                abilitySlot={1}
+                initiator={opponent!}
+                receiver={player!}
+              />
+              <AbilityButton
+                disabled={gameOver}
+                ability={player2Abilities[1]}
+                handleClick={handleClick}
+                abilitySlot={2}
+                initiator={opponent!}
+                receiver={player!}
+              />
+              <AbilityButton
+                disabled={gameOver}
+                ability={player2Abilities[2]}
+                handleClick={handleClick}
+                abilitySlot={3}
+                initiator={opponent!}
+                receiver={player!}
               />
             </>
           )}

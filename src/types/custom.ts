@@ -15,7 +15,9 @@ export type AbilitySlot = 1 | 2 | 3;
 export type AbilityButtonHandleClick = (
   event: React.MouseEvent<HTMLButtonElement>,
   ability: Ability,
-  abilitySlot: AbilitySlot
+  abilitySlot: AbilitySlot,
+  initiator: Tables<"characters">,
+  receiver: Tables<"characters">
 ) => void;
 
 // export type CharacterData = CreatedCharacter & {
