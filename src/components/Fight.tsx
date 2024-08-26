@@ -28,6 +28,7 @@ const fightLogAtom = atom<string[]>([]);
 const gameOverAtom = atom(false);
 const attackingAtom = atom(false);
 const opponentDefeatedAtom = atom(false);
+const winnerAtom = atom<number>();
 
 // const calculateHealthPercentage = (health: number, maxHealth: number) => {
 //   return (health / maxHealth) * 100;
@@ -45,116 +46,114 @@ const Fight = () => {
   const [player1Abilities, setPlayer1Abilities] = useAtom(player1AbilitiesAtom);
   const [player2Abilities, setPlayer2Abilities] = useAtom(player2AbilitiesAtom);
   const currentUser = useAtomValue(currentUserAtom);
+  const winner = useAtomValue(winnerAtom);
   const { fightId } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       if (!currentUser) return;
 
-      const tableName = "characters";
-      const tablesSelect = [
-        "*",
-        "ability_1:ability_1_id (*)",
-        "ability_2:ability_2_id (*)",
-        "ability_3:ability_3_id (*)",
-      ];
+      try {
+        const tableName = "characters";
+        const tablesSelect = [
+          "*",
+          "ability_1:ability_1_id (*)",
+          "ability_2:ability_2_id (*)",
+          "ability_3:ability_3_id (*)",
+        ];
 
-      const { data, error: fetchFightsError } = await supabase
-        .from("fights")
-        .select("*")
-        .eq("id", fightId!)
-        .single();
+        const { data, error: fetchFightsError } = await supabase
+          .from("fights")
+          .select("*")
+          .eq("id", fightId!)
+          .single();
 
-      if (fetchFightsError) {
-        console.error(fetchFightsError);
+        if (fetchFightsError) throw fetchFightsError;
+
+        const { player1_id: player1Id, player2_id: player2Id } = data;
+
+        const [
+          { data: player1, error: fetchPlayer1Error },
+          { data: player2, error: fetchPlayer2Error },
+        ] = await Promise.all([
+          supabase
+            .from(tableName)
+            .select(tablesSelect.join(", "))
+            .eq("id", player1Id)
+            .returns<CharacterWithAbilitiesRecord[]>()
+            .single(),
+          supabase
+            .from(tableName)
+            .select(tablesSelect.join(", "))
+            .eq("id", player2Id)
+            .returns<CharacterWithAbilitiesRecord[]>()
+            .single(),
+        ]);
+
+        if (fetchPlayer1Error) throw fetchPlayer1Error;
+        if (fetchPlayer2Error) throw fetchPlayer2Error;
+
+        setPlayer(player1);
+        setPlayer1Abilities([
+          player1.ability_1!,
+          player1.ability_2!,
+          player1.ability_3!,
+        ]);
+        setOpponent(player2);
+        setPlayer2Abilities([
+          player2.ability_1!,
+          player2.ability_2!,
+          player2.ability_3!,
+        ]);
+
+        // delete unused data
+        delete player1.ability_1;
+        delete player1.ability_2;
+        delete player1.ability_3;
+        delete player2.ability_1;
+        delete player2.ability_2;
+        delete player2.ability_3;
+
+        console.log({ data, fightId, player1Id, player2Id, player1, player2 });
+
+        // subscribe to live updates from characters table
+        supabase
+          .channel("player1 attacks")
+          .on(
+            "postgres_changes",
+            {
+              event: "UPDATE",
+              schema: "public",
+              table: "characters",
+              filter: `id=eq.${player1.id}`,
+            },
+            (payload) => {
+              console.log(payload);
+              setPlayer(payload.new as Tables<"characters">);
+            }
+          )
+          .subscribe();
+
+        supabase
+          .channel("player2 attacks")
+          .on(
+            "postgres_changes",
+            {
+              event: "UPDATE",
+              schema: "public",
+              table: "characters",
+              filter: `id=eq.${player2.id}`,
+            },
+            (payload) => {
+              console.log(payload);
+              setOpponent(payload.new as Tables<"characters">);
+            }
+          )
+          .subscribe();
+      } catch (error) {
+        console.error(error);
         return;
       }
-      const { player1_id: player1Id, player2_id: player2Id } = data!;
-
-      const [
-        { data: player1, error: fetchPlayer1Error },
-        { data: player2, error: fetchPlayer2Error },
-      ] = await Promise.all([
-        supabase
-          .from(tableName)
-          .select(tablesSelect.join(", "))
-          .eq("id", player1Id)
-          .returns<CharacterWithAbilitiesRecord[]>()
-          .single(),
-        supabase
-          .from(tableName)
-          .select(tablesSelect.join(", "))
-          .eq("id", player2Id)
-          .returns<CharacterWithAbilitiesRecord[]>()
-          .single(),
-      ]);
-
-      if (fetchPlayer1Error) console.error(fetchPlayer1Error);
-      if (fetchPlayer2Error) console.error(fetchPlayer2Error);
-
-      if (!player1 || !player2) {
-        console.error("Player 1 or 2 was not retreived");
-        return;
-      }
-
-      setPlayer(player1);
-      setPlayer1Abilities([
-        player1.ability_1!,
-        player1.ability_2!,
-        player1.ability_3!,
-      ]);
-      setOpponent(player2);
-      setPlayer2Abilities([
-        player2.ability_1!,
-        player2.ability_2!,
-        player2.ability_3!,
-      ]);
-
-      // delete unused data
-      delete player1.ability_1;
-      delete player1.ability_2;
-      delete player1.ability_3;
-      delete player2.ability_1;
-      delete player2.ability_2;
-      delete player2.ability_3;
-
-      console.log({ data, fightId, player1Id, player2Id, player1, player2 });
-
-      // live updates
-      supabase
-        .channel("player1 attacks")
-        .on(
-          "postgres_changes",
-          {
-            event: "UPDATE",
-            schema: "public",
-            table: "characters",
-            filter: `id=eq.${player1.id}`,
-          },
-          (payload) => {
-            // console.error(errors)
-            console.log(payload);
-            setPlayer(payload.new as Tables<"characters">);
-          }
-        )
-        .subscribe();
-
-      supabase
-        .channel("player2 attacks")
-        .on(
-          "postgres_changes",
-          {
-            event: "UPDATE",
-            schema: "public",
-            table: "characters",
-            filter: `id=eq.${player2.id}`,
-          },
-          (payload) => {
-            console.log(payload);
-            setOpponent(payload.new as Tables<"characters">);
-          }
-        )
-        .subscribe();
     };
 
     fetchData();
@@ -277,7 +276,7 @@ const Fight = () => {
             <Character
               name={"Bison"}
               character={opponent}
-              defeated={opponentDefeated}
+              defeated={true}
               reverse={true}
               healthPercentage={100}
               ability1={player2Abilities[0]}
