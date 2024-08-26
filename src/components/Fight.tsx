@@ -28,10 +28,11 @@ const fightLogAtom = atom<string[]>([]);
 const gameOverAtom = atom(false);
 const player1AttackingAtom = atom(false);
 const player2AttackingAtom = atom(false);
+// const showPlayer1Controls = atom(true);
 // const opponentDefeatedAtom = atom(false);
 // const winnerAtom = atom<number>();
 const currentPlayerAtom = atom<Tables<"characters">>();
-
+const currentFightAtom = atom<Tables<"fights">>();
 // const calculateHealthPercentage = (health: number, maxHealth: number) => {
 //   return (health / maxHealth) * 100;
 // };
@@ -51,6 +52,7 @@ const Fight = () => {
   const currentUser = useAtomValue(currentUserAtom);
   // const winner = useAtomValue(winnerAtom);
   const [currentPlayer, setCurrentPlayer] = useAtom(currentPlayerAtom);
+  const [currentFight, setCurrentFight] = useAtom(currentFightAtom);
   const { fightId } = useParams();
 
   useEffect(() => {
@@ -66,22 +68,23 @@ const Fight = () => {
           "ability_3:ability_3_id (*)",
         ];
 
-        const { data, error: fetchFightsError } = await supabase
+        const { data: fight, error: fetchFightsError } = await supabase
           .from("fights")
           .select("*")
           .eq("id", fightId!)
+          .returns<Tables<"fights">[]>()
           .single();
 
         if (fetchFightsError) throw fetchFightsError;
 
-        // setGameOver();
-        console.log({ fight: data });
+        setCurrentFight(fight);
+        console.log({ fight });
 
         const {
           player1_id: player1Id,
           player2_id: player2Id,
           game_over,
-        } = data;
+        } = fight;
         setGameOver(game_over);
 
         const [
@@ -133,7 +136,7 @@ const Fight = () => {
         }
 
         console.log({
-          data,
+          fight,
           fightId,
           player1Id,
           player2Id,
@@ -162,7 +165,7 @@ const Fight = () => {
               // const player1Data = payload.new as Tables<"characters">;
               setPlayer(payload.new as Tables<"characters">);
 
-              const { data: currentFight, error } = await supabase
+              const { data: fight, error } = await supabase
                 .from("fights")
                 .select("*")
                 .eq("id", fightId!)
@@ -171,7 +174,8 @@ const Fight = () => {
 
               if (error) throw error;
 
-              setGameOver(currentFight.game_over);
+              setGameOver(fight.game_over);
+              setCurrentFight(fight);
 
               // setPlayer2Attacking(true);
               // setTimeout(() => setPlayer2Attacking(false), 500);
@@ -198,7 +202,7 @@ const Fight = () => {
               );
               setOpponent(payload.new as Tables<"characters">);
 
-              const { data: currentFight, error } = await supabase
+              const { data: fight, error } = await supabase
                 .from("fights")
                 .select("*")
                 .eq("id", fightId!)
@@ -207,7 +211,8 @@ const Fight = () => {
 
               if (error) throw error;
 
-              setGameOver(currentFight.game_over);
+              setGameOver(fight.game_over);
+              setCurrentFight(fight);
 
               // setPlayer1Attacking(true);
               // setTimeout(() => setPlayer1Attacking(false), 500);
@@ -315,7 +320,11 @@ const Fight = () => {
           {currentPlayer?.id === player?.id && (
             <>
               <AbilityButton
-                disabled={gameOver}
+                disabled={
+                  gameOver || (currentFight && currentFight.turn % 2 === 0)
+                    ? true
+                    : false
+                }
                 ability={player1Abilities[0]}
                 handleClick={handleClick}
                 abilitySlot={1}
@@ -323,7 +332,11 @@ const Fight = () => {
                 receiver={opponent!}
               />
               <AbilityButton
-                disabled={gameOver}
+                disabled={
+                  gameOver || (currentFight && currentFight.turn % 2 === 0)
+                    ? true
+                    : false
+                }
                 ability={player1Abilities[1]}
                 handleClick={handleClick}
                 abilitySlot={2}
@@ -331,7 +344,11 @@ const Fight = () => {
                 receiver={opponent!}
               />
               <AbilityButton
-                disabled={gameOver}
+                disabled={
+                  gameOver || (currentFight && currentFight.turn % 2 === 0)
+                    ? true
+                    : false
+                }
                 ability={player1Abilities[2]}
                 handleClick={handleClick}
                 abilitySlot={3}
@@ -343,7 +360,11 @@ const Fight = () => {
           {currentPlayer?.id === opponent?.id && (
             <>
               <AbilityButton
-                disabled={gameOver}
+                disabled={
+                  gameOver || (currentFight && currentFight.turn % 2 === 1)
+                    ? true
+                    : false
+                }
                 ability={player2Abilities[0]}
                 handleClick={handleClick}
                 abilitySlot={1}
@@ -351,7 +372,11 @@ const Fight = () => {
                 receiver={player!}
               />
               <AbilityButton
-                disabled={gameOver}
+                disabled={
+                  gameOver || (currentFight && currentFight.turn % 2 === 1)
+                    ? true
+                    : false
+                }
                 ability={player2Abilities[1]}
                 handleClick={handleClick}
                 abilitySlot={2}
@@ -359,7 +384,11 @@ const Fight = () => {
                 receiver={player!}
               />
               <AbilityButton
-                disabled={gameOver}
+                disabled={
+                  gameOver || (currentFight && currentFight.turn % 2 === 1)
+                    ? true
+                    : false
+                }
                 ability={player2Abilities[2]}
                 handleClick={handleClick}
                 abilitySlot={3}
