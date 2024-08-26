@@ -1,6 +1,6 @@
 import { Tables } from "./supabase";
 
-export interface Ability {
+export type Ability = {
   name: Tables<"abilities">["name"];
   description: Tables<"abilities">["description"];
   // metadata: {
@@ -8,7 +8,7 @@ export interface Ability {
   //   health?: number;
   //   type?: string;
   // };
-}
+};
 
 export type AbilitySlot = 1 | 2 | 3;
 
@@ -37,7 +37,7 @@ export type AbilityButtonHandleClick = (
 //   healthPercentage: number;
 // }
 
-export interface CreatedCharacter {
+export type CreatedCharacter = {
   id: Tables<"characters">["id"];
   attack: Tables<"characters">["attack"];
   defense: Tables<"characters">["defense"];
@@ -48,12 +48,6 @@ export interface CreatedCharacter {
   ability1: Tables<"abilities">; // TODO: correct these types at some point
   ability2: Tables<"abilities">;
   ability3: Tables<"abilities">;
-}
-
-export type CharacterWithAbilitiesRecord = Tables<"characters"> & {
-  ability_1?: Tables<"abilities">;
-  ability_2?: Tables<"abilities">;
-  ability_3?: Tables<"abilities">;
 };
 
 // export type CharacterWithAbilitiesRecord = {

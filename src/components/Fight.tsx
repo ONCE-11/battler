@@ -41,7 +41,7 @@ const Fight = () => {
   const [player, setPlayer] = useAtom(playerAtom);
   const [fightLog, setFightLog] = useAtom(fightLogAtom);
   // const [gameOver, setGameOver] = useAtom(gameOverAtom);
-  const gameOver = useAtomValue(gameOverAtom);
+  const [gameOver, setGameOver] = useAtom(gameOverAtom);
   const [player1Attacking, setPlayer1Attacking] = useAtom(player1AttackingAtom);
   const [player2Attacking, setPlayer2Attacking] = useAtom(player2AttackingAtom);
   // const [opponentDefeated, setOpponentDefeated] = useAtom(opponentDefeatedAtom);
@@ -74,7 +74,15 @@ const Fight = () => {
 
         if (fetchFightsError) throw fetchFightsError;
 
-        const { player1_id: player1Id, player2_id: player2Id } = data;
+        // setGameOver();
+        console.log({ fight: data });
+
+        const {
+          player1_id: player1Id,
+          player2_id: player2Id,
+          game_over,
+        } = data;
+        setGameOver(game_over);
 
         const [
           { data: player1, error: fetchPlayer1Error },
@@ -153,6 +161,9 @@ const Fight = () => {
               );
               // const player1Data = payload.new as Tables<"characters">;
               setPlayer(payload.new as Tables<"characters">);
+
+              // setPlayer2Attacking(true);
+              // setTimeout(() => setPlayer2Attacking(false), 500);
             }
           )
           .subscribe();
@@ -175,6 +186,9 @@ const Fight = () => {
                 // currentPlayer === payload.new
               );
               setOpponent(payload.new as Tables<"characters">);
+
+              // setPlayer1Attacking(true);
+              // setTimeout(() => setPlayer1Attacking(false), 500);
             }
           )
           .subscribe();
@@ -304,7 +318,6 @@ const Fight = () => {
               ability3={player1Abilities[2]}
               isCurrentPlayer={currentPlayer?.id === player?.id}
               healthPercentage={100}
-              
             />
           )}
         </section>
