@@ -4,7 +4,6 @@ interface CharacterProps {
   character: Tables<"characters">;
   attacking?: boolean;
   reverse?: boolean;
-  defeated?: boolean;
   name: string;
   healthPercentage: number;
   isCurrentPlayer: boolean;
@@ -17,7 +16,6 @@ const Character = ({
   character,
   reverse,
   attacking,
-  defeated,
   name,
   healthPercentage,
   ability1,
@@ -25,7 +23,8 @@ const Character = ({
   ability3,
   isCurrentPlayer,
 }: CharacterProps) => {
-  const { avatar_url, max_health, current_health, attack, defense } = character;
+  const { avatar_url, max_health, current_health, attack, defense, alive } =
+    character;
 
   return (
     <>
@@ -62,7 +61,7 @@ const Character = ({
         <div className="overflow-clip rounded-lg mt-4">
           <img
             className={`${reverse ? "-scale-x-100 " : ""}${
-              defeated ? "sepia" : "grayscale"
+              !alive ? "sepia" : "grayscale"
             } w-full`}
             src={avatar_url}
           />

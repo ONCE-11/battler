@@ -305,6 +305,7 @@ const Fight = () => {
               ability3={player1Abilities[2]}
               isCurrentPlayer={currentPlayer?.id === player?.id}
               healthPercentage={100}
+              
             />
           )}
         </section>
@@ -315,7 +316,6 @@ const Fight = () => {
               name={"Bison"}
               character={opponent}
               attacking={player2Attacking}
-              defeated={true}
               reverse={true}
               healthPercentage={100}
               isCurrentPlayer={currentPlayer?.id === opponent?.id}
