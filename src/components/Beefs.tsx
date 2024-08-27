@@ -40,16 +40,6 @@ const Beefs = () => {
 
         setCurrentCharacter(character);
 
-        const { data: characters, error: fetchCharactersError } = await supabase
-          .from("characters")
-          .select("*")
-          .not("user_id", "eq", currentUser!.id)
-          .eq("alive", true);
-
-        if (fetchCharactersError) throw fetchCharactersError;
-
-        setCharacters(characters);
-
         const { data: fights, error: fetchFightsError } = await supabase
           .from("fights")
           .select("*, player1:player1_id(*), player2:player2_id(*)")
@@ -59,6 +49,30 @@ const Beefs = () => {
         if (fetchFightsError) throw fetchFightsError;
 
         setFightsWithPlayers(fights);
+
+        const { data: characters, error: fetchCharactersError } = await supabase
+          .from("characters")
+          .select("*")
+          .not("user_id", "eq", currentUser!.id)
+          .eq("alive", true);
+
+        if (fetchCharactersError) throw fetchCharactersError;
+
+        console.log(
+          characters.filter(({ id }) =>
+            !fights.find(
+              (fight) => fight.player1_id === id || fight.player2_id === id
+            )
+          )
+        );
+
+        setCharacters(
+          characters.filter(({ id }) =>
+            !fights.find(
+              (fight) => fight.player1_id === id || fight.player2_id === id
+            )
+          )
+        );
       } catch (error) {
         console.error(error);
       }
@@ -109,7 +123,7 @@ const Beefs = () => {
                 </li>
               ))
             ) : (
-              <li className="p-4">No players in the system are alive</li>
+              <li className="p-4">Everyone else is dead ☠️</li>
             )}
           </ul>
         </>

@@ -18,7 +18,8 @@ const Layout = () => {
   }, []);
 
   return (
-    <div style={{ width: "1000px", margin: "0 auto" }}>
+    // TODO: change this to using tailwind
+    <div style={{ width: "1000px", margin: "0 auto" }} className="relative">
       <header className="m-4">
         <Nav />
       </header>
