@@ -33,7 +33,6 @@ const Character = ({
 
   return (
     <>
-      {isCurrentPlayer && <h1>Current Player</h1>}
       <div
         className={`bg-white p-4 rounded-lg border-4 border-black w-80 ${
           attacking ? "animate-bounce" : ""
@@ -63,11 +62,16 @@ const Character = ({
           {/* <span className="text-blue-700 text-2xl">{attack} </span>
         <span className="text-red-700 text-2xl">{defense}</span> */}
         </div>
-        <div className="overflow-clip rounded-lg mt-4">
+        <div className="overflow-clip rounded-lg mt-4 relative">
+          {isCurrentPlayer && (
+            <span className="absolute text-white z-10 top-0 right-2 font-bold text-xl">
+              c
+            </span>
+          )}
           <img
             className={`${reverse ? "-scale-x-100 " : ""}${
               !alive ? "sepia" : "grayscale"
-            } w-full`}
+            } w-full z-0`}
             src={avatar_url}
           />
         </div>
