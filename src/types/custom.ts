@@ -1,4 +1,5 @@
 import { Tables } from "./supabase";
+import { MouseEvent } from "react";
 
 export type Ability = {
   name: Tables<"abilities">["name"];
@@ -13,11 +14,16 @@ export type Ability = {
 export type AbilitySlot = 1 | 2 | 3;
 
 export type AbilityButtonHandleClick = (
-  event: React.MouseEvent<HTMLButtonElement>,
+  event: MouseEvent<HTMLButtonElement>,
   ability: Ability,
   abilitySlot: AbilitySlot,
   initiator: Tables<"characters">,
   receiver: Tables<"characters">
+) => void;
+
+export type ButtonHandleClick = (
+  event: MouseEvent<HTMLButtonElement>,
+  extraParam?: any
 ) => void;
 
 // export type CharacterData = CreatedCharacter & {

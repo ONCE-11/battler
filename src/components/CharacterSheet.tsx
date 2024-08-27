@@ -4,7 +4,9 @@ import { atom, useAtomValue, useAtom } from "jotai";
 import { useEffect } from "react";
 import { currentUserAtom } from "../state";
 import useCharacter from "./hooks/useCharacter";
-import { CreatedCharacter } from "../types/custom";
+import { CreatedCharacter, ButtonHandleClick } from "../types/custom";
+import { supabase } from "../utils";
+import { MouseEvent } from "react";
 
 // const characterAtom = atom<Tables<"characters">>();
 const characterAtom = atom<CreatedCharacter>();
@@ -13,7 +15,24 @@ const New = () => {
   // const [character, setCharacter] = useAtom(characterAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const [character, setCharacter] = useAtom(characterAtom);
-  const { createCharacter, fetchCharacterWithAbilities } = useCharacter();
+  const { fetchCharacterWithAbilities } = useCharacter();
+
+  const handleClick: ButtonHandleClick = async (
+    _event: MouseEvent<HTMLButtonElement>
+  ) => {
+    const { data: character, error } = await supabase.functions.invoke(
+      "createCharacter",
+      {
+        body: { userId: currentUser!.id },
+      }
+    );
+
+    if (error) console.error(error);
+
+    console.log(character);
+
+    setCharacter(character);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +40,6 @@ const New = () => {
 
       setCharacter(character);
     };
-    // fetchCurrentCharacter();
     fetchData();
   }, []);
 
@@ -29,11 +47,17 @@ const New = () => {
     <>
       <Title>
         <h1>
-          <img
-            className="h-20 grayscale rounded-lg inline-block"
-            src={character?.avatarUrl}
-          />
-          <span className="inline-block ml-2">{character?.name}</span>
+          {character ? (
+            <>
+              <img
+                className="h-20 grayscale rounded-lg inline-block"
+                src={character?.avatarUrl}
+              />
+              <span className="inline-block ml-2">{character?.name}</span>
+            </>
+          ) : (
+            "Character"
+          )}
         </h1>
       </Title>
 
@@ -65,7 +89,7 @@ const New = () => {
           <Button
             text="Go"
             additionalCssClasses={["mt-4"]}
-            handleClick={createCharacter}
+            handleClick={handleClick}
           />
         </>
       )}

@@ -1,9 +1,11 @@
-interface ButtonProps {
+import { ButtonHandleClick } from "../types/custom";
+
+type ButtonProps = {
   text: string;
-  handleClick?: (e: any, extraParam?: any) => void;
+  handleClick?: ButtonHandleClick;
   additionalCssClasses?: string[];
   type?: "button" | "submit";
-}
+};
 
 const Button = ({
   text,

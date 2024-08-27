@@ -47,6 +47,8 @@ const useCharacter = () => {
       return;
     }
 
+    console.log("fetchCharacterWithAbilities: ", character);
+
     console.log("current character = ", character);
 
     setCurrentCharacter(character);
