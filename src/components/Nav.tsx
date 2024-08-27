@@ -7,7 +7,6 @@ const Nav = () => {
   const { logout } = useAuth();
   const loggedIn = useAtomValue(loggedInAtom);
   const navigate = useNavigate();
-
   const sharedCssClasses = "m-0 text-2xl hover:underline inline-block";
 
   const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -21,7 +20,7 @@ const Nav = () => {
       <nav className="flex justify-between items-baseline">
         <div>
           <Link to={"/"} className="text-4xl">
-            Battler
+            Beef
           </Link>
         </div>
         <div>
@@ -31,13 +30,10 @@ const Nav = () => {
                 to={"/current-character"}
                 className={`m-0 ${sharedCssClasses}`}
               >
-                Current
+                Deets
               </Link>
-              <Link to={"/fights"} className={`ml-4 ${sharedCssClasses}`}>
-                Fights
-              </Link>
-              <Link to={"/fight"} className={`ml-4 ${sharedCssClasses}`}>
-                Fight!
+              <Link to={"/beefs"} className={`ml-4 ${sharedCssClasses}`}>
+                Beefs
               </Link>
               <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
                 Bodega

@@ -9,14 +9,11 @@ import { useEffect } from "react";
 const Layout = () => {
   const loading = useAtomValue(loadingAtom);
   const message = useAtomValue(messageAtom);
+
   const { fetchSession } = useAuth();
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchSession();
-    };
-
-    fetchData();
+    fetchSession();
   }, []);
 
   return (

@@ -15,7 +15,7 @@ const New = () => {
 
   return (
     <>
-      <Title text="Current Character" />
+      <Title text="Deets" />
 
       {currentCharacter ? (
         <div className="rounded b">

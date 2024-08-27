@@ -5,7 +5,7 @@ const Home = () => {
 
   return (
     <>
-      <Title text="Welcome to Battler" />
+      <Title text="Welcome to Beef" />
       <p className={classes}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Vel pharetra vel

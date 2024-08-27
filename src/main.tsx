@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/fights/:fightId",
+        path: "/beefs/:fightId",
         element: (
           <ProtectedRoute>
             <Fight />
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/fights",
+        path: "/beefs",
         element: (
           <ProtectedRoute>
             <Fights />
