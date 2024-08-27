@@ -28,9 +28,9 @@ const Nav = () => {
           {loggedIn ? (
             <>
               <Link
-                to={"/current-character"}
+                to={"/character"}
                 className={`m-0 ${sharedCssClasses}${
-                  pathname === "/current-character" ? " underline" : ""
+                  pathname === "/character" ? " underline" : ""
                 }`}
               >
                 Character

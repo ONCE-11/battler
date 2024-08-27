@@ -11,7 +11,7 @@ import Equipment from "./components/Equipment.tsx";
 import Fights from "./components/Fights.tsx";
 import { Provider } from "jotai";
 import Home from "./components/Home.tsx";
-import CurrentCharacter from "./components/CurrentCharacter.tsx";
+import CharacterSheet from "./components/CharacterSheet.tsx";
 
 const router = createBrowserRouter([
   {
@@ -59,10 +59,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "/current-character",
+        path: "/character",
         element: (
           <ProtectedRoute>
-            <CurrentCharacter />
+            <CharacterSheet />
           </ProtectedRoute>
         ),
       },
