@@ -16,7 +16,7 @@ const fightsWithPlayersAtom = atom<FightWithPlayers[]>([]);
 const currentCharacterAtom = atom<Tables<"characters">>();
 const charactersAtom = atom<Tables<"characters">[]>([]);
 
-const Fights = () => {
+const Beefs = () => {
   const [fightsWithPlayers, setFightsWithPlayers] = useAtom(
     fightsWithPlayersAtom
   );
@@ -154,4 +154,4 @@ const Fights = () => {
   );
 };
 
-export default Fights;
+export default Beefs;

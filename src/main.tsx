@@ -8,7 +8,7 @@ import LoginForm from "./components/Login.tsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
 import Bodega from "./components/Bodega.tsx";
 import Equipment from "./components/Equipment.tsx";
-import Fights from "./components/Fights.tsx";
+import Beefs from "./components/Beefs.tsx";
 import { Provider } from "jotai";
 import Home from "./components/Home.tsx";
 import CharacterSheet from "./components/CharacterSheet.tsx";
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         path: "/beefs",
         element: (
           <ProtectedRoute>
-            <Fights />
+            <Beefs />
           </ProtectedRoute>
         ),
       },
