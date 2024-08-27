@@ -22,7 +22,7 @@ const useCharacter = () => {
     setCurrentCharacter(character);
   };
 
-  const fetchCurrentCharacter = async () => {
+  const fetchCharacterWithAbilities = async (userId: string) => {
     console.log(currentUser);
 
     const {
@@ -31,9 +31,9 @@ const useCharacter = () => {
     }: { data: CreatedCharacter | null; error: object | null } = await supabase
       .from("characters")
       .select(
-        "id, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
+        "id, name, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
       )
-      .eq("user_id", currentUser!.id)
+      .eq("user_id", userId)
       .eq("alive", true)
       .single();
 
@@ -54,25 +54,25 @@ const useCharacter = () => {
     return character;
   };
 
-  const fetchCharacter = async (id: string) => {
-    const {
-      data: character,
-      error,
-    }: { data: CreatedCharacter | null; error: object | null } = await supabase
+  const fetchCharacter = async (userId: string) => {
+    const { data: character, error } = await supabase
       .from("characters")
-      .select(
-        "id, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
-      )
-      .eq("user_id", id)
+      .select("*")
+      .eq("user_id", userId)
       .eq("alive", true)
       .single();
 
-    if (error) console.error(error);
+    console.info("character info", character);
+
+    if (error) {
+      console.error(error);
+      return;
+    }
 
     return character;
   };
 
-  return { createCharacter, fetchCurrentCharacter, fetchCharacter };
+  return { createCharacter, fetchCharacterWithAbilities, fetchCharacter };
 };
 
 export default useCharacter;

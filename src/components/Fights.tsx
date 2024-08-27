@@ -85,7 +85,7 @@ const Fights = () => {
 
   return (
     <>
-      <Title text={`${currentCharacter?.name}`} />
+      <Title text={"What's cookin?"} />
       {characters && (
         <>
           <p className="text-xl w-full bg-slate-500 text-white py-2 px-4">

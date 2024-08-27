@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useMatches } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 import { useAtomValue } from "jotai";
 import { loggedInAtom } from "../state";
@@ -7,6 +7,7 @@ const Nav = () => {
   const { logout } = useAuth();
   const loggedIn = useAtomValue(loggedInAtom);
   const navigate = useNavigate();
+  const [, { pathname }] = useMatches();
   const sharedCssClasses = "m-0 text-2xl hover:underline inline-block";
 
   const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -20,7 +21,7 @@ const Nav = () => {
       <nav className="flex justify-between items-baseline">
         <div>
           <Link to={"/"} className="text-4xl">
-            Beef
+            <span>🐮</span> Beef
           </Link>
         </div>
         <div>
@@ -28,17 +29,34 @@ const Nav = () => {
             <>
               <Link
                 to={"/current-character"}
-                className={`m-0 ${sharedCssClasses}`}
+                className={`m-0 ${sharedCssClasses}${
+                  pathname === "/current-character" ? " underline" : ""
+                }`}
               >
-                Deets
+                Character
               </Link>
-              <Link to={"/beefs"} className={`ml-4 ${sharedCssClasses}`}>
+              <Link
+                to={"/beefs"}
+                className={`ml-4 ${sharedCssClasses}${
+                  pathname === "/beefs" ? " underline" : ""
+                }`}
+              >
                 Beefs
               </Link>
-              <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
+              <Link
+                to={"/bodega"}
+                className={`ml-4 ${sharedCssClasses}${
+                  pathname === "/bodega" ? " underline" : ""
+                }`}
+              >
                 Bodega
               </Link>
-              <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
+              <Link
+                to={"/equipment"}
+                className={`ml-4 ${sharedCssClasses}${
+                  pathname === "/equipment" ? " underline" : ""
+                }`}
+              >
                 Equipment
               </Link>
               <Link

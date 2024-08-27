@@ -5,6 +5,7 @@ import { useAtomValue } from "jotai";
 import { loadingAtom, messageAtom } from "./state";
 import useAuth from "./components/hooks/useAuth";
 import { useEffect } from "react";
+import Footer from "./components/Footer";
 
 const Layout = () => {
   const loading = useAtomValue(loadingAtom);
@@ -35,6 +36,8 @@ const Layout = () => {
           <Outlet />
         </main>
       )}
+
+      <Footer />
     </div>
   );
 };

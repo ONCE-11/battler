@@ -268,7 +268,7 @@ const Fight = () => {
 
   return (
     <>
-      <Title text="Fight!" />
+      <Title text="Squabble!" />
       <div className="flex justify-between relative">
         {gameOver && (
           <p className="absolute text-9xl -rotate-12 text-red-600 z-10 top-32 left-12">

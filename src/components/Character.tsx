@@ -47,10 +47,10 @@ const Character = ({
               style={{ width: `${healthPercentage}%` }}
             ></div>
             <ul>
-              <li>max health = {max_health}</li>
-              <li>current_health = {current_health}</li>
-              <li>attack = {attack}</li>
-              <li>defense = {defense}</li>
+              <li>mH: {max_health}</li>
+              <li>cH: {current_health}</li>
+              <li>At: {attack}</li>
+              <li>Def: {defense}</li>
             </ul>
           </div>
           {/* <span className="text-purple-700 text-2xl">{hp}</span> */}

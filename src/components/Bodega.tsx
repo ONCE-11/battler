@@ -57,7 +57,7 @@ const Bodega = () => {
 
       const { data, error } = await supabase
         .from("characters")
-        .select()
+        .select("*")
         .eq("user_id", currentUser!.id)
         .single();
 
@@ -83,8 +83,6 @@ const Bodega = () => {
   ) => {
     if (!currentUser) return;
 
-    // console.log(itemId);
-
     const {
       data: { remainingPesos },
       error,
@@ -104,22 +102,27 @@ const Bodega = () => {
 
   return (
     <>
-      <Title text="Bodega" />
+      <Title className="flex justify-between items-end">
+        <span>Bodega</span>
+        <span className="inline-block text-right text-xl py-2 pr-2 border-t">
+          <span className="text-green-900">{pesos}</span> ch
+        </span>
+      </Title>
       <table className="w-full">
         <tbody>
           {items.map(({ name, description, price, id }, index) => (
             <tr key={index}>
               <td className="capitalize">{name}</td>
               <td>{description}</td>
-              <td>{price} P</td>
-              <td>
-                <Button text="Buy" handleClick={(e) => handleClick(e, id)} />
+              <td>{price}</td>
+              <td className="text-right">
+                <Button text="cop" handleClick={(e) => handleClick(e, id)} />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      <div className="border-t-black border-t mt-4 pt-4">PESOS: {pesos}</div>
+      {/* <div className="border-t-black border-t mt-4 pt-4">{pesos} CH</div> */}
     </>
   );
 };

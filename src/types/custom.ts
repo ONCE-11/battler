@@ -48,6 +48,13 @@ export type CreatedCharacter = {
   ability1: Tables<"abilities">; // TODO: correct these types at some point
   ability2: Tables<"abilities">;
   ability3: Tables<"abilities">;
+  name: Tables<"characters">["name"];
+};
+
+export type CreatedCharacter2 = Tables<"characters"> & {
+  ability1: Tables<"abilities">; // TODO: correct these types at some point
+  ability2: Tables<"abilities">;
+  ability3: Tables<"abilities">;
 };
 
 // export type CharacterWithAbilitiesRecord = {
