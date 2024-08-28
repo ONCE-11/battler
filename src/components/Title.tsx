@@ -6,7 +6,7 @@ type TitleProps = PropsWithChildren<{ text?: string; className?: string }>;
 const Title: FC<TitleProps> = ({ text, children, className }) => {
   return (
     <h1
-      className={`text-6xl font-bold py-4${className ? ` ${className}` : ""}`}
+      className={`text-4xl font-bold py-4${className ? ` ${className}` : ""}`}
     >
       {children ?? text}
     </h1>

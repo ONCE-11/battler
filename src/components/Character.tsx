@@ -34,37 +34,37 @@ const Character = ({
   return (
     <>
       <div
-        className={`bg-white p-4 rounded-lg border-4 border-black w-80 ${
+        className={`bg-white p-4 rounded-lg border border-slate-200 w-80 ${
           attacking ? "animate-bounce" : ""
-          // ${playerOne ? "skew-x-3 ml-4" : "-skew-x-3 mr-4"}
         }`}
       >
-        <div className="">
-          <div className="w-full">
-            <div
-              className="w-full bg-black rounded h-2"
-              style={{ width: `${healthPercentage}%` }}
-            ></div>
-            <ul>
-              <li>mH: {max_health}</li>
-              <li>cH: {current_health}</li>
-              <li>At: {attack}</li>
-              <li>Def: {defense}</li>
-            </ul>
-          </div>
-          {/* <span className="text-purple-700 text-2xl">{hp}</span> */}
-          {/* <progress
-          value="100"
-          max="100"
-          className="w-full"
-          style={{ background: "black", color: "black", accentColor: "black" }}
-        ></progress> */}
-          {/* <span className="text-blue-700 text-2xl">{attack} </span>
-        <span className="text-red-700 text-2xl">{defense}</span> */}
+        <div className="w-full">
+          <ul className="flex justify-between items-start pb-2">
+            <li>
+              <span className="font-bold">H:</span> {current_health}/
+              {max_health}
+            </li>
+            <div>
+              <li>
+                <span className="font-bold">Att:</span> {attack}
+              </li>
+              <li>
+                <span className="font-bold">Def:</span> {defense}
+              </li>
+            </div>
+          </ul>
+          <div
+            className="w-full bg-black rounded h-2"
+            style={{ width: `${healthPercentage}%` }}
+          ></div>
         </div>
-        <div className="overflow-clip rounded-lg mt-4 relative">
+        <div className="overflow-clip rounded-lg mt-1 relative">
           {isCurrentPlayer && (
-            <span className="absolute text-white z-10 top-0 right-2 font-bold text-xl">
+            <span
+              className={`absolute text-white z-10 top-0 font-bold text-xl ${
+                reverse ? "right-2" : "left-2"
+              }`}
+            >
               c
             </span>
           )}
@@ -74,15 +74,28 @@ const Character = ({
             } w-full z-0`}
             src={avatar_url}
           />
+          <h2
+            className={`text-white capitalize text-l absolute bottom-2 ${
+              reverse ? "right-2" : "left-2"
+            }`}
+          >
+            {name}
+          </h2>
         </div>
-        <section className="flex justify-between border-solid pt-4">
-          <h2 className="text-green-700 capitalize text-2xl">{name}</h2>
-
-          <ul className="text-right text-lg">
-            <li>{ability1?.name}</li>
-            <li>{ability2?.name}</li>
-            <li>{ability3?.name}</li>
-          </ul>
+        <section className="pt-4">
+          {reverse ? (
+            <ul className="text-right text-lg pl-2 w-full">
+              <li>{ability1?.name} : 1</li>
+              <li>{ability2?.name} : 2</li>
+              <li>{ability3?.name} : 3</li>
+            </ul>
+          ) : (
+            <ul className="text-left text-lg pl-2 w-full">
+              <li>1 : {ability1?.name}</li>
+              <li>2 : {ability2?.name}</li>
+              <li>3 : {ability3?.name}</li>
+            </ul>
+          )}
         </section>
       </div>
     </>
