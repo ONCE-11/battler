@@ -78,7 +78,7 @@ const Fight = () => {
         if (fetchFightsError) throw fetchFightsError;
 
         setCurrentFight(fight);
-        console.log({ fight });
+        // console.log({ fight });
 
         const {
           player1_id: player1Id,
@@ -135,35 +135,134 @@ const Fight = () => {
           setCurrentPlayer(player2);
         }
 
-        console.log({
-          fight,
-          fightId,
-          player1Id,
-          player2Id,
-          player1,
-          player2,
-        });
+        // console.log({
+        //   fight,
+        //   fightId,
+        //   player1Id,
+        //   player2Id,
+        //   player1,
+        //   player2,
+        // });
 
         // subscribe to live updates from characters table
+        // supabase
+        //   .channel("player1 attacks")
+        //   .on(
+        //     "postgres_changes",
+        //     {
+        //       event: "UPDATE",
+        //       schema: "public",
+        //       table: "characters",
+        //       filter: `id=eq.${player1.id}`,
+        //     },
+        //     async (payload) => {
+        //       console.log(
+        //         // payload,
+        //         // currentPlayer,
+        //         payload.new
+        //         // currentPlayer === payload.new
+        //       );
+        //       // const player1Data = payload.new as Tables<"characters">;
+        //       setPlayer(payload.new as Tables<"characters">);
+
+        //       const { data: fight, error } = await supabase
+        //         .from("fights")
+        //         .select("*")
+        //         .eq("id", fightId!)
+        //         .returns<Tables<"fights">[]>()
+        //         .single();
+
+        //       if (error) throw error;
+
+        //       setGameOver(fight.game_over);
+        //       setCurrentFight(fight);
+
+        //       // setPlayer2Attacking(true);
+        //       // setTimeout(() => setPlayer2Attacking(false), 500);
+        //     }
+        //   )
+        //   .subscribe();
+
+        // supabase
+        //   .channel("player2 attacks")
+        //   .on(
+        //     "postgres_changes",
+        //     {
+        //       event: "UPDATE",
+        //       schema: "public",
+        //       table: "characters",
+        //       filter: `id=eq.${player2.id}`,
+        //     },
+        //     async (payload) => {
+        //       console.log(
+        //         // payload,
+        //         payload.new
+        //         // currentPlayer,
+        //         // currentPlayer === payload.new
+        //       );
+        //       setOpponent(payload.new as Tables<"characters">);
+
+        //       const { data: fight, error } = await supabase
+        //         .from("fights")
+        //         .select("*")
+        //         .eq("id", fightId!)
+        //         .returns<Tables<"fights">[]>()
+        //         .single();
+
+        //       if (error) throw error;
+
+        //       setGameOver(fight.game_over);
+        //       setCurrentFight(fight);
+
+        //       // setPlayer1Attacking(true);
+        //       // setTimeout(() => setPlayer1Attacking(false), 500);
+        //     }
+        //   )
+        //   .subscribe();
+
+        console.log(player1?.id, player2?.id);
+
+        // const transformPlayers = (
+        //   updatedPlayer1Data: Tables<"characters">,
+        //   updatedPlayer2Data: Tables<"characters">
+        // ): void => {};
+
         supabase
-          .channel("player1 attacks")
+          .channel("player 1 actions")
           .on(
             "postgres_changes",
             {
-              event: "UPDATE",
+              event: "INSERT",
               schema: "public",
-              table: "characters",
-              filter: `id=eq.${player1.id}`,
+              table: "actions",
+              filter: `initiator=eq.${player1?.id}`,
             },
             async (payload) => {
-              console.log(
-                // payload,
-                // currentPlayer,
-                payload.new
-                // currentPlayer === payload.new
-              );
-              // const player1Data = payload.new as Tables<"characters">;
-              setPlayer(payload.new as Tables<"characters">);
+              console.log("player 1 ability");
+
+              const {
+                metadata: { initiator, receiver },
+              } = payload.new as {
+                metadata: {
+                  initiator: Tables<"characters">;
+                  receiver: Tables<"characters">;
+                };
+              };
+              console.log(initiator, receiver);
+
+              setPlayer({
+                ...player1,
+                attack: initiator.attack,
+                defense: initiator.defense,
+                current_health: initiator.current_health,
+              });
+
+              setOpponent({
+                ...player2,
+                attack: receiver.attack,
+                defense: receiver.defense,
+                current_health: receiver.current_health,
+              });
 
               const { data: fight, error } = await supabase
                 .from("fights")
@@ -176,31 +275,46 @@ const Fight = () => {
 
               setGameOver(fight.game_over);
               setCurrentFight(fight);
-
-              // setPlayer2Attacking(true);
-              // setTimeout(() => setPlayer2Attacking(false), 500);
             }
           )
           .subscribe();
 
         supabase
-          .channel("player2 attacks")
+          .channel("player 2 actions")
           .on(
             "postgres_changes",
             {
-              event: "UPDATE",
+              event: "INSERT",
               schema: "public",
-              table: "characters",
-              filter: `id=eq.${player2.id}`,
+              table: "actions",
+              filter: `initiator=eq.${player2?.id}`,
             },
             async (payload) => {
-              console.log(
-                // payload,
-                payload.new
-                // currentPlayer,
-                // currentPlayer === payload.new
-              );
-              setOpponent(payload.new as Tables<"characters">);
+              console.log("player 2 ability");
+
+              const {
+                metadata: { initiator, receiver },
+              } = payload.new as {
+                metadata: {
+                  initiator: Tables<"characters">;
+                  receiver: Tables<"characters">;
+                };
+              };
+              console.log(initiator, receiver);
+
+              setOpponent({
+                ...player2,
+                attack: initiator.attack,
+                defense: initiator.defense,
+                current_health: initiator.current_health,
+              });
+
+              setPlayer({
+                ...player1,
+                attack: receiver.attack,
+                defense: receiver.defense,
+                current_health: receiver.current_health,
+              });
 
               const { data: fight, error } = await supabase
                 .from("fights")
@@ -213,9 +327,6 @@ const Fight = () => {
 
               setGameOver(fight.game_over);
               setCurrentFight(fight);
-
-              // setPlayer1Attacking(true);
-              // setTimeout(() => setPlayer1Attacking(false), 500);
             }
           )
           .subscribe();
@@ -243,7 +354,7 @@ const Fight = () => {
 
     let action = "";
 
-    const { data, error } = await supabase.functions.invoke("useAbility", {
+    const { error } = await supabase.functions.invoke("useAbility", {
       body: {
         abilityNumber: abilitySlot,
         playerId: initiator.id,
@@ -252,7 +363,7 @@ const Fight = () => {
       },
     });
 
-    console.log({ data, error });
+    if (error) throw error;
 
     action = `Guile has just used ${ability.name}.`;
 
@@ -264,7 +375,7 @@ const Fight = () => {
     setFightLog([...fightLog, action]);
   };
 
-  console.log(currentPlayer, opponent, currentPlayer?.id === opponent?.id);
+  // console.log(currentPlayer, opponent, currentPlayer?.id === opponent?.id);
 
   return (
     <>
