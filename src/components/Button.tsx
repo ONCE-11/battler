@@ -5,6 +5,7 @@ type ButtonProps = {
   handleClick?: ButtonHandleClick;
   additionalCssClasses?: string[];
   type?: "button" | "submit";
+  disabled?: boolean;
 };
 
 const Button = ({
@@ -12,6 +13,7 @@ const Button = ({
   handleClick,
   additionalCssClasses,
   type,
+  disabled,
 }: ButtonProps) => {
   return (
     <button
@@ -20,6 +22,7 @@ const Button = ({
       )}`}
       onClick={handleClick}
       type={type === undefined || type === "button" ? "button" : "submit"}
+      disabled={disabled ?? false}
     >
       {text}
     </button>

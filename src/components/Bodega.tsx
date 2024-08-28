@@ -23,74 +23,55 @@ const Bodega = () => {
     const fetchItems = async () => {
       const { data, error } = await supabase.from("items").select();
 
-      if (error) {
-        console.error(error);
-        setMessage({ type: "error", text: error.message });
-        return;
-      }
+      if (error) throw error;
 
       setItems(data);
     };
 
     const fetchProfile = async () => {
-      if (!currentUser) return;
-
-      console.log({ currentUser });
-
       const { data, error } = await supabase
         .from("profiles")
         .select("pesos")
-        .eq("user_id", currentUser.id)
+        .eq("user_id", currentUser!.id)
         .single();
 
-      if (error) {
-        console.error(error);
-        setMessage({ type: "error", text: error.message });
-        return;
-      }
+      if (error) throw error;
 
       setPesos(data.pesos);
     };
 
     const fetchCharacter = async () => {
-      console.log({ currentUserId: currentUser!.id });
-
       const { data, error } = await supabase
         .from("characters")
         .select("*")
         .eq("user_id", currentUser!.id)
+        .eq("alive", true)
         .single();
 
-      if (error) {
-        console.error(error);
-        setMessage({ type: "error", text: error.message });
-        return;
-      }
-
-      console.log({ data });
+      if (error) throw error;
 
       setCharacterId(data.id);
     };
 
-    fetchItems();
-    fetchProfile();
-    fetchCharacter();
+    try {
+      fetchItems();
+      fetchProfile();
+      fetchCharacter();
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const handleClick = async (
     _: React.MouseEvent<HTMLButtonElement>,
     itemId: string
   ) => {
-    if (!currentUser) return;
-
     const {
       data: { remainingPesos },
       error,
     } = await supabase.functions.invoke("buyItem", {
-      body: { characterId, itemId, userId: currentUser.id },
+      body: { characterId, itemId, userId: currentUser!.id },
     });
-
-    console.log(remainingPesos);
 
     if (error) {
       setMessage({ type: "error", text: error.message });
@@ -116,13 +97,16 @@ const Bodega = () => {
               <td>{description}</td>
               <td>{price}</td>
               <td className="text-right">
-                <Button text="cop" handleClick={(e) => handleClick(e, id)} />
+                <Button
+                  text="cop"
+                  handleClick={(e) => handleClick(e, id)}
+                  disabled={pesos < price}
+                />
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-      {/* <div className="border-t-black border-t mt-4 pt-4">{pesos} CH</div> */}
     </>
   );
 };
