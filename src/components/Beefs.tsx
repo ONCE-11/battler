@@ -6,6 +6,7 @@ import { atom, useAtom, useAtomValue } from "jotai";
 import { currentUserAtom } from "../state";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 type FightWithPlayers = Tables<"fights"> & {
   player1: Tables<"characters">;
@@ -59,18 +60,20 @@ const Beefs = () => {
         if (fetchCharactersError) throw fetchCharactersError;
 
         console.log(
-          characters.filter(({ id }) =>
-            !fights.find(
-              (fight) => fight.player1_id === id || fight.player2_id === id
-            )
+          characters.filter(
+            ({ id }) =>
+              !fights.find(
+                (fight) => fight.player1_id === id || fight.player2_id === id
+              )
           )
         );
 
         setCharacters(
-          characters.filter(({ id }) =>
-            !fights.find(
-              (fight) => fight.player1_id === id || fight.player2_id === id
-            )
+          characters.filter(
+            ({ id }) =>
+              !fights.find(
+                (fight) => fight.player1_id === id || fight.player2_id === id
+              )
           )
         );
       } catch (error) {
@@ -99,7 +102,9 @@ const Beefs = () => {
 
   return (
     <>
-      <Title text={"What's cookin?"} />
+      <Title>
+        <FontAwesomeIcon icon="skull-crossbones" /> <span>What's cookin'</span>
+      </Title>
       {characters && (
         <>
           <p className="text-xl w-full bg-slate-500 text-white py-2 px-4">
@@ -123,7 +128,10 @@ const Beefs = () => {
                 </li>
               ))
             ) : (
-              <li className="p-4">Everyone else is dead ☠️</li>
+              <li className="p-4">
+                Everyone else is dead{" "}
+                <FontAwesomeIcon icon={["far", "face-angry"]} />
+              </li>
             )}
           </ul>
         </>

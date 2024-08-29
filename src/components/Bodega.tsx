@@ -5,6 +5,7 @@ import Title from "./Title";
 import Button from "./Button";
 import { atom, useAtom, useSetAtom, useAtomValue } from "jotai";
 import { currentUserAtom, messageAtom } from "../state";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const itemsAtom = atom<Database["public"]["Tables"]["items"]["Row"][]>([]);
 const pesosAtom =
@@ -84,7 +85,9 @@ const Bodega = () => {
   return (
     <>
       <Title className="flex justify-between items-end">
-        <span>Bodega</span>
+        <div>
+          <FontAwesomeIcon icon="store" /> <span>Bodega</span>
+        </div>
         <span className="inline-block text-right text-xl py-2 pr-2 border-t">
           <span className="text-green-900">{pesos}</span> ch
         </span>

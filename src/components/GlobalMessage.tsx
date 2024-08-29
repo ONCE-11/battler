@@ -11,14 +11,12 @@ const GlobalMessage = () => {
   return (
     <h2
       className={`text-xl p-4  rounded relative ${
-        type === "info"
-          ? "text-green-700 bg-green-300"
-          : "text-red-700 bg-red-300"
+        type === "info" ? "text-white bg-slate-500" : "text-red-700 bg-red-300"
       }`}
     >
       <span>{text}</span>
       <button className="absolute right-4" onClick={handleClick}>
-        x
+        <span className="font-bold hover:text-slate-800">x</span>
       </button>
     </h2>
   );

@@ -2,18 +2,24 @@ import { Link, useNavigate, useMatches } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
 import { useAtomValue } from "jotai";
 import { loggedInAtom } from "../state";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Nav = () => {
   const { logout } = useAuth();
   const loggedIn = useAtomValue(loggedInAtom);
   const navigate = useNavigate();
   const [, { pathname }] = useMatches();
-  const sharedCssClasses = "m-0 text-2xl hover:underline inline-block";
+  const sharedCssClasses = "m-0 text-2xl inline-block";
 
   const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     logout();
     navigate("/");
+  };
+
+  const underline = (match: string): string => {
+    const hoverUnderline = "hover:underline";
+    return pathname === match ? `underline ${hoverUnderline}` : hoverUnderline;
   };
 
   return (
@@ -27,49 +33,35 @@ const Nav = () => {
         <div>
           {loggedIn ? (
             <>
-              <Link
-                to={"/character"}
-                className={`m-0 ${sharedCssClasses}${
-                  pathname === "/character" ? " underline" : ""
-                }`}
-              >
-                Character
+              <Link to={"/character"} className={`m-0 ${sharedCssClasses}}`}>
+                <FontAwesomeIcon icon="user" />{" "}
+                <span className={`${underline("/character")}`}>Character</span>
               </Link>
-              <Link
-                to={"/beefs"}
-                className={`ml-4 ${sharedCssClasses}${
-                  pathname === "/beefs" ? " underline" : ""
-                }`}
-              >
-                Beefs
+              <Link to={"/beefs"} className={`ml-4 ${sharedCssClasses}`}>
+                <FontAwesomeIcon icon="skull-crossbones" />{" "}
+                <span className={`${underline("/beefs")}`}>Beefs</span>
               </Link>
-              <Link
-                to={"/bodega"}
-                className={`ml-4 ${sharedCssClasses}${
-                  pathname === "/bodega" ? " underline" : ""
-                }`}
-              >
-                Bodega
+              <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
+                <FontAwesomeIcon icon="store" />{" "}
+                <span className={`${underline("/bodega")}`}>Bodega</span>
               </Link>
-              <Link
-                to={"/equipment"}
-                className={`ml-4 ${sharedCssClasses}${
-                  pathname === "/equipment" ? " underline" : ""
-                }`}
-              >
-                Equipment
+              <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
+                <FontAwesomeIcon icon="shield" />{" "}
+                <span className={`${underline("/equipment")}`}>Equipment</span>
               </Link>
               <Link
                 to={"/logout"}
                 className={`ml-4  ${sharedCssClasses}`}
                 onClick={handleLogoutClick}
               >
-                Logout
+                <FontAwesomeIcon icon="right-from-bracket" />{" "}
+                <span className="hover:underline">Logout</span>
               </Link>
             </>
           ) : (
             <Link to={"/login"} className={`ml-4 ${sharedCssClasses}`}>
-              Login
+              <FontAwesomeIcon icon={["fas", "door-open"]} />{" "}
+              <span className="hover:underline">Login</span>
             </Link>
           )}
         </div>
