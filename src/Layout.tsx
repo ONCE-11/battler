@@ -19,7 +19,7 @@ const Layout = () => {
 
   return (
     // TODO: change this to using tailwind
-    <div style={{ width: "1000px", margin: "0 auto" }} className="relative">
+    <div style={{ maxWidth: "1200px", margin: "0 auto" }} className="relative">
       <header className="m-4">
         <Nav />
       </header>

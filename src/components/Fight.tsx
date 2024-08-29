@@ -239,6 +239,7 @@ const Fight = () => {
             },
             async (payload) => {
               console.log("player 1 ability");
+              setPlayer1Attacking(true);
 
               const {
                 metadata: { initiator, receiver },
@@ -250,20 +251,6 @@ const Fight = () => {
               };
               console.log(initiator, receiver);
 
-              setPlayer({
-                ...player1,
-                attack: initiator.attack,
-                defense: initiator.defense,
-                current_health: initiator.current_health,
-              });
-
-              setOpponent({
-                ...player2,
-                attack: receiver.attack,
-                defense: receiver.defense,
-                current_health: receiver.current_health,
-              });
-
               const { data: fight, error } = await supabase
                 .from("fights")
                 .select("*")
@@ -273,8 +260,26 @@ const Fight = () => {
 
               if (error) throw error;
 
-              setGameOver(fight.game_over);
-              setCurrentFight(fight);
+              setTimeout(() => {
+                setPlayer1Attacking(false);
+                setGameOver(fight.game_over);
+                setCurrentFight(fight);
+                setPlayer({
+                  ...player1,
+                  attack: initiator.attack,
+                  defense: initiator.defense,
+                  current_health: initiator.current_health,
+                  alive: initiator.alive,
+                });
+
+                setOpponent({
+                  ...player2,
+                  attack: receiver.attack,
+                  defense: receiver.defense,
+                  current_health: receiver.current_health,
+                  alive: receiver.alive,
+                });
+              }, 500);
             }
           )
           .subscribe();
@@ -291,6 +296,7 @@ const Fight = () => {
             },
             async (payload) => {
               console.log("player 2 ability");
+              setPlayer2Attacking(true);
 
               const {
                 metadata: { initiator, receiver },
@@ -302,20 +308,6 @@ const Fight = () => {
               };
               console.log(initiator, receiver);
 
-              setOpponent({
-                ...player2,
-                attack: initiator.attack,
-                defense: initiator.defense,
-                current_health: initiator.current_health,
-              });
-
-              setPlayer({
-                ...player1,
-                attack: receiver.attack,
-                defense: receiver.defense,
-                current_health: receiver.current_health,
-              });
-
               const { data: fight, error } = await supabase
                 .from("fights")
                 .select("*")
@@ -325,8 +317,26 @@ const Fight = () => {
 
               if (error) throw error;
 
-              setGameOver(fight.game_over);
-              setCurrentFight(fight);
+              setTimeout(() => {
+                setPlayer2Attacking(false);
+                setGameOver(fight.game_over);
+                setCurrentFight(fight);
+                setOpponent({
+                  ...player2,
+                  attack: initiator.attack,
+                  defense: initiator.defense,
+                  current_health: initiator.current_health,
+                  alive: initiator.alive,
+                });
+
+                setPlayer({
+                  ...player1,
+                  attack: receiver.attack,
+                  defense: receiver.defense,
+                  current_health: receiver.current_health,
+                  alive: receiver.alive,
+                });
+              }, 500);
             }
           )
           .subscribe();
