@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { useRef } from "react";
-import useAuth from "./hooks/useAuth";
 import { currentUserAtom } from "../state";
 
 const playingAtom = atom<boolean>(false);
