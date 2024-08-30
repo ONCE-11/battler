@@ -430,9 +430,7 @@ const Fight = () => {
           className={`text-xl${
             currentPlayer?.id === opponent?.id ? " text-right" : ""
           }`}
-        >
-          Choose an ability
-        </h2>
+        ></h2>
         <section
           className={`mt-6${
             currentPlayer?.id === opponent?.id ? " text-right" : ""

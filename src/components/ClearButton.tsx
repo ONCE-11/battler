@@ -1,7 +1,7 @@
 import { ButtonHandleClick } from "../types/custom";
 import { FC, PropsWithChildren } from "react";
 
-type ButtonProps = PropsWithChildren<{
+type ClearButtonProps = PropsWithChildren<{
   text?: string;
   handleClick?: ButtonHandleClick;
   additionalCssClasses?: string[];
@@ -9,7 +9,7 @@ type ButtonProps = PropsWithChildren<{
   disabled?: boolean;
 }>;
 
-const Button: FC<ButtonProps> = ({
+const ClearButton: FC<ClearButtonProps> = ({
   text,
   handleClick,
   additionalCssClasses,
@@ -19,7 +19,7 @@ const Button: FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      className={`bg-purple-500 shadow-md shadow-black py-2 px-4 text-zinc-900 font-bold rounded active:shadow-inner active:bg-purple-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-purple-600 hover:text-zinc-50 ${additionalCssClasses?.join(
+      className={`bg-zinc-900 border border-purple-500 shadow-md shadow-black py-2 px-4 text-zinc-50 font-bold rounded active:shadow-inner active:bg-purple-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-purple-600 hover:text-zinc-50 ${additionalCssClasses?.join(
         ""
       )}`}
       onClick={handleClick}
@@ -31,4 +31,4 @@ const Button: FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default ClearButton;

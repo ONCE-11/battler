@@ -33,7 +33,7 @@ const Layout = () => {
       {loading ? (
         "LOADING"
       ) : (
-        <main className="m-4">
+        <main className="mt-4 mx-4 mb-16">
           <Outlet />
         </main>
       )}

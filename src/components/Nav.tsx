@@ -27,26 +27,38 @@ const Nav = () => {
       <nav className="flex justify-between items-baseline">
         <div>
           <Link to={"/"} className="text-4xl">
-            <span>🐮</span> Beef
+            <span>🐮</span> Beef<span className="text-purple-500">!</span>
           </Link>
         </div>
         <div>
           {loggedIn ? (
             <>
               <Link to={"/character"} className={`m-0 ${sharedCssClasses}}`}>
-                <FontAwesomeIcon icon="user" />{" "}
+                <FontAwesomeIcon
+                  icon="user"
+                  className="text-base align-middle"
+                />{" "}
                 <span className={`${underline("/character")}`}>Character</span>
               </Link>
               <Link to={"/beefs"} className={`ml-4 ${sharedCssClasses}`}>
-                <FontAwesomeIcon icon="skull-crossbones" />{" "}
+                <FontAwesomeIcon
+                  icon="skull-crossbones"
+                  className="text-base  align-middle"
+                />{" "}
                 <span className={`${underline("/beefs")}`}>Beefs</span>
               </Link>
               <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
-                <FontAwesomeIcon icon="store" />{" "}
+                <FontAwesomeIcon
+                  icon="store"
+                  className="text-base  align-middle"
+                />{" "}
                 <span className={`${underline("/bodega")}`}>Bodega</span>
               </Link>
               <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
-                <FontAwesomeIcon icon="shield" />{" "}
+                <FontAwesomeIcon
+                  icon="shield"
+                  className="text-base align-middle"
+                />{" "}
                 <span className={`${underline("/equipment")}`}>Equipment</span>
               </Link>
               <Link
@@ -54,13 +66,19 @@ const Nav = () => {
                 className={`ml-4  ${sharedCssClasses}`}
                 onClick={handleLogoutClick}
               >
-                <FontAwesomeIcon icon="right-from-bracket" />{" "}
+                <FontAwesomeIcon
+                  icon="right-from-bracket"
+                  className="text-base align-middle"
+                />{" "}
                 <span className="hover:underline">Logout</span>
               </Link>
             </>
           ) : (
             <Link to={"/login"} className={`ml-4 ${sharedCssClasses}`}>
-              <FontAwesomeIcon icon={["fas", "door-open"]} />{" "}
+              <FontAwesomeIcon
+                icon={["fas", "door-open"]}
+                className="text-base"
+              />{" "}
               <span className="hover:underline">Login</span>
             </Link>
           )}

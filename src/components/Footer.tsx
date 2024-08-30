@@ -21,18 +21,17 @@ const Footer = () => {
   };
 
   return (
-    // TODO: change this to using tailwind
-    <footer className="px-4 fixed bottom-0 bg-slate-50 max-w-screen-xl w-full">
+    <footer className="px-4 fixed bottom-0 max-w-screen-xl w-full bg-zinc-900">
       <div className="border-t flex justify-between">
         <p className="py-4">
-          © 2024 <span className="text-purple-900 font-bold">¡</span>ONCE
+          © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE
         </p>
 
         {currentUser && (
           <div className="py-4">
             <FontAwesomeIcon
               icon={`${playing ? "circle-pause" : "circle-play"}`}
-              className="mr-4"
+              className="mr-4 text-purple-500"
             />
             <span
               className="inline-block hover:underline hover:cursor-pointer"

@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tables } from "../types/supabase";
 
 interface CharacterProps {
@@ -34,31 +35,36 @@ const Character = ({
   return (
     <>
       <div
-        className={`bg-white p-4 rounded-lg border border-slate-200 w-80 ${
+        className={`bg-purple-500 p-4 rounded-lg border-slate-200 w-80 text-black shadow-md shadow-black ${
           attacking ? "animate-bounce" : ""
         }`}
       >
         <div className="w-full">
           <ul className="flex justify-between items-start pb-2">
+            {/* <div> */}
             <li>
-              <span className="font-bold">H:</span> {current_health}/
-              {max_health}
+              <FontAwesomeIcon icon="notes-medical" />{" "}
+              {/* <span className="font-bold">H:</span>  */}
+              {current_health}/{max_health}
             </li>
-            <div>
-              <li>
-                <span className="font-bold">Att:</span> {attack}
-              </li>
-              <li>
-                <span className="font-bold">Def:</span> {defense}
-              </li>
-            </div>
+            <li>
+              <FontAwesomeIcon icon="hand-fist" />{" "}
+              {/* <span className="font-bold">Att:</span> */}
+              {attack}
+            </li>
+            <li>
+              <FontAwesomeIcon icon="shield" />{" "}
+              {/* <span className="font-bold">Def:</span>  */}
+              {defense}
+            </li>
+            {/* </div> */}
           </ul>
           <div
-            className="w-full bg-black rounded h-2"
+            className="w-full bg-black rounded h-2 shadow-md shadow-black"
             style={{ width: `${healthPercentage}%` }}
           ></div>
         </div>
-        <div className="overflow-clip rounded-lg mt-1 relative">
+        <div className="overflow-clip rounded-lg mt-2 relative shadow-md shadow-black">
           {isCurrentPlayer && (
             <span
               className={`absolute text-white z-10 top-0 font-bold text-xl ${

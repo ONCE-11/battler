@@ -7,6 +7,7 @@ import { currentUserAtom } from "../state";
 import { useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ClearButton from "./ClearButton";
 
 type FightWithPlayers = Tables<"fights"> & {
   player1: Tables<"characters">;
@@ -131,7 +132,7 @@ const Beefs = () => {
       </Title>
       {characters && (
         <>
-          <p className="text-xl w-full bg-slate-500 text-white py-2 px-4">
+          <p className="text-xl w-full bg-purple-500 text-white py-2 px-4 shadow-lg shadow-black">
             Players
           </p>
           <ul>
@@ -164,7 +165,7 @@ const Beefs = () => {
       )}
       {fightsWithPlayers.length > 0 && (
         <table className="table-auto w-full">
-          <caption className="text-xl w-full bg-slate-500 text-white py-2 px-4 text-left">
+          <caption className="text-xl w-full bg-purple-500 text-white py-2 px-4 text-left shadow-lg shadow-black">
             Ongoing Beef
           </caption>
           <thead className="border-b border-black">
@@ -187,12 +188,12 @@ const Beefs = () => {
                     {Object.is(winner, null) ? "" : winner}
                   </td>
                   <td className="p-4 text-right">
-                    <Button
+                    <ClearButton
                       text="Peep"
                       handleClick={() => navigate(`/beefs/${id}`)}
                     >
                       <FontAwesomeIcon icon={["far", "eye"]} /> Peep
-                    </Button>
+                    </ClearButton>
                   </td>
                 </tr>
               )
@@ -202,7 +203,7 @@ const Beefs = () => {
       )}
       {pastFightsWithPlayers.length > 0 && (
         <table className="table-auto w-full">
-          <caption className="text-xl w-full bg-slate-500 text-white py-2 px-4 text-left">
+          <caption className="text-xl w-full bg-purple-500 text-white py-2 px-4 text-left shadow-lg shadow-black">
             Past Beef
           </caption>
           <thead className="border-b border-black">
@@ -225,12 +226,12 @@ const Beefs = () => {
                     {Object.is(winner, null) ? "" : winner}
                   </td>
                   <td className="p-4 text-right">
-                    <Button
+                    <ClearButton
                       text="Peep"
                       handleClick={() => navigate(`/beefs/${id}`)}
                     >
                       <FontAwesomeIcon icon={["far", "eye"]} /> Peep
-                    </Button>
+                    </ClearButton>
                   </td>
                 </tr>
               )
