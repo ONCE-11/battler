@@ -96,7 +96,7 @@ const Bodega = () => {
         <tbody>
           {items.map(({ name, description, price, id }, index) => (
             <tr key={index}>
-              <td className="capitalize">{name}</td>
+              <td className="capitalize py-4">{name}</td>
               <td>{description}</td>
               <td>{price}</td>
               <td className="text-right">
@@ -104,7 +104,10 @@ const Bodega = () => {
                   text="cop"
                   handleClick={(e) => handleClick(e, id)}
                   disabled={pesos < price}
-                />
+                >
+                  <FontAwesomeIcon icon={["fas", "money-check-dollar"]} />{" "}
+                  <span>Cop</span>
+                </Button>
               </td>
             </tr>
           ))}

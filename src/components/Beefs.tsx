@@ -16,10 +16,14 @@ type FightWithPlayers = Tables<"fights"> & {
 const fightsWithPlayersAtom = atom<FightWithPlayers[]>([]);
 const currentCharacterAtom = atom<Tables<"characters">>();
 const charactersAtom = atom<Tables<"characters">[]>([]);
+const pastFightsWithPlayersAtom = atom<FightWithPlayers[]>([]);
 
 const Beefs = () => {
   const [fightsWithPlayers, setFightsWithPlayers] = useAtom(
     fightsWithPlayersAtom
+  );
+  const [pastFightsWithPlayers, setPastFightsWithPlayers] = useAtom(
+    pastFightsWithPlayersAtom
   );
   const [currentCharacter, setCurrentCharacter] = useAtom(currentCharacterAtom);
   const [characters, setCharacters] = useAtom(charactersAtom);
@@ -59,15 +63,6 @@ const Beefs = () => {
 
         if (fetchCharactersError) throw fetchCharactersError;
 
-        console.log(
-          characters.filter(
-            ({ id }) =>
-              !fights.find(
-                (fight) => fight.player1_id === id || fight.player2_id === id
-              )
-          )
-        );
-
         setCharacters(
           characters.filter(
             ({ id }) =>
@@ -76,6 +71,35 @@ const Beefs = () => {
               )
           )
         );
+
+        const { data: allCharacterIdsResult, error: fetchAllCharactersError } =
+          await supabase
+            .from("characters")
+            .select("id")
+            .eq("user_id", currentUser!.id);
+
+        if (fetchAllCharactersError) throw fetchAllCharactersError;
+
+        const characterIdStrings = allCharacterIdsResult
+          .map(({ id }) => id)
+          .join(",");
+
+        console.log({ userId: currentUser!.id });
+        console.log({ characterIdStrings });
+
+        const { data: pastFights, error: fetchPastFightsError } = await supabase
+          .from("fights")
+          .select("*, player1:player1_id(*), player2:player2_id(*)")
+          .or(
+            `player1_id.in.(${characterIdStrings}),player2_id.in.(${characterIdStrings})`
+          )
+          .returns<FightWithPlayers[]>();
+
+        if (fetchPastFightsError) throw fetchPastFightsError;
+
+        console.log({ pastFights });
+
+        setPastFightsWithPlayers(pastFights);
       } catch (error) {
         console.error(error);
       }
@@ -120,10 +144,12 @@ const Beefs = () => {
                   <span>{name}</span>
                   <span className="text-right">
                     <Button
-                      text="Start beefin"
                       additionalCssClasses={["text-right"]}
                       handleClick={() => startBeefin(id)}
-                    ></Button>
+                    >
+                      <FontAwesomeIcon icon={["fas", "face-angry"]} />{" "}
+                      <span>Beef</span>
+                    </Button>
                   </span>
                 </li>
               ))
@@ -154,8 +180,8 @@ const Beefs = () => {
             {fightsWithPlayers.map(
               ({ player1, player2, id, game_over, winner }, index) => (
                 <tr key={index}>
-                  <td className="p-4">{player1.name}</td>
-                  <td className="p-4">{player2.name}</td>
+                  <td className="p-4 truncate">{player1.name}</td>
+                  <td className="p-4 truncate">{player2.name}</td>
                   <td className="p-4">{game_over ? "Y" : "N"}</td>
                   <td className="p-4">
                     {Object.is(winner, null) ? "" : winner}
@@ -164,7 +190,47 @@ const Beefs = () => {
                     <Button
                       text="Peep"
                       handleClick={() => navigate(`/beefs/${id}`)}
-                    />
+                    >
+                      <FontAwesomeIcon icon={["far", "eye"]} /> Peep
+                    </Button>
+                  </td>
+                </tr>
+              )
+            )}
+          </tbody>
+        </table>
+      )}
+      {pastFightsWithPlayers.length > 0 && (
+        <table className="table-auto w-full">
+          <caption className="text-xl w-full bg-slate-500 text-white py-2 px-4 text-left">
+            Past Beef
+          </caption>
+          <thead className="border-b border-black">
+            <tr>
+              <th className="text-left p-4">Player 1</th>
+              <th className="text-left p-4">Player 2</th>
+              <th className="text-left p-4">Game Over</th>
+              <th className="text-left p-4">Winner</th>
+              <th className="p-4"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {pastFightsWithPlayers.map(
+              ({ player1, player2, id, game_over, winner }, index) => (
+                <tr key={index}>
+                  <td className="p-4">{player1?.name}</td>
+                  <td className="p-4">{player2?.name}</td>
+                  <td className="p-4">{game_over ? "Y" : "N"}</td>
+                  <td className="p-4">
+                    {Object.is(winner, null) ? "" : winner}
+                  </td>
+                  <td className="p-4 text-right">
+                    <Button
+                      text="Peep"
+                      handleClick={() => navigate(`/beefs/${id}`)}
+                    >
+                      <FontAwesomeIcon icon={["far", "eye"]} /> Peep
+                    </Button>
                   </td>
                 </tr>
               )

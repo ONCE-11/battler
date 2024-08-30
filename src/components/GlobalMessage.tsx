@@ -11,7 +11,7 @@ const GlobalMessage = () => {
   return (
     <h2
       className={`text-xl p-4  rounded relative ${
-        type === "info" ? "text-white bg-slate-500" : "text-red-700 bg-red-300"
+        type === "info" ? "text-white bg-slate-800" : "text-red-700 bg-red-300"
       }`}
     >
       <span>{text}</span>
