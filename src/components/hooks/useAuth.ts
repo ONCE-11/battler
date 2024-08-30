@@ -46,6 +46,7 @@ const useAuth = () => {
     } else {
       setMessage({ type: "info", text: "You have logged out successfully" });
       setLoggedIn(false);
+      setCurrentUser(undefined);
     }
   };
 
