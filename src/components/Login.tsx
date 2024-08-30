@@ -44,7 +44,7 @@ const LoginForm = () => {
           type="text"
           name="email"
           placeholder="Email"
-          className="block text-2xl px-4 py-2"
+          className="block text-2xl px-4 py-2 text-zinc-950"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
         />
@@ -52,7 +52,7 @@ const LoginForm = () => {
           type="password"
           name="password"
           placeholder="Password"
-          className="block text-2xl mt-8 px-4 py-2"
+          className="block text-2xl mt-8 px-4 py-2 text-zinc-950"
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
         />

@@ -29,7 +29,7 @@ const AbilityButton = ({
   return (
     ability && (
       <button
-        className={`first:ml-0 inline-block ml-10 py-2 px-4 text-zinc-50 rounded active:shadow-inner active:bg-purple-600 disabled:cursor-not-allowed disabled:bg-zinc-50 disabled:text-black disabled:border-zinc-900 hover:bg-purple-500 hover:text-black shadow-md shadow-black border border-purple-500`}
+        className={`first:ml-0 inline-block ml-10 py-2 px-4 text-zinc-50 rounded active:shadow-inner active:bg-purple-600 disabled:cursor-not-allowed disabled:bg-zinc-300 disabled:text-zinc-700 disabled:border-zinc-900 hover:bg-purple-500 hover:text-black shadow-md shadow-black border border-purple-500`}
         disabled={disabled}
         onClick={(e) =>
           handleClick(e, ability, abilitySlot, initiator, receiver)
@@ -40,7 +40,7 @@ const AbilityButton = ({
         <FontAwesomeIcon
           icon="hand-fist"
           className={`text-purple-500 ${hover ? " text-black" : ""}${
-            disabled ? " text-black" : ""
+            disabled ? " text-zinc-700" : ""
           }`}
         />{" "}
         {ability.name}
