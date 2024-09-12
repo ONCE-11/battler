@@ -39,7 +39,7 @@ const AbilityButton = ({
       >
         <FontAwesomeIcon
           icon="hand-fist"
-          className={`text-purple-500 ${hover ? " text-black" : ""}${
+          className={`${hover ? " text-black" : "text-purple-500"}${
             disabled ? " text-zinc-700" : ""
           }`}
         />{" "}

@@ -9,7 +9,7 @@ const Nav = () => {
   const loggedIn = useAtomValue(loggedInAtom);
   const navigate = useNavigate();
   const [, { pathname }] = useMatches();
-  const sharedCssClasses = "m-0 text-2xl inline-block";
+  const sharedCssClasses = "m-0 inline-block";
 
   const handleLogoutClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
@@ -19,14 +19,16 @@ const Nav = () => {
 
   const underline = (match: string): string => {
     const hoverUnderline = "hover:underline";
-    return pathname === match ? `underline ${hoverUnderline}` : hoverUnderline;
+    return pathname === match
+      ? ` underline ${hoverUnderline}`
+      : ` ${hoverUnderline}`;
   };
 
   return (
     <>
       <nav className="flex justify-between items-baseline">
         <div>
-          <Link to={"/"} className="text-4xl">
+          <Link to={"/"} className="text-xl">
             <span>🐮</span> Beef<span className="text-purple-500">!</span>
           </Link>
         </div>
@@ -37,29 +39,49 @@ const Nav = () => {
                 <FontAwesomeIcon
                   icon="user"
                   className="text-base align-middle"
-                />{" "}
-                <span className={`${underline("/character")}`}>Character</span>
+                />
+                <span className="hidden md:inline-block">&nbsp;</span>
+                <span
+                  className={`hidden md:inline-block${underline("/character")}`}
+                >
+                  Character
+                </span>
               </Link>
               <Link to={"/beefs"} className={`ml-4 ${sharedCssClasses}`}>
                 <FontAwesomeIcon
                   icon="skull-crossbones"
-                  className="text-base  align-middle"
-                />{" "}
-                <span className={`${underline("/beefs")}`}>Beefs</span>
+                  className="text-base align-middle"
+                />
+                <span className="hidden md:inline-block">&nbsp;</span>
+                <span
+                  className={`hidden md:inline-block${underline("/beefs")}`}
+                >
+                  Beefs
+                </span>
               </Link>
               <Link to={"/bodega"} className={`ml-4 ${sharedCssClasses}`}>
                 <FontAwesomeIcon
                   icon="store"
-                  className="text-base  align-middle"
-                />{" "}
-                <span className={`${underline("/bodega")}`}>Bodega</span>
+                  className="text-base align-middle"
+                />
+                <span className="hidden md:inline-block">&nbsp;</span>
+                <span
+                  className={`hidden md:inline-block${underline("/bodega")}`}
+                >
+                  Bodega
+                </span>
               </Link>
               <Link to={"/equipment"} className={`ml-4 ${sharedCssClasses}`}>
                 <FontAwesomeIcon
                   icon="shield"
                   className="text-base align-middle"
-                />{" "}
-                <span className={`${underline("/equipment")}`}>Equipment</span>
+                />
+                <span className="hidden md:inline-block">&nbsp;</span>
+                <span
+                  className={`hidden md:inline-block${underline("/equipment")}`}
+                >
+                  Equipment
+                </span>
               </Link>
               <Link
                 to={"/logout"}
@@ -69,8 +91,11 @@ const Nav = () => {
                 <FontAwesomeIcon
                   icon="right-from-bracket"
                   className="text-base align-middle"
-                />{" "}
-                <span className="hover:underline">Logout</span>
+                />
+                <span className="hidden md:inline-block">&nbsp;</span>
+                <span className="hidden md:inline-block hover:underline">
+                  Logout
+                </span>
               </Link>
             </>
           ) : (
@@ -78,8 +103,11 @@ const Nav = () => {
               <FontAwesomeIcon
                 icon={["fas", "door-open"]}
                 className="text-base"
-              />{" "}
-              <span className="hover:underline">Login</span>
+              />
+              <span className="sm:hidden md:inline-block hover:underline">
+                {" "}
+                Login
+              </span>
             </Link>
           )}
         </div>

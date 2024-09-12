@@ -34,7 +34,7 @@ const Footer = () => {
               className="mr-4 text-purple-500"
             />
             <span
-              className="inline-block hover:underline hover:cursor-pointer"
+              className="b-truncate w-40 sm:w-auto inline-block active:underline hover:underline hover:cursor-pointer"
               onClick={handleClick}
             >
               Nightfall / Future Bass Music : SoulProdMusic

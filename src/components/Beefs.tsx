@@ -128,7 +128,7 @@ const Beefs = () => {
   return (
     <>
       <Title>
-        <FontAwesomeIcon icon="skull-crossbones" /> <span>What's cookin'</span>
+        <FontAwesomeIcon icon="skull-crossbones" /> <span>Let's cook</span>
       </Title>
       {characters && (
         <>
@@ -149,7 +149,6 @@ const Beefs = () => {
                       handleClick={() => startBeefin(id)}
                     >
                       <FontAwesomeIcon icon={["fas", "face-angry"]} />{" "}
-                      <span>Beef</span>
                     </Button>
                   </span>
                 </li>
@@ -171,8 +170,8 @@ const Beefs = () => {
           <thead className="border-b border-black">
             <tr>
               <th className="text-left p-4">Player 1</th>
-              <th className="text-left p-4">Player 2</th>
-              <th className="text-left p-4">Game Over</th>
+              {/* <th className="text-left p-4">Player 2</th> */}
+              {/* <th className="text-left p-4">Game Over</th> */}
               <th className="text-left p-4">Winner</th>
               <th className="p-4"></th>
             </tr>
@@ -181,9 +180,9 @@ const Beefs = () => {
             {fightsWithPlayers.map(
               ({ player1, player2, id, game_over, winner }, index) => (
                 <tr key={index}>
-                  <td className="p-4 truncate">{player1.name}</td>
-                  <td className="p-4 truncate">{player2.name}</td>
-                  <td className="p-4">{game_over ? "Y" : "N"}</td>
+                  <td className="p-4">{player1.name}</td>
+                  {/* <td className="p-4">{player2.name}</td> */}
+                  {/* <td className="p-4">{game_over ? "Y" : "N"}</td> */}
                   <td className="p-4">
                     {Object.is(winner, null) ? "" : winner}
                   </td>
@@ -192,7 +191,7 @@ const Beefs = () => {
                       text="Peep"
                       handleClick={() => navigate(`/beefs/${id}`)}
                     >
-                      <FontAwesomeIcon icon={["far", "eye"]} /> Peep
+                      <FontAwesomeIcon icon={["far", "eye"]} />
                     </ClearButton>
                   </td>
                 </tr>
@@ -209,8 +208,8 @@ const Beefs = () => {
           <thead className="border-b border-black">
             <tr>
               <th className="text-left p-4">Player 1</th>
-              <th className="text-left p-4">Player 2</th>
-              <th className="text-left p-4">Game Over</th>
+              {/* <th className="text-left p-4">Player 2</th> */}
+              {/* <th className="text-left p-4">Game Over</th> */}
               <th className="text-left p-4">Winner</th>
               <th className="p-4"></th>
             </tr>
@@ -220,8 +219,8 @@ const Beefs = () => {
               ({ player1, player2, id, game_over, winner }, index) => (
                 <tr key={index}>
                   <td className="p-4">{player1?.name}</td>
-                  <td className="p-4">{player2?.name}</td>
-                  <td className="p-4">{game_over ? "Y" : "N"}</td>
+                  {/* <td className="p-4">{player2?.name}</td> */}
+                  {/* <td className="p-4">{game_over ? "Y" : "N"}</td> */}
                   <td className="p-4">
                     {Object.is(winner, null) ? "" : winner}
                   </td>
@@ -230,7 +229,7 @@ const Beefs = () => {
                       text="Peep"
                       handleClick={() => navigate(`/beefs/${id}`)}
                     >
-                      <FontAwesomeIcon icon={["far", "eye"]} /> Peep
+                      <FontAwesomeIcon icon={["far", "eye"]} />
                     </ClearButton>
                   </td>
                 </tr>

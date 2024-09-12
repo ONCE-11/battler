@@ -48,7 +48,7 @@ const Character = ({
               {current_health}/{max_health}
             </li>
             <li>
-              <FontAwesomeIcon icon="hand-fist" />{" "}
+              <FontAwesomeIcon icon="gun" />{" "}
               {/* <span className="font-bold">Att:</span> */}
               {attack}
             </li>

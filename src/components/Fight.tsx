@@ -389,7 +389,7 @@ const Fight = () => {
 
   return (
     <>
-      <Title text="Squabble!" />
+      <Title text="Beef" />
       <div className="flex justify-between relative">
         {gameOver && (
           <p className="absolute text-9xl -rotate-12 text-red-600 z-10 top-32 left-12">
@@ -409,7 +409,7 @@ const Fight = () => {
             />
           )}
         </section>
-        <section className="self-center font-bold text-8xl">VS</section>
+        {/* <section className="self-center font-bold text-8xl">VS</section> */}
         <section>
           {opponent && (
             <Character
@@ -518,12 +518,12 @@ const Fight = () => {
           )}
         </section>
       </div>
-      <div className="mt-10 text-xl">Fight Log</div>
+      {/* <div className="mt-10 text-xl">Fight Log</div>
       <ul className="mt-6 leading-loose overflow-y-auto h-72">
         {fightLog.map((action, index) => (
           <li key={index}>{action}</li>
         ))}
-      </ul>
+      </ul> */}
     </>
   );
 };
