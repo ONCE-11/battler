@@ -178,7 +178,7 @@ const Beefs = () => {
           </thead>
           <tbody>
             {fightsWithPlayers.map(
-              ({ player1, player2, id, game_over, winner }, index) => (
+              ({ player1, id, winner }, index) => (
                 <tr key={index}>
                   <td className="p-4">{player1.name}</td>
                   {/* <td className="p-4">{player2.name}</td> */}
@@ -216,7 +216,7 @@ const Beefs = () => {
           </thead>
           <tbody>
             {pastFightsWithPlayers.map(
-              ({ player1, player2, id, game_over, winner }, index) => (
+              ({ player1, id, winner }, index) => (
                 <tr key={index}>
                   <td className="p-4">{player1?.name}</td>
                   {/* <td className="p-4">{player2?.name}</td> */}
