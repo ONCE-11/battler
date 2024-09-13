@@ -1,11 +1,12 @@
-import { supabase } from "../../utils";
+// import { supabase } from "../../utils";
+import { supabase } from "../utils";
 import { useSetAtom } from "jotai";
 import {
   loadingAtom,
   messageAtom,
   loggedInAtom,
   currentUserAtom,
-} from "../../state";
+} from "../state";
 
 const useAuth = () => {
   const setLoggedIn = useSetAtom(loggedInAtom);

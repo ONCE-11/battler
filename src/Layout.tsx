@@ -3,7 +3,7 @@ import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { loadingAtom, messageAtom } from "./state";
-import useAuth from "./components/hooks/useAuth";
+import useAuth from "./hooks/useAuth";
 import { useEffect } from "react";
 import Footer from "./components/Footer";
 

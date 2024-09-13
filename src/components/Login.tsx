@@ -1,6 +1,6 @@
 import Button from "./Button";
 import Title from "./Title";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { messageAtom, loggedInAtom } from "../state";

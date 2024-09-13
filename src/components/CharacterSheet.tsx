@@ -3,7 +3,7 @@ import Title from "./Title";
 import { atom, useAtomValue, useAtom } from "jotai";
 import { useEffect } from "react";
 import { currentUserAtom } from "../state";
-import useCharacter from "./hooks/useCharacter";
+import useCharacter from "../hooks/useCharacter";
 import { CreatedCharacter, ButtonHandleClick } from "../types/custom";
 import { supabase } from "../utils";
 import { MouseEvent } from "react";

@@ -5,7 +5,7 @@ import Battle from "./Battle";
 import Beef from "./Beef";
 import { characterAtom, currentUserAtom, gamePageAtom } from "../../state";
 import { useEffect } from "react";
-import useCharacter from "../hooks/useCharacter";
+import useCharacter from "../../hooks/useCharacter";
 import NewCharacter from "./NewCharacter";
 
 export default function Game() {
