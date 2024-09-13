@@ -74,3 +74,10 @@ export type CreatedCharacter2 = Tables<"characters"> & {
 //   ability_2: Tables<"abilities">;
 //   ability_3: Tables<"abilities">;
 // };
+
+export enum GamePage {
+  NewCharacter,
+  CharacterSheet,
+  Beef,
+  Battle,
+}

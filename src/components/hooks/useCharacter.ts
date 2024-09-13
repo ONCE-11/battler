@@ -23,8 +23,6 @@ const useCharacter = () => {
   };
 
   const fetchCharacterWithAbilities = async (userId: string) => {
-    console.log(currentUser);
-
     const {
       data: character,
       error,
@@ -37,8 +35,6 @@ const useCharacter = () => {
       .eq("alive", true)
       .single();
 
-    // Try changing 'abilities' to one of the following: 'abilities!characters_ability_1_id_fkey', 'abilities!characters_ability_2_id_fkey', 'abilities!characters_ability_3_id_fkey'. Find the desired relationship in the 'details' key.
-
     if (error) {
       console.error(error);
     }
@@ -46,10 +42,6 @@ const useCharacter = () => {
     if (!character) {
       return;
     }
-
-    console.log("fetchCharacterWithAbilities: ", character);
-
-    console.log("current character = ", character);
 
     setCurrentCharacter(character);
 

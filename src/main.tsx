@@ -12,6 +12,7 @@ import Beefs from "./components/Beefs.tsx";
 import { Provider } from "jotai";
 import Home from "./components/Home.tsx";
 import CharacterSheet from "./components/CharacterSheet.tsx";
+import Game from "./components/Game/index.tsx";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <CharacterSheet />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/game",
+        element: (
+          <ProtectedRoute>
+            <Game />
           </ProtectedRoute>
         ),
       },

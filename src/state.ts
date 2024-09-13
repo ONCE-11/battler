@@ -1,6 +1,7 @@
 import { atom } from "jotai";
 import { User } from "@supabase/supabase-js";
 import { CreatedCharacter } from "./types/custom";
+import { GamePage } from "./types/custom";
 // import { supabase } from "./utilities";
 
 interface MessageType {
@@ -55,3 +56,5 @@ export const currentUserAtom = atom<User>();
 //   set(character);
 // }));
 export const currentCharacterAtom = atom<CreatedCharacter>();
+export const gamePageAtom = atom<GamePage>(GamePage.CharacterSheet);
+export const characterAtom = atom<CreatedCharacter>();
