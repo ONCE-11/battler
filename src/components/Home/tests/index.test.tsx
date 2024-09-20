@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { screen, render } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
-import { characterAtom, loggedInAtom } from "../../state";
-import Home from ".";
-import { characterMock } from "../Game/tests/testUtils";
+import { characterAtom, loggedInAtom } from "../../../state";
+import Home from "..";
+import { characterMock } from "../../Game/tests/testUtils";
 
 describe("Home", function () {
   const store = createStore();
