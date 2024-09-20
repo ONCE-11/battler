@@ -31,11 +31,11 @@ export default function Game() {
   }, []);
 
   if (!character) {
-    componentToRender = <NewCharacter />;
+    componentToRender = <NewCharacter setCharacter={setCharacter} />;
   } else {
     switch (gamePage) {
       case GamePage.CharacterSheet:
-        componentToRender = <CharacterSheet />;
+        componentToRender = <CharacterSheet character={character} />;
         break;
       case GamePage.Beef:
         componentToRender = <Beef />;

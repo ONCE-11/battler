@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { currentCharacterAtom, gamePageAtom, loggedInAtom } from "../../state";
+import { characterAtom, gamePageAtom, loggedInAtom } from "../../state";
 import { RemoveUnderlinesFn } from "./types";
 import CharacterNavElements from "./CharacterNavElements";
 import { GamePage } from "../../types/custom";
@@ -20,7 +20,7 @@ const Nav = () => {
   const loggedIn = useAtomValue(loggedInAtom);
   const navigate = useNavigate();
   const sharedCssClasses = "m-0 inline-block";
-  const character = useAtomValue(currentCharacterAtom);
+  const character = useAtomValue(characterAtom);
   const setGamePage = useSetAtom(gamePageAtom);
 
   // underline atoms
