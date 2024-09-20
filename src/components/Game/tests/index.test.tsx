@@ -4,15 +4,13 @@ import Game from "../index.tsx";
 import { createStore, Provider } from "jotai";
 import { gamePageAtom, characterAtom } from "../../../state.ts";
 import { GamePage } from "../../../types/custom.ts";
-import { characterMock } from "./character.ts";
+import { characterMock } from "./testUtils.ts";
 
 describe("Game", async function () {
   it("should display the new character page when no characters exist", function () {
     render(<Game />);
 
-    const heading = screen.getByRole("heading");
-
-    expect(heading.textContent).toEqual("New Character");
+    expect(screen.getByText("New Character")).toBeInTheDocument();
   });
 
   describe("Character exists", function () {
@@ -52,13 +50,13 @@ describe("Game", async function () {
         new RegExp(`.*${characterMock.ability3.name}`)
       );
 
-      expect(characterNameEl.textContent).toBeDefined();
-      expect(characterAttackEl.textContent).toBeDefined();
-      expect(characterDefenseEl.textContent).toBeDefined();
+      expect(characterNameEl).toBeInTheDocument();
+      expect(characterAttackEl).toBeInTheDocument();
+      expect(characterDefenseEl).toBeInTheDocument();
       expect(characterHealthEls.length).toEqual(2);
-      expect(ability1NameEl.textContent).toBeDefined();
-      expect(ability2NameEl.textContent).toBeDefined();
-      expect(ability3NameEl.textContent).toBeDefined();
+      expect(ability1NameEl).toBeInTheDocument();
+      expect(ability2NameEl).toBeInTheDocument();
+      expect(ability3NameEl).toBeInTheDocument();
     });
 
     it("should display the beef page when game page is set to beef", function () {
@@ -69,9 +67,7 @@ describe("Game", async function () {
         </Provider>
       );
 
-      const heading = screen.getByRole("heading");
-
-      expect(heading.textContent).toEqual("Beef");
+      expect(screen.getByText("Beef")).toBeInTheDocument();
     });
 
     it("should display the battle page when game page is set to battle", function () {
@@ -82,9 +78,7 @@ describe("Game", async function () {
         </Provider>
       );
 
-      const heading = screen.getByRole("heading");
-
-      expect(heading.textContent).toEqual("Battle");
+      expect(screen.getByText("Battle")).toBeInTheDocument();
     });
   });
 });
