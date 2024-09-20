@@ -1,0 +1,31 @@
+export const characterMock = {
+  id: "",
+  attack: 10,
+  defense: 10,
+  maxHealth: 10,
+  currentHealth: 10,
+  avatarUrl: "",
+  createdAt: "",
+  name: "",
+  ability1: {
+    id: "",
+    name: "",
+    metadata: "{}",
+    created_at: "",
+    description: "",
+  },
+  ability2: {
+    id: "",
+    name: "",
+    metadata: "{}",
+    created_at: "",
+    description: "",
+  },
+  ability3: {
+    id: "",
+    name: "",
+    metadata: "{}",
+    created_at: "",
+    description: "",
+  },
+};
