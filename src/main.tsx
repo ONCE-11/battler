@@ -10,7 +10,7 @@ import Bodega from "./components/Bodega.tsx";
 import Equipment from "./components/Equipment.tsx";
 import Beefs from "./components/Beefs.tsx";
 import { Provider } from "jotai";
-import Home from "./components/Home.tsx";
+import Home from "./components/Home/index.tsx";
 import CharacterSheet from "./components/CharacterSheet.tsx";
 import Game from "./components/Game/index.tsx";
 

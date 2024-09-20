@@ -36,7 +36,7 @@ export default function CharacterNavElements({
     removeUnderlines();
     setGamePage(gamePage);
     callbackFn();
-    navigate("/game");
+    navigate("/");
   }
 
   return (

@@ -49,7 +49,7 @@ const Nav = () => {
     removeUnderlines();
     setNewCharacterUnderlined(true);
     setGamePage(GamePage.NewCharacter);
-    navigate("/game");
+    navigate("/");
   }
 
   function handleLoginClick() {
