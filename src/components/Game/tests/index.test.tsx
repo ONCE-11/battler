@@ -30,9 +30,35 @@ describe("Game", async function () {
         </Provider>
       );
 
-      const heading = screen.getByRole("heading");
+      const characterNameEl = screen.getByText(characterMock.name);
+      const characterAttackEl = screen.getByText(
+        new RegExp(`.*${characterMock.attack}`)
+      );
+      const characterDefenseEl = screen.getByText(
+        new RegExp(`.*${characterMock.defense}`)
+      );
+      // current health should appear twice since current and max health should
+      //  be the same value
+      const characterHealthEls = screen.getAllByText(
+        new RegExp(`.*${characterMock.currentHealth}`)
+      );
+      const ability1NameEl = screen.getByText(
+        new RegExp(`.*${characterMock.ability1.name}`)
+      );
+      const ability2NameEl = screen.getByText(
+        new RegExp(`.*${characterMock.ability2.name}`)
+      );
+      const ability3NameEl = screen.getByText(
+        new RegExp(`.*${characterMock.ability3.name}`)
+      );
 
-      expect(heading.textContent).toEqual("Character");
+      expect(characterNameEl.textContent).toBeDefined();
+      expect(characterAttackEl.textContent).toBeDefined();
+      expect(characterDefenseEl.textContent).toBeDefined();
+      expect(characterHealthEls.length).toEqual(2);
+      expect(ability1NameEl.textContent).toBeDefined();
+      expect(ability2NameEl.textContent).toBeDefined();
+      expect(ability3NameEl.textContent).toBeDefined();
     });
 
     it("should display the beef page when game page is set to beef", function () {

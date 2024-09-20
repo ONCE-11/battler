@@ -13,7 +13,9 @@ export default function CharacterSheet({ character }: CharacterSheetProps) {
           className="h-20 grayscale rounded-lg inline-block"
           src={character?.avatarUrl}
         />
-        <span className="inline-block ml-2">{character?.name}</span>
+        <span className="inline-block ml-2" data-testid="character">
+          {character?.name}
+        </span>
       </Title>
       <div className="rounded b">
         <ul>
