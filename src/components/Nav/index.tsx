@@ -85,6 +85,7 @@ const Nav = () => {
                   handleClick={handleNewCharacterClick}
                   icon="user"
                   underlined={newCharacterUnderlined}
+                  testId="new-character"
                 >
                   New Character
                 </NavItem>

@@ -1,4 +1,3 @@
-// import { supabase } from "../../utils";
 import { supabase } from "../utils";
 import { useSetAtom } from "jotai";
 import {

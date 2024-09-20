@@ -50,6 +50,7 @@ export default function CharacterNavElements({
         }
         icon="user"
         underlined={characterSheetUnderlined}
+        testId="character-sheet"
       >
         Character
       </NavItem>

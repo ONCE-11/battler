@@ -7,6 +7,7 @@ type NavItemProps = PropsWithChildren<{
   handleClick: (event: MouseEvent<HTMLButtonElement>) => void;
   icon: IconProp;
   underlined: boolean;
+  testId?: string;
 }>;
 
 const NavItem: FC<NavItemProps> = ({
@@ -15,13 +16,18 @@ const NavItem: FC<NavItemProps> = ({
   icon,
   children,
   underlined,
+  testId,
 }: NavItemProps) => {
   function underlineClassName() {
     return underlined ? " underline" : "";
   }
 
   return (
-    <button className={`ml-4  ${sharedCssClasses}`} onClick={handleClick}>
+    <button
+      className={`ml-4  ${sharedCssClasses}`}
+      onClick={handleClick}
+      data-testid={testId}
+    >
       <FontAwesomeIcon icon={icon} className="text-base align-middle" />
       <span className="hidden md:inline-block">&nbsp;</span>
       <span
