@@ -38,7 +38,7 @@ describe("Game", async function () {
       // current health should appear twice since current and max health should
       //  be the same value
       const characterHealthEls = screen.getAllByText(
-        new RegExp(`.*${characterMock.currentHealth}`)
+        new RegExp(`.*${characterMock.current_health}`)
       );
       const ability1NameEl = screen.getByText(
         new RegExp(`.*${characterMock.ability1.name}`)

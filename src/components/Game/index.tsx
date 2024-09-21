@@ -24,7 +24,7 @@ export default function Game() {
       if (!character) return;
 
       setCharacter(character);
-      console.log(character);
+      console.log({ character });
     }
 
     fetchData();
@@ -38,7 +38,7 @@ export default function Game() {
         componentToRender = <CharacterSheet character={character} />;
         break;
       case GamePage.Beef:
-        componentToRender = <Beef />;
+        componentToRender = <Beef character={character} />;
         break;
       case GamePage.Battle:
         componentToRender = <Battle />;

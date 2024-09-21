@@ -1,7 +1,7 @@
 import { supabase } from "../utils";
 import { useSetAtom, useAtomValue } from "jotai";
 import { currentUserAtom, currentCharacterAtom } from "../state";
-import { CreatedCharacter } from "../types/custom";
+import { CharacterWithAbilities } from "../types/custom";
 
 const useCharacter = () => {
   const setCurrentCharacter = useSetAtom(currentCharacterAtom);
@@ -26,14 +26,15 @@ const useCharacter = () => {
     const {
       data: character,
       error,
-    }: { data: CreatedCharacter | null; error: object | null } = await supabase
-      .from("characters")
-      .select(
-        "id, name, attack, defense, maxHealth:max_health, currentHealth:current_health, avatarUrl:avatar_url, createdAt:created_at, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
-      )
-      .eq("user_id", userId)
-      .eq("alive", true)
-      .single();
+    }: { data: CharacterWithAbilities | null; error: object | null } =
+      await supabase
+        .from("characters")
+        .select(
+          "*, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
+        )
+        .eq("user_id", userId)
+        .eq("alive", true)
+        .single();
 
     if (error) {
       console.error(error);

@@ -2,13 +2,13 @@ import Title from "../Title";
 import { supabase } from "../../utils";
 import { currentUserAtom } from "../../state";
 import { useAtomValue } from "jotai";
-import { CreatedCharacter } from "../../types/custom";
+import { CharacterWithAbilities } from "../../types/custom";
 import { MouseEvent } from "react";
 import { ButtonHandleClick } from "../../types/custom";
 import Button from "../Button";
 
 type NewCharacterProps = {
-  setCharacter: (character: CreatedCharacter) => void;
+  setCharacter: (character: CharacterWithAbilities) => void;
 };
 
 export default function NewCharacter({ setCharacter }: NewCharacterProps) {

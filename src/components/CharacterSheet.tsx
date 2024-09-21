@@ -4,12 +4,12 @@ import { atom, useAtomValue, useAtom } from "jotai";
 import { useEffect } from "react";
 import { currentUserAtom } from "../state";
 import useCharacter from "../hooks/useCharacter";
-import { CreatedCharacter, ButtonHandleClick } from "../types/custom";
+import { CharacterWithAbilities, ButtonHandleClick } from "../types/custom";
 import { supabase } from "../utils";
 import { MouseEvent } from "react";
 
 // const characterAtom = atom<Tables<"characters">>();
-const characterAtom = atom<CreatedCharacter>();
+const characterAtom = atom<CharacterWithAbilities>();
 
 const New = () => {
   // const [character, setCharacter] = useAtom(characterAtom);
@@ -51,7 +51,7 @@ const New = () => {
             <>
               <img
                 className="h-20 grayscale rounded-lg inline-block"
-                src={character?.avatarUrl}
+                src={character?.avatar_url}
               />
               <span className="inline-block ml-2">{character?.name}</span>
             </>
@@ -67,8 +67,8 @@ const New = () => {
             <h2 className="text-2xl">Attributes</h2>
             <li>Attack: {character.attack}</li>
             <li>Defense: {character.defense}</li>
-            <li>Max Health: {character.maxHealth}</li>
-            <li>Current Health: {character.currentHealth}</li>
+            <li>Max Health: {character.max_health}</li>
+            <li>Current Health: {character.current_health}</li>
           </ul>
           <ol className="mt-2">
             <h2 className="text-2xl">Abilities</h2>

@@ -1,8 +1,8 @@
-import { CreatedCharacter } from "../../types/custom";
+import { CharacterWithAbilities } from "../../types/custom";
 import Title from "../Title";
 
 type CharacterSheetProps = {
-  character: CreatedCharacter;
+  character: CharacterWithAbilities;
 };
 
 export default function CharacterSheet({ character }: CharacterSheetProps) {
@@ -11,10 +11,10 @@ export default function CharacterSheet({ character }: CharacterSheetProps) {
       <Title>
         <img
           className="h-20 grayscale rounded-lg inline-block"
-          src={character?.avatarUrl}
+          src={character.avatar_url}
         />
         <span className="inline-block ml-2" data-testid="character">
-          {character?.name}
+          {character.name}
         </span>
       </Title>
       <div className="rounded b">
@@ -22,8 +22,8 @@ export default function CharacterSheet({ character }: CharacterSheetProps) {
           <h2 className="text-2xl">Attributes</h2>
           <li>Attack: {character.attack}</li>
           <li>Defense: {character.defense}</li>
-          <li>Max Health: {character.maxHealth}</li>
-          <li>Current Health: {character.currentHealth}</li>
+          <li>Max Health: {character.max_health}</li>
+          <li>Current Health: {character.current_health}</li>
         </ul>
         <ol className="mt-2">
           <h2 className="text-2xl">Abilities</h2>

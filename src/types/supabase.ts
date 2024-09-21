@@ -46,7 +46,7 @@ export type Database = {
           created_at?: string;
           description: string;
           id?: string;
-          metadata: Json;
+          metadata?: Json;
           name: string;
         };
         Update: {
@@ -57,6 +57,38 @@ export type Database = {
           name?: string;
         };
         Relationships: [];
+      };
+      actions: {
+        Row: {
+          created_at: string;
+          id: string;
+          initiator: string;
+          metadata: Json;
+          type: Database["public"]["Enums"]["action_type"];
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          initiator: string;
+          metadata?: Json;
+          type: Database["public"]["Enums"]["action_type"];
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          initiator?: string;
+          metadata?: Json;
+          type?: Database["public"]["Enums"]["action_type"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "actions_initiator_fkey";
+            columns: ["initiator"];
+            isOneToOne: false;
+            referencedRelation: "characters";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       characters: {
         Row: {
@@ -73,6 +105,7 @@ export type Database = {
           current_health: number;
           defense: number;
           defense_item_id: string | null;
+          fighting: boolean;
           id: string;
           max_health: number;
           name: string;
@@ -92,6 +125,7 @@ export type Database = {
           current_health: number;
           defense: number;
           defense_item_id?: string | null;
+          fighting?: boolean;
           id?: string;
           max_health: number;
           name?: string;
@@ -111,6 +145,7 @@ export type Database = {
           current_health?: number;
           defense?: number;
           defense_item_id?: string | null;
+          fighting?: boolean;
           id?: string;
           max_health?: number;
           name?: string;
@@ -183,7 +218,7 @@ export type Database = {
           player1_id: string;
           player2_id: string;
           turn: number;
-          winner: Database["public"]["Enums"]["player_slot"] | null;
+          winner: string | null;
         };
         Insert: {
           created_at?: string;
@@ -192,7 +227,7 @@ export type Database = {
           player1_id: string;
           player2_id: string;
           turn?: number;
-          winner?: Database["public"]["Enums"]["player_slot"] | null;
+          winner?: string | null;
         };
         Update: {
           created_at?: string;
@@ -201,7 +236,7 @@ export type Database = {
           player1_id?: string;
           player2_id?: string;
           turn?: number;
-          winner?: Database["public"]["Enums"]["player_slot"] | null;
+          winner?: string | null;
         };
         Relationships: [
           {
@@ -214,6 +249,13 @@ export type Database = {
           {
             foreignKeyName: "fights_player2_id_fkey";
             columns: ["player2_id"];
+            isOneToOne: false;
+            referencedRelation: "characters";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fights_winner_fkey";
+            columns: ["winner"];
             isOneToOne: false;
             referencedRelation: "characters";
             referencedColumns: ["id"];
@@ -286,6 +328,27 @@ export type Database = {
         };
         Relationships: [];
       };
+      names: {
+        Row: {
+          created_at: string;
+          id: number;
+          prefix: string;
+          suffix: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          prefix: string;
+          suffix?: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          prefix?: string;
+          suffix?: string;
+        };
+        Relationships: [];
+      };
       profiles: {
         Row: {
           created_at: string;
@@ -326,9 +389,16 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      start_beefin: {
+        Args: {
+          character_id: string;
+          opponent_id: string;
+        };
+        Returns: undefined;
+      };
     };
     Enums: {
+      action_type: "ability" | "item";
       item_type: "attack" | "defense" | "accessory" | "consumable";
       player_slot: "1" | "2";
     };
