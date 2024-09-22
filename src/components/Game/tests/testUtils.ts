@@ -1,3 +1,4 @@
+import { User } from "@supabase/supabase-js";
 import { CharacterWithAbilities } from "../../../types/custom";
 
 export const characterMock = {
@@ -38,3 +39,7 @@ export const characterMock = {
   attack_item_id: null,
   consumable_id: null,
 } as CharacterWithAbilities;
+
+export const currentUserMock = {
+  id: "52ade4df-ee35-460d-b845-8fccaa2a201a",
+} as User;

@@ -2,9 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import Game from "../index.tsx";
 import { createStore, Provider } from "jotai";
-import { gamePageAtom, characterAtom } from "../../../state.ts";
+import {
+  gamePageAtom,
+  characterAtom,
+  currentUserAtom,
+} from "../../../state.ts";
 import { GamePage } from "../../../types/custom.ts";
-import { characterMock } from "./testUtils.ts";
+import { characterMock, currentUserMock } from "./testUtils.ts";
 
 describe("Game", async function () {
   it("should display the new character page when no characters exist", function () {
@@ -61,11 +65,14 @@ describe("Game", async function () {
 
     it("should display the beef page when game page is set to beef", function () {
       store.set(gamePageAtom, GamePage.Beef);
+      store.set(currentUserAtom, currentUserMock);
       render(
         <Provider store={store}>
           <Game />
         </Provider>
       );
+
+      console.log(screen.getByText("Past Beef").textContent);
 
       expect(screen.getByText("Beef")).toBeInTheDocument();
     });

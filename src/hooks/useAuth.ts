@@ -64,6 +64,7 @@ const useAuth = () => {
     if (!session) {
       setLoggedIn(false);
     } else {
+      console.log({ user: session.user });
       setCurrentUser(session.user);
       setLoggedIn(true);
     }
