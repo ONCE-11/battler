@@ -4,7 +4,7 @@ import { atom, useAtomValue, useAtom } from "jotai";
 import { useEffect } from "react";
 import { currentUserAtom } from "../state";
 import useCharacter from "../hooks/useCharacter";
-import { CharacterWithAbilities, ButtonHandleClick } from "../types/custom";
+import { CharacterWithAbilities } from "../types/custom";
 import { supabase } from "../utils";
 import { MouseEvent } from "react";
 
@@ -17,7 +17,7 @@ const New = () => {
   const [character, setCharacter] = useAtom(characterAtom);
   const { fetchCharacterWithAbilities } = useCharacter();
 
-  const handleClick: ButtonHandleClick = async (
+  const handleClick = async (
     _event: MouseEvent<HTMLButtonElement>
   ) => {
     const { data: character, error } = await supabase.functions.invoke(

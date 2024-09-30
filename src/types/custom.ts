@@ -21,11 +21,6 @@ export type AbilityButtonHandleClick = (
   receiver: Tables<"characters">
 ) => void;
 
-export type ButtonHandleClick = (
-  event: MouseEvent<HTMLButtonElement>,
-  extraParam?: any
-) => void;
-
 export type CharacterWithAbilities = Tables<"characters"> & {
   ability1: Tables<"abilities">; // TODO: correct these types at some point
   ability2: Tables<"abilities">;

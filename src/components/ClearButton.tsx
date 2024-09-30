@@ -1,9 +1,8 @@
-import { ButtonHandleClick } from "../types/custom";
-import { FC, PropsWithChildren } from "react";
+import { FC, MouseEvent, PropsWithChildren } from "react";
 
 type ClearButtonProps = PropsWithChildren<{
   text?: string;
-  handleClick?: ButtonHandleClick;
+  handleClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   additionalCssClasses?: string[];
   type?: "button" | "submit";
   disabled?: boolean;
