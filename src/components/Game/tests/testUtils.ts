@@ -41,5 +41,5 @@ export const characterMock = {
 } as CharacterWithAbilities;
 
 export const currentUserMock = {
-  id: "52ade4df-ee35-460d-b845-8fccaa2a201a",
+  id: "some-sort-of-id",
 } as User;
