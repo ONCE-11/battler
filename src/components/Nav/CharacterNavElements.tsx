@@ -1,5 +1,4 @@
 import { GamePage } from "../../types/custom";
-import { MouseEvent } from "react";
 import { RemoveUnderlinesFn } from "./types";
 import { useNavigate } from "react-router-dom";
 import { useAtom, useSetAtom } from "jotai";
@@ -28,11 +27,7 @@ export default function CharacterNavElements({
   const [battleUnderlined, setBattleUnderlined] = useAtom(battleUnderlinedAtom);
   const navigate = useNavigate();
 
-  function handleClick(
-    _event: MouseEvent<HTMLButtonElement>,
-    gamePage: GamePage,
-    callbackFn: () => void
-  ) {
+  function handleClick(gamePage: GamePage, callbackFn: () => void) {
     removeUnderlines();
     setGamePage(gamePage);
     callbackFn();
@@ -43,8 +38,8 @@ export default function CharacterNavElements({
     <>
       <NavItem
         sharedCssClasses={sharedCssClasses}
-        handleClick={(e) =>
-          handleClick(e, GamePage.CharacterSheet, () =>
+        handleClick={(_e) =>
+          handleClick(GamePage.CharacterSheet, () =>
             setCharacterSheetUnderlined(true)
           )
         }
@@ -56,8 +51,8 @@ export default function CharacterNavElements({
       </NavItem>
       <NavItem
         sharedCssClasses={sharedCssClasses}
-        handleClick={(e) =>
-          handleClick(e, GamePage.Beef, () => setBeefUnderlined(true))
+        handleClick={(_e) =>
+          handleClick(GamePage.Beef, () => setBeefUnderlined(true))
         }
         icon="skull"
         underlined={beefUnderlined}
@@ -66,8 +61,8 @@ export default function CharacterNavElements({
       </NavItem>
       <NavItem
         sharedCssClasses={sharedCssClasses}
-        handleClick={(e) =>
-          handleClick(e, GamePage.Battle, () => setBattleUnderlined(true))
+        handleClick={(_e) =>
+          handleClick(GamePage.Battle, () => setBattleUnderlined(true))
         }
         icon="skull-crossbones"
         underlined={battleUnderlined}
