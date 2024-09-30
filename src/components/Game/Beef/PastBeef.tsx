@@ -1,41 +1,50 @@
 import { useEffect } from "react";
 import { supabase } from "../../../utils";
 import { Tables } from "../../../types/supabase";
+import { atom, useAtom, useAtomValue } from "jotai";
+import { characterAtom } from "../../../state";
 import { CharacterWithAbilities } from "../../../types/custom";
-import { atom, useAtom } from "jotai";
 
 type FightWithPlayers = Tables<"fights"> & {
   player1: Tables<"characters">;
   player2: Tables<"characters">;
 };
 
-type PastBeefProps = {
-  character: CharacterWithAbilities;
-};
-
 const pastFightsAtom = atom<FightWithPlayers[]>([]);
 
-export default function PastBeef({ character }: PastBeefProps) {
+export default function PastBeef() {
   const [pastFights, setPastFights] = useAtom(pastFightsAtom);
+  const character = useAtomValue(characterAtom);
+
+  if (!character) {
+    console.error("Character is not defined");
+    return;
+  }
 
   useEffect(function () {
-    async function fetchData() {
-      const { data: pastFightsData, error: fetchPastFightsError } =
-        await supabase
-          .from("fights")
-          .select("*, player1:player1_id(*), player2:player2_id(*)")
-          .or(`player1_id.in.(${character.id}),player2_id.in.(${character.id})`)
-          .eq("game_over", true)
-          .returns<FightWithPlayers[]>();
+    async function fetchData(character: CharacterWithAbilities) {
+      try {
+        const { data: pastFightsData, error: fetchPastFightsError } =
+          await supabase
+            .from("fights")
+            .select("*, player1:player1_id(*), player2:player2_id(*)")
+            .or(
+              `player1_id.in.(${character.id}),player2_id.in.(${character.id})`
+            )
+            .eq("game_over", true)
+            .returns<FightWithPlayers[]>();
 
-      if (fetchPastFightsError) throw fetchPastFightsError;
+        if (fetchPastFightsError) throw fetchPastFightsError;
 
-      console.log({ pastFightsData });
+        console.log({ pastFightsData });
 
-      setPastFights(pastFightsData);
+        setPastFights(pastFightsData);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    fetchData();
+    fetchData(character);
   }, []);
 
   return (

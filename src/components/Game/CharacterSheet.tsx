@@ -1,11 +1,15 @@
-import { CharacterWithAbilities } from "../../types/custom";
+import { useAtomValue } from "jotai";
 import Title from "../Title";
+import { characterAtom } from "../../state";
 
-type CharacterSheetProps = {
-  character: CharacterWithAbilities;
-};
+export default function CharacterSheet() {
+  const character = useAtomValue(characterAtom);
 
-export default function CharacterSheet({ character }: CharacterSheetProps) {
+  if (!character) {
+    console.error("Character is not defined");
+    return;
+  }
+
   return (
     <>
       <Title>

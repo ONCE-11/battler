@@ -11,17 +11,26 @@ import { GamePage } from "../../../types/custom.ts";
 import { characterMock, currentUserMock } from "./testUtils.ts";
 
 describe("Game", async function () {
+  const store = createStore();
+
+  beforeEach(function () {
+    store.set(currentUserAtom, currentUserMock);
+  });
+
   it("should display the new character page when no characters exist", function () {
-    render(<Game />);
+    render(
+      <Provider store={store}>
+        <Game />
+      </Provider>
+    );
 
     expect(screen.getByText("New Character")).toBeInTheDocument();
   });
 
   describe("Character exists", function () {
-    const store = createStore();
-
     beforeEach(function () {
       store.set(characterAtom, characterMock);
+      store.set(currentUserAtom, currentUserMock);
     });
 
     it("should display the character sheet when game page is set to character sheet", function () {

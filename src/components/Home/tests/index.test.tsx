@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { screen, render } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
-import { characterAtom, loggedInAtom } from "../../../state";
+import { characterAtom, currentUserAtom, loggedInAtom } from "../../../state";
 import Home from "..";
-import { characterMock } from "../../Game/tests/testUtils";
+import { characterMock, currentUserMock } from "../../Game/tests/testUtils";
 
 describe("Home", function () {
   const store = createStore();
@@ -22,6 +22,7 @@ describe("Home", function () {
 
   describe("logged in", function () {
     beforeEach(function () {
+      store.set(currentUserAtom, currentUserMock);
       store.set(loggedInAtom, true);
     });
 

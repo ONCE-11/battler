@@ -1,32 +1,33 @@
 import Title from "../Title";
 import { supabase } from "../../utils";
-import { currentUserAtom } from "../../state";
-import { useAtomValue } from "jotai";
-import { CharacterWithAbilities } from "../../types/custom";
-import { MouseEvent } from "react";
-import { ButtonHandleClick } from "../../types/custom";
+import { characterAtom, currentUserAtom } from "../../state";
+import { useAtomValue, useSetAtom } from "jotai";
 import Button from "../Button";
+import { User } from "@supabase/supabase-js";
 
-type NewCharacterProps = {
-  setCharacter: (character: CharacterWithAbilities) => void;
-};
-
-export default function NewCharacter({ setCharacter }: NewCharacterProps) {
+export default function NewCharacter() {
   const currentUser = useAtomValue(currentUserAtom);
+  const setCharacter = useSetAtom(characterAtom);
 
-  const handleClick: ButtonHandleClick = async (
-    _event: MouseEvent<HTMLButtonElement>
-  ) => {
+  if (!currentUser) {
+    console.error("Current user is not defined");
+    return;
+  }
+
+  const handleClick = async (currentUser: User) => {
     const { data: character, error } = await supabase.functions.invoke(
       "createCharacter",
       {
-        body: { userId: currentUser!.id },
+        body: { userId: currentUser.id },
       }
     );
 
-    if (error) console.error(error);
+    if (error) {
+      console.error(error);
+      return;
+    }
 
-    console.log(character);
+    console.log({ character });
 
     setCharacter(character);
   };
@@ -37,7 +38,7 @@ export default function NewCharacter({ setCharacter }: NewCharacterProps) {
       <Button
         text="Go"
         additionalCssClasses={["mt-4"]}
-        handleClick={handleClick}
+        handleClick={(_e) => handleClick(currentUser)}
       />
     </>
   );

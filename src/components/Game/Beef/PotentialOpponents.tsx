@@ -3,30 +3,37 @@ import Button from "../../Button";
 import { supabase } from "../../../utils";
 import { CharacterWithAbilities, GamePage } from "../../../types/custom";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { currentUserAtom, gamePageAtom } from "../../../state";
+import { characterAtom, currentUserAtom, gamePageAtom } from "../../../state";
 import { useEffect } from "react";
-
-type PotentialOpponentProps = {
-  character: CharacterWithAbilities;
-};
+import { User } from "@supabase/supabase-js";
 
 const potentialOpponentsAtom = atom<CharacterWithAbilities[]>([]);
 
-export default function PotentialOpponents({
-  character,
-}: PotentialOpponentProps) {
-  const currentUser = useAtomValue(currentUserAtom);
+export default function PotentialOpponents() {
   const [potentialOpponents, setPotentialOpponents] = useAtom(
     potentialOpponentsAtom
   );
+  const setGamePage = useSetAtom(gamePageAtom);
+  const currentUser = useAtomValue(currentUserAtom);
+  const character = useAtomValue(characterAtom);
+
+  if (!currentUser) {
+    console.error("Current user is not defined");
+    return;
+  }
+
+  if (!character) {
+    console.error("Character is not defined");
+    return;
+  }
 
   useEffect(function () {
-    async function fetchData() {
+    async function fetchData(currentUser: User) {
       const { data: potentialOpponents, error: fetchCharactersError } =
         await supabase
           .from("characters")
           .select("*")
-          .not("user_id", "eq", currentUser!.id)
+          .not("user_id", "eq", currentUser.id)
           .eq("alive", true)
           .eq("fighting", false)
           .returns<CharacterWithAbilities[]>();
@@ -37,13 +44,16 @@ export default function PotentialOpponents({
       setPotentialOpponents(potentialOpponents);
     }
 
-    fetchData();
+    fetchData(currentUser);
   }, []);
 
-  const setGamePage = useSetAtom(gamePageAtom);
-
-  async function startBeefin(player2_id: string) {
+  async function startBeefin(
+    character: CharacterWithAbilities,
+    player2_id: string
+  ) {
     try {
+      // TODO: not sure why character is thought to be undefined by ts,
+      //  should look into this at some point
       let { error } = await supabase.rpc("start_beefin", {
         character_id: character.id,
         opponent_id: player2_id,
@@ -71,7 +81,7 @@ export default function PotentialOpponents({
                 <span className="text-right">
                   <Button
                     additionalCssClasses={["text-right"]}
-                    handleClick={() => startBeefin(id)}
+                    handleClick={() => startBeefin(character, id)}
                   >
                     <FontAwesomeIcon icon={["fas", "face-angry"]} />{" "}
                   </Button>
