@@ -51,20 +51,19 @@ export default function PotentialOpponents() {
     character: CharacterWithAbilities,
     player2_id: string
   ) {
-    try {
-      // TODO: not sure why character is thought to be undefined by ts,
-      //  should look into this at some point
-      let { error } = await supabase.rpc("start_beefin", {
-        character_id: character.id,
-        opponent_id: player2_id,
-      });
+    const { data, error } = await supabase.rpc("start_beefin", {
+      character_id: character.id,
+      opponent_id: player2_id,
+    });
 
-      if (error) throw error;
-
-      setGamePage(GamePage.Battle);
-    } catch (error) {
+    if (error) {
       console.error(error);
+      return;
     }
+
+    console.log({ data });
+
+    setGamePage(GamePage.Battle);
   }
 
   return (
