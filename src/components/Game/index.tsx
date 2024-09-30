@@ -21,12 +21,8 @@ export default function Game() {
     return;
   }
 
-  console.log({ currentUser });
-
   useEffect(() => {
     async function fetchData(currentUser: User) {
-      // if (!currentUser) return;
-
       const character = await fetchCharacterWithAbilities(currentUser.id);
 
       setCharacter(character);

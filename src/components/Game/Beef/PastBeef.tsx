@@ -23,25 +23,22 @@ export default function PastBeef() {
 
   useEffect(function () {
     async function fetchData(character: CharacterWithAbilities) {
-      try {
-        const { data: pastFightsData, error: fetchPastFightsError } =
-          await supabase
-            .from("fights")
-            .select("*, player1:player1_id(*), player2:player2_id(*)")
-            .or(
-              `player1_id.in.(${character.id}),player2_id.in.(${character.id})`
-            )
-            .eq("game_over", true)
-            .returns<FightWithPlayers[]>();
+      const { data: pastFightsData, error: fetchPastFightsError } =
+        await supabase
+          .from("fights")
+          .select("*, player1:player1_id(*), player2:player2_id(*)")
+          .or(`player1_id.in.(${character.id}),player2_id.in.(${character.id})`)
+          .eq("game_over", true)
+          .returns<FightWithPlayers[]>();
 
-        if (fetchPastFightsError) throw fetchPastFightsError;
-
-        console.log({ pastFightsData });
-
-        setPastFights(pastFightsData);
-      } catch (error) {
-        console.error(error);
+      if (fetchPastFightsError) {
+        console.error(fetchPastFightsError);
+        return;
       }
+
+      console.log({ pastFightsData });
+
+      setPastFights(pastFightsData);
     }
 
     fetchData(character);
