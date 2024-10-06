@@ -350,7 +350,7 @@ const Fight = () => {
   }, []);
 
   const handleClick: AbilityButtonHandleClick = async (
-    _button,
+    _event,
     ability,
     abilitySlot,
     initiator,

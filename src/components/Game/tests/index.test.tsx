@@ -81,8 +81,6 @@ describe("Game", async function () {
         </Provider>
       );
 
-      console.log(screen.getByText("Past Beef").textContent);
-
       expect(screen.getByText("Beef")).toBeInTheDocument();
     });
 

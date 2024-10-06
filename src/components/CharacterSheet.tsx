@@ -17,9 +17,7 @@ const New = () => {
   const [character, setCharacter] = useAtom(characterAtom);
   const { fetchCharacterWithAbilities } = useCharacter();
 
-  const handleClick = async (
-    _event: MouseEvent<HTMLButtonElement>
-  ) => {
+  const handleClick = async (_event: MouseEvent<HTMLButtonElement>) => {
     const { data: character, error } = await supabase.functions.invoke(
       "createCharacter",
       {
@@ -29,7 +27,7 @@ const New = () => {
 
     if (error) console.error(error);
 
-    console.log(character);
+    // console.log(character);
 
     setCharacter(character);
   };

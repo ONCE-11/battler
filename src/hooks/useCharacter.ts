@@ -17,7 +17,7 @@ const useCharacter = () => {
 
     if (error) console.error(error);
 
-    console.log(character);
+    // console.log(character);
 
     setCurrentCharacter(character);
   };
