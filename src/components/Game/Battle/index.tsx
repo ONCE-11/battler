@@ -178,7 +178,13 @@ export default function Battle({ fight, character }: BattleProps) {
 
   return (
     <>
-      {gameOver ? <Title>{gameOverTitle}</Title> : <Title>Battle</Title>}
+      {gameOver ? (
+        <Title>{gameOverTitle}</Title>
+      ) : (
+        <Title>
+          {currentTurnPlayerId === player1.id ? "P1's Turn" : "P2's Turn"}
+        </Title>
+      )}
       <div>
         {player1 && player2 && (
           <>
