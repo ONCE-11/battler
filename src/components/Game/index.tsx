@@ -84,7 +84,14 @@ export default function Game() {
           return;
         }
 
-        componentToRender = <Battle fight={fight} character={character} />;
+        componentToRender = (
+          <Battle
+            fight={fight}
+            character={character}
+            fightAtom={fightAtom}
+            setFight={setFight}
+          />
+        );
         break;
     }
   }
