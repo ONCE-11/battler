@@ -1,4 +1,4 @@
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useSetAtom } from "jotai";
 import Title from "../../Title";
 import { useEffect, useMemo } from "react";
 import { supabase } from "../../../utils";
@@ -7,6 +7,7 @@ import Player from "./Player";
 import { Tables } from "../../../types/supabase";
 import { fightAtom, FightWithPlayers } from "../types";
 import { SetStateAction } from "jotai/vanilla";
+import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 
 type SetAtom<Args extends any[], Result> = (...args: Args) => Result;
 
@@ -17,17 +18,14 @@ type BattleProps = {
   setFight: SetAtom<[SetStateAction<FightWithPlayers | undefined>], void>;
 };
 
-type RealtimeMetadata = {
+type RealtimePayloadData = {
   metadata: {
-    player1: CharacterWithAbilities;
-    player2: CharacterWithAbilities;
-    fight: {
-      turn: Tables<"fights">["turn"];
-      winner: Tables<"fights">["winner"];
-      game_over: Tables<"fights">["game_over"];
-      current_turn_player_id: Tables<"fights">["current_turn_player_id"];
-    };
-    winnerId: Tables<"characters">["id"];
+    player_1: CharacterWithAbilities;
+    player_2: CharacterWithAbilities;
+    turn: Tables<"fights">["turn"];
+    winner_id: Tables<"fights">["winner_id"];
+    game_over: Tables<"fights">["game_over"];
+    current_turn_player_id: Tables<"fights">["current_turn_player_id"];
   };
 };
 
@@ -42,9 +40,7 @@ export default function Battle({ fight, character }: BattleProps) {
   const [player2, setPlayer2] = useAtom(
     useMemo(() => atom<CharacterWithAbilities>(fight.player2), [fight.player2])
   );
-  const [_turn, setTurn] = useAtom(
-    useMemo(() => atom(fight.turn), [fight.turn])
-  );
+  const setTurn = useSetAtom(useMemo(() => atom(fight.turn), [fight.turn]));
   const [gameOver, setGameOver] = useAtom(
     useMemo(() => atom(fight.game_over), [fight.game_over])
   );
@@ -70,36 +66,40 @@ export default function Battle({ fight, character }: BattleProps) {
   }, []);
 
   function updateStates(
-    updatedPlayer1Data: CharacterWithAbilities,
-    updatedPlayer2Data: CharacterWithAbilities,
-    updatedTurn: Tables<"fights">["turn"],
-    updatedGameOver: Tables<"fights">["game_over"],
-    updatedCurrentTurnPlayerId: Tables<"fights">["current_turn_player_id"],
-    winnerId: Tables<"characters">["id"]
+    payload: RealtimePostgresInsertPayload<RealtimePayloadData>
   ) {
+    const {
+      player_1,
+      player_2,
+      turn,
+      game_over,
+      current_turn_player_id,
+      winner_id,
+    } = payload.new.metadata;
+
     setPlayer1((previousPlayer1) => ({
       ...previousPlayer1,
-      attack: updatedPlayer1Data.attack,
-      defense: updatedPlayer1Data.defense,
-      current_health: updatedPlayer1Data.current_health,
-      alive: updatedPlayer1Data.alive,
+      attack: player_1.attack,
+      defense: player_1.defense,
+      current_health: player_1.current_health,
+      alive: player_1.alive,
     }));
 
     setPlayer2((previousPlayer2) => ({
       ...previousPlayer2,
-      attack: updatedPlayer2Data.attack,
-      defense: updatedPlayer2Data.defense,
-      current_health: updatedPlayer2Data.current_health,
-      alive: updatedPlayer2Data.alive,
+      attack: player_2.attack,
+      defense: player_2.defense,
+      current_health: player_2.current_health,
+      alive: player_2.alive,
     }));
 
     setTimeout(() => {
-      setTurn(updatedTurn);
-      setCurrentTurnPlayerId(updatedCurrentTurnPlayerId);
-      setGameOver(updatedGameOver);
+      setTurn(turn);
+      setCurrentTurnPlayerId(current_turn_player_id);
+      setGameOver(game_over);
 
-      if (updatedGameOver) {
-        setGameOverTitle(winnerId === player1.id ? "P1 Wins" : "P2 Wins");
+      if (game_over) {
+        setGameOverTitle(winner_id === player1.id ? "P1 Wins" : "P2 Wins");
       }
     }, 500);
   }
@@ -115,26 +115,10 @@ export default function Battle({ fight, character }: BattleProps) {
           table: "actions",
           filter: `initiator=eq.${id}`,
         },
-        async (payload) => {
+        async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
           console.log(`player 1 action`, payload);
 
-          const {
-            metadata: {
-              player1,
-              player2,
-              winnerId,
-              fight: { turn, game_over, current_turn_player_id },
-            },
-          } = payload.new as RealtimeMetadata;
-
-          updateStates(
-            player1,
-            player2,
-            turn,
-            game_over,
-            current_turn_player_id,
-            winnerId
-          );
+          updateStates(payload);
         }
       )
       .subscribe();
@@ -151,26 +135,10 @@ export default function Battle({ fight, character }: BattleProps) {
           table: "actions",
           filter: `initiator=eq.${id}`,
         },
-        async (payload) => {
+        async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
           console.log(`player 2 action`, payload);
 
-          const {
-            metadata: {
-              player1,
-              player2,
-              winnerId,
-              fight: { turn, game_over, current_turn_player_id },
-            },
-          } = payload.new as RealtimeMetadata;
-
-          updateStates(
-            player1,
-            player2,
-            turn,
-            game_over,
-            current_turn_player_id,
-            winnerId
-          );
+          updateStates(payload);
         }
       )
       .subscribe();

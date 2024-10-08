@@ -59,12 +59,14 @@ export default function PastBeef() {
             </tr>
           </thead>
           <tbody>
-            {pastFights.map(({ player1, player2, id, winner }) => (
+            {pastFights.map(({ player1, player2, id, winner_id }) => (
               <tr key={id}>
                 <td className="p-4">
                   {player1.id === character.id ? player2.name : player1.name}
                 </td>
-                <td className="p-4">{winner === character.id ? "W" : "L"}</td>
+                <td className="p-4">
+                  {winner_id === character.id ? "W" : "L"}
+                </td>
               </tr>
             ))}
           </tbody>
