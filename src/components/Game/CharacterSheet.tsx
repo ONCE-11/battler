@@ -1,6 +1,6 @@
 import { useAtomValue } from "jotai";
 import Title from "../Title";
-import { characterAtom } from "../../state";
+import { characterAtom } from "../../atoms";
 
 export default function CharacterSheet() {
   const character = useAtomValue(characterAtom);

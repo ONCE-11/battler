@@ -3,7 +3,7 @@ import Title from "./Title";
 import useAuth from "../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { messageAtom, loggedInAtom } from "../state";
+import { messageAtom, loggedInAtom } from "../atoms";
 
 const emailAtom = atom("");
 const passwordAtom = atom("");

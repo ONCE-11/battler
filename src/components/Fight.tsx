@@ -3,7 +3,7 @@ import Title from "./Title";
 import { AbilityButtonHandleClick } from "../types/custom";
 import { useAtom, atom, useAtomValue } from "jotai";
 import { supabase } from "../utils";
-import { currentUserAtom } from "../state";
+import { currentUserAtom } from "../atoms";
 import { useEffect } from "react";
 import AbilityButton from "./AbilityButton";
 import { useParams } from "react-router-dom";

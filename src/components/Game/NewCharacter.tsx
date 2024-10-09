@@ -1,6 +1,6 @@
 import Title from "../Title";
 import { supabase } from "../../utils";
-import { characterAtom, currentUserAtom } from "../../state";
+import { characterAtom, currentUserAtom } from "../../atoms";
 import { useAtomValue, useSetAtom } from "jotai";
 import Button from "../Button";
 import { User } from "@supabase/supabase-js";

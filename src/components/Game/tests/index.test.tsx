@@ -6,7 +6,7 @@ import {
   gamePageAtom,
   characterAtom,
   currentUserAtom,
-} from "../../../state.ts";
+} from "../../../atoms.ts";
 import { GamePage } from "../../../types/custom.ts";
 import { characterMock, currentUserMock } from "./testUtils.ts";
 

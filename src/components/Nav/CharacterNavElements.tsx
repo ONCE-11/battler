@@ -2,14 +2,14 @@ import { GamePage } from "../../types/custom";
 import { RemoveUnderlinesFn } from "./types";
 import { useNavigate } from "react-router-dom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { gamePageAtom } from "../../state";
+import { gamePageAtom } from "../../atoms";
 import NavItem from "./NavItem";
 import {
   characterSheetUnderlinedAtom,
   beefUnderlinedAtom,
   battleUnderlinedAtom,
-} from "./state";
-import { fightAtom } from "../Game/state";
+} from "./atoms";
+import { fightAtom } from "../Game/atoms";
 
 type CharacterNavElementsProps = {
   sharedCssClasses: string;

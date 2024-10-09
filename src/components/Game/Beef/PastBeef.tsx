@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { supabase } from "../../../utils";
 import { Tables } from "../../../types/supabase";
 import { atom, useAtom, useAtomValue } from "jotai";
-import { characterAtom } from "../../../state";
+import { characterAtom } from "../../../atoms";
 import { CharacterWithAbilities } from "../../../types/custom";
 
 type FightWithPlayers = Tables<"fights"> & {

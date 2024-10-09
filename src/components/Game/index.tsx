@@ -3,13 +3,13 @@ import { CharacterWithAbilities, GamePage } from "../../types/custom";
 import CharacterSheet from "./CharacterSheet";
 import Battle from "./Battle";
 import Beef from "./Beef";
-import { characterAtom, currentUserAtom, gamePageAtom } from "../../state";
+import { characterAtom, currentUserAtom, gamePageAtom } from "../../atoms.js";
 import { useEffect } from "react";
 import NewCharacter from "./NewCharacter";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "../../utils";
 import { FightWithPlayers } from "./types.js";
-import { fightAtom } from "./state.js";
+import { fightAtom } from "./atoms.js";
 
 export default function Game() {
   const [gamePage, setGamePage] = useAtom(gamePageAtom);

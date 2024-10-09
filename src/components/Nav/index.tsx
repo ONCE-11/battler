@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { characterAtom, gamePageAtom, loggedInAtom } from "../../state";
+import { characterAtom, gamePageAtom, loggedInAtom } from "../../atoms";
 import { RemoveUnderlinesFn } from "./types";
 import CharacterNavElements from "./CharacterNavElements";
 import { GamePage } from "../../types/custom";
@@ -10,7 +10,7 @@ import {
   battleUnderlinedAtom,
   beefUnderlinedAtom,
   characterSheetUnderlinedAtom,
-} from "./state";
+} from "./atoms";
 
 const newCharacterUnderlinedAtom = atom<boolean>(false);
 const loginUnderlinedAtom = atom<boolean>(false);

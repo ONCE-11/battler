@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import { loggedInAtom } from "../../state";
+import { loggedInAtom } from "../../atoms";
 import Game from "../Game";
 import LoggedOut from "./LoggedOut";
 

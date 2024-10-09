@@ -5,7 +5,7 @@ import {
   messageAtom,
   loggedInAtom,
   currentUserAtom,
-} from "../state";
+} from "../atoms";
 
 const useAuth = () => {
   const setLoggedIn = useSetAtom(loggedInAtom);

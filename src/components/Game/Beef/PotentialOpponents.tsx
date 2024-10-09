@@ -3,7 +3,7 @@ import Button from "../../Button";
 import { supabase } from "../../../utils";
 import { CharacterWithAbilities, GamePage } from "../../../types/custom";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { characterAtom, currentUserAtom, gamePageAtom } from "../../../state";
+import { characterAtom, currentUserAtom, gamePageAtom } from "../../../atoms";
 import { useEffect } from "react";
 import { User } from "@supabase/supabase-js";
 

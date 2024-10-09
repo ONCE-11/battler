@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { atom, useAtom, useAtomValue } from "jotai";
 import { useRef } from "react";
-import { currentUserAtom } from "../state";
+import { currentUserAtom } from "../atoms";
 
 const playingAtom = atom<boolean>(false);
 

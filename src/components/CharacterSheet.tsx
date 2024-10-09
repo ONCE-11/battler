@@ -2,7 +2,7 @@ import Button from "./Button";
 import Title from "./Title";
 import { atom, useAtomValue, useAtom } from "jotai";
 import { useEffect } from "react";
-import { currentUserAtom } from "../state";
+import { currentUserAtom } from "../atoms";
 import useCharacter from "../hooks/useCharacter";
 import { CharacterWithAbilities } from "../types/custom";
 import { supabase } from "../utils";

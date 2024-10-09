@@ -2,7 +2,7 @@ import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import { loadingAtom, messageAtom } from "./state";
+import { loadingAtom, messageAtom } from "./atoms";
 import useAuth from "./hooks/useAuth";
 import { useEffect } from "react";
 import Footer from "./components/Footer";

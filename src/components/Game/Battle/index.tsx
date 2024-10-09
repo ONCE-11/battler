@@ -8,7 +8,7 @@ import { Tables } from "../../../types/supabase";
 import { FightWithPlayers } from "../types.js";
 import { SetStateAction } from "jotai/vanilla";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { fightAtom } from "../state.js";
+import { fightAtom } from "../atoms.js";
 
 type SetAtom<Args extends any[], Result> = (...args: Args) => Result;
 

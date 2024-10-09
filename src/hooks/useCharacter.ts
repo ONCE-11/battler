@@ -1,6 +1,6 @@
 import { supabase } from "../utils";
 import { useSetAtom, useAtomValue } from "jotai";
-import { currentUserAtom, currentCharacterAtom } from "../state";
+import { currentUserAtom, currentCharacterAtom } from "../atoms";
 import { CharacterWithAbilities } from "../types/custom";
 
 const useCharacter = () => {

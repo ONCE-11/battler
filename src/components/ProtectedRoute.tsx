@@ -1,7 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { PropsWithChildren } from "react";
 import { useSetAtom, useAtomValue } from "jotai";
-import { messageAtom, loggedInAtom } from "../state";
+import { messageAtom, loggedInAtom } from "../atoms";
 
 export const ProtectedRoute = ({ children }: PropsWithChildren) => {
   const loggedIn = useAtomValue(loggedInAtom);
