@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../Button";
 import { supabase } from "../../../utils";
-import { CharacterWithAbilities, GamePage } from "../../../types/custom";
+import { CharacterWithAbilities, Scene } from "../../../types/custom";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { characterAtom, currentUserAtom, gamePageAtom } from "../../../atoms";
 import { useEffect } from "react";
@@ -63,7 +63,7 @@ export default function PotentialOpponents() {
 
     console.log({ data });
 
-    setGamePage(GamePage.Battle);
+    setGamePage(Scene.Battle);
   }
 
   return (

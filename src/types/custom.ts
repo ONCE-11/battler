@@ -27,7 +27,7 @@ export type CharacterWithAbilities = Tables<"characters"> & {
   ability3: Tables<"abilities">;
 };
 
-export enum GamePage {
+export enum Scene {
   NewCharacter,
   CharacterSheet,
   Beef,

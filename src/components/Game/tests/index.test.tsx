@@ -7,7 +7,7 @@ import {
   characterAtom,
   currentUserAtom,
 } from "../../../atoms.ts";
-import { GamePage } from "../../../types/custom.ts";
+import { Scene } from "../../../types/custom.ts";
 import { characterMock, currentUserMock } from "./testUtils.ts";
 
 describe("Game", async function () {
@@ -17,7 +17,7 @@ describe("Game", async function () {
     store.set(currentUserAtom, currentUserMock);
   });
 
-  it("should display the new character page when no characters exist", function () {
+  it("should display the new character scene when no characters exist", function () {
     render(
       <Provider store={store}>
         <Game />
@@ -33,8 +33,8 @@ describe("Game", async function () {
       store.set(currentUserAtom, currentUserMock);
     });
 
-    it("should display the character sheet when game page is set to character sheet", function () {
-      store.set(gamePageAtom, GamePage.CharacterSheet);
+    it("should display the character sheet when scene is set to character sheet", function () {
+      store.set(gamePageAtom, Scene.CharacterSheet);
       render(
         <Provider store={store}>
           <Game />
@@ -72,8 +72,8 @@ describe("Game", async function () {
       expect(ability3NameEl).toBeInTheDocument();
     });
 
-    it("should display the beef page when game page is set to beef", function () {
-      store.set(gamePageAtom, GamePage.Beef);
+    it("should display the beef scene when scene is set to beef", function () {
+      store.set(gamePageAtom, Scene.Beef);
       store.set(currentUserAtom, currentUserMock);
       render(
         <Provider store={store}>
@@ -84,8 +84,8 @@ describe("Game", async function () {
       expect(screen.getByText("Beef")).toBeInTheDocument();
     });
 
-    it("should display the battle page when game page is set to battle", function () {
-      store.set(gamePageAtom, GamePage.Battle);
+    it("should display the battle scene when scene is set to battle", function () {
+      store.set(gamePageAtom, Scene.Battle);
       render(
         <Provider store={store}>
           <Game />

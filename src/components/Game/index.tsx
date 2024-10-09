@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue } from "jotai";
-import { CharacterWithAbilities, GamePage } from "../../types/custom";
+import { CharacterWithAbilities, Scene } from "../../types/custom";
 import CharacterSheet from "./CharacterSheet";
 import Battle from "./Battle";
 import Beef from "./Beef";
@@ -64,7 +64,7 @@ export default function Game() {
         console.log({ fightWithPlayersData: fightWithPlayers });
 
         setFight(fightWithPlayers);
-        setGamePage(GamePage.Battle);
+        setGamePage(Scene.Battle);
       } catch (error) {
         console.error(error);
       }
@@ -77,13 +77,13 @@ export default function Game() {
     componentToRender = <NewCharacter />;
   } else {
     switch (gamePage) {
-      case GamePage.CharacterSheet:
+      case Scene.CharacterSheet:
         componentToRender = <CharacterSheet />;
         break;
-      case GamePage.Beef:
+      case Scene.Beef:
         componentToRender = <Beef />;
         break;
-      case GamePage.Battle:
+      case Scene.Battle:
         if (!fight) {
           console.error("Fight is not set");
           return;

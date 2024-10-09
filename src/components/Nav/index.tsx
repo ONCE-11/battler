@@ -4,7 +4,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { characterAtom, gamePageAtom, loggedInAtom } from "../../atoms";
 import { RemoveUnderlinesFn } from "./types";
 import CharacterNavElements from "./CharacterNavElements";
-import { GamePage } from "../../types/custom";
+import { Scene } from "../../types/custom";
 import NavItem from "./NavItem";
 import {
   battleUnderlinedAtom,
@@ -48,7 +48,7 @@ const Nav = () => {
   function handleNewCharacterClick() {
     removeUnderlines();
     setNewCharacterUnderlined(true);
-    setGamePage(GamePage.NewCharacter);
+    setGamePage(Scene.NewCharacter);
     navigate("/");
   }
 
