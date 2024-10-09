@@ -1,13 +1,14 @@
 import { atom, useAtom, useSetAtom } from "jotai";
 import Title from "../../Title";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../../../utils";
 import { CharacterWithAbilities } from "../../../types/custom";
 import Player from "./Player";
 import { Tables } from "../../../types/supabase";
-import { fightAtom, FightWithPlayers } from "../types";
+import { FightWithPlayers } from "../types.js";
 import { SetStateAction } from "jotai/vanilla";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
+import { fightAtom } from "../state.js";
 
 type SetAtom<Args extends any[], Result> = (...args: Args) => Result;
 
@@ -34,12 +35,15 @@ const player2DisabledAtom = atom(false);
 const gameOverTitleAtom = atom("");
 
 export default function Battle({ fight, character }: BattleProps) {
-  const [player1, setPlayer1] = useAtom(
-    useMemo(() => atom<CharacterWithAbilities>(fight.player1), [fight.player1])
-  );
-  const [player2, setPlayer2] = useAtom(
-    useMemo(() => atom<CharacterWithAbilities>(fight.player2), [fight.player2])
-  );
+  const [player1, setPlayer1] = useState(fight.player1);
+  const [player2, setPlayer2] = useState(fight.player2);
+
+  // const [player1, setPlayer1] = useAtom(
+  //   useMemo(() => atom<CharacterWithAbilities>(fight.player1), [fight.player1])
+  // );
+  // const [player2, setPlayer2] = useAtom(
+  //   useMemo(() => atom<CharacterWithAbilities>(fight.player2), [fight.player2])
+  // );
   const setTurn = useSetAtom(useMemo(() => atom(fight.turn), [fight.turn]));
   const [gameOver, setGameOver] = useAtom(
     useMemo(() => atom(fight.game_over), [fight.game_over])
@@ -77,21 +81,13 @@ export default function Battle({ fight, character }: BattleProps) {
       winner_id,
     } = payload.new.metadata;
 
-    setPlayer1((previousPlayer1) => ({
-      ...previousPlayer1,
-      attack: player_1.attack,
-      defense: player_1.defense,
-      current_health: player_1.current_health,
-      alive: player_1.alive,
-    }));
+    console.log({
+      p1_current_health: player_1.current_health,
+      p2_current_health: player_2.current_health,
+    });
 
-    setPlayer2((previousPlayer2) => ({
-      ...previousPlayer2,
-      attack: player_2.attack,
-      defense: player_2.defense,
-      current_health: player_2.current_health,
-      alive: player_2.alive,
-    }));
+    setPlayer1({ ...player_1 });
+    setPlayer2({ ...player_2 });
 
     setTimeout(() => {
       setTurn(turn);
@@ -101,7 +97,7 @@ export default function Battle({ fight, character }: BattleProps) {
       if (game_over) {
         setGameOverTitle(winner_id === player1.id ? "P1 Wins" : "P2 Wins");
       }
-    }, 500);
+    }, 1000);
   }
 
   function initiatePlayer1RealtimeUpdates(id: string) {

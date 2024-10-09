@@ -1,4 +1,4 @@
 import { atom } from "jotai";
-import { Tables } from "../../types/supabase";
+import { FightWithPlayers } from "./types";
 
-export const fightAtom = atom<Tables<"fights">>();
+export const fightAtom = atom<FightWithPlayers>();

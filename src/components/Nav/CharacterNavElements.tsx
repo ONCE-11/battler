@@ -1,7 +1,7 @@
 import { GamePage } from "../../types/custom";
 import { RemoveUnderlinesFn } from "./types";
 import { useNavigate } from "react-router-dom";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { gamePageAtom } from "../../state";
 import NavItem from "./NavItem";
 import {
@@ -9,6 +9,7 @@ import {
   beefUnderlinedAtom,
   battleUnderlinedAtom,
 } from "./state";
+import { fightAtom } from "../Game/state";
 
 type CharacterNavElementsProps = {
   sharedCssClasses: string;
@@ -26,6 +27,9 @@ export default function CharacterNavElements({
   const [beefUnderlined, setBeefUnderlined] = useAtom(beefUnderlinedAtom);
   const [battleUnderlined, setBattleUnderlined] = useAtom(battleUnderlinedAtom);
   const navigate = useNavigate();
+  const fight = useAtomValue(fightAtom);
+
+  console.log({ fight });
 
   function handleClick(gamePage: GamePage, callbackFn: () => void) {
     removeUnderlines();
@@ -36,39 +40,46 @@ export default function CharacterNavElements({
 
   return (
     <>
-      <NavItem
-        sharedCssClasses={sharedCssClasses}
-        handleClick={(_e) =>
-          handleClick(GamePage.CharacterSheet, () =>
-            setCharacterSheetUnderlined(true)
-          )
-        }
-        icon="user"
-        underlined={characterSheetUnderlined}
-        testId="character-sheet"
-      >
-        Character
-      </NavItem>
-      <NavItem
-        sharedCssClasses={sharedCssClasses}
-        handleClick={(_e) =>
-          handleClick(GamePage.Beef, () => setBeefUnderlined(true))
-        }
-        icon="skull"
-        underlined={beefUnderlined}
-      >
-        Beefs
-      </NavItem>
-      <NavItem
-        sharedCssClasses={sharedCssClasses}
-        handleClick={(_e) =>
-          handleClick(GamePage.Battle, () => setBattleUnderlined(true))
-        }
-        icon="skull-crossbones"
-        underlined={battleUnderlined}
-      >
-        Battle
-      </NavItem>
+      {!fight && (
+        <>
+          <NavItem
+            sharedCssClasses={sharedCssClasses}
+            handleClick={(_e) =>
+              handleClick(GamePage.CharacterSheet, () =>
+                setCharacterSheetUnderlined(true)
+              )
+            }
+            icon="user"
+            underlined={characterSheetUnderlined}
+            testId="character-sheet"
+          >
+            Character
+          </NavItem>
+
+          <NavItem
+            sharedCssClasses={sharedCssClasses}
+            handleClick={(_e) =>
+              handleClick(GamePage.Beef, () => setBeefUnderlined(true))
+            }
+            icon="skull"
+            underlined={beefUnderlined}
+          >
+            Beefs
+          </NavItem>
+        </>
+      )}
+      {fight && (
+        <NavItem
+          sharedCssClasses={sharedCssClasses}
+          handleClick={(_e) =>
+            handleClick(GamePage.Battle, () => setBattleUnderlined(true))
+          }
+          icon="skull-crossbones"
+          underlined={battleUnderlined}
+        >
+          Battle
+        </NavItem>
+      )}
     </>
   );
 }

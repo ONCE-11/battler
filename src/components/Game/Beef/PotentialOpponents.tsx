@@ -40,7 +40,7 @@ export default function PotentialOpponents() {
 
       if (fetchCharactersError) throw fetchCharactersError;
 
-      // console.log({ potentialOpponents });
+      console.log({ potentialOpponents });
       setPotentialOpponents(potentialOpponents);
     }
 

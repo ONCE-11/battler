@@ -36,7 +36,7 @@ export default function PastBeef() {
         return;
       }
 
-      // console.log({ pastFightsData });
+      console.log({ pastFightsData });
 
       setPastFights(pastFightsData);
     }

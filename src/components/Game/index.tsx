@@ -8,10 +8,11 @@ import { useEffect } from "react";
 import NewCharacter from "./NewCharacter";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "../../utils";
-import { fightAtom, FightWithPlayers } from "./types";
+import { FightWithPlayers } from "./types.js";
+import { fightAtom } from "./state.js";
 
 export default function Game() {
-  const gamePage = useAtomValue(gamePageAtom);
+  const [gamePage, setGamePage] = useAtom(gamePageAtom);
   const currentUser = useAtomValue(currentUserAtom);
   const [character, setCharacter] = useAtom(characterAtom);
   const [fight, setFight] = useAtom(fightAtom);
@@ -55,11 +56,15 @@ export default function Game() {
             .returns<FightWithPlayers[]>()
             .single();
 
-        if (fetchFightError) throw fetchFightError;
+        if (fetchFightError) {
+          if (fetchFightError.code === "PGRST116") return;
+          throw fetchFightError;
+        }
 
         console.log({ fightWithPlayersData: fightWithPlayers });
 
         setFight(fightWithPlayers);
+        setGamePage(GamePage.Battle);
       } catch (error) {
         console.error(error);
       }
