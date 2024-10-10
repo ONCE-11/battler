@@ -74,10 +74,10 @@ export default function Game() {
         setGamePage(Scene.Battle);
 
         console.log("loading finished");
-
-        setTimeout(() => setLoading(false), 500);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
 
