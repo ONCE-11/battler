@@ -1,24 +1,24 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { atom, useAtom, useAtomValue } from "jotai";
-import { useRef } from "react";
-import { currentUserAtom } from "../atoms";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { atom, useAtom } from "jotai";
+// import { useRef } from "react";
+// import { currentUserAtom } from "../atoms";
 
-const playingAtom = atom<boolean>(false);
+// const playingAtom = atom<boolean>(false);
 
 export default function Footer() {
-  const ref = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useAtom(playingAtom);
-  const currentUser = useAtomValue(currentUserAtom);
+  // const ref = useRef<HTMLAudioElement>(null);
+  // const [playing, setPlaying] = useAtom(playingAtom);
+  // const currentUser = useAtomValue(currentUserAtom);
 
-  const handleClick = () => {
-    if (playing) {
-      ref.current!.pause();
-    } else {
-      ref.current!.play();
-    }
+  // const handleClick = () => {
+  //   if (playing) {
+  //     ref.current!.pause();
+  //   } else {
+  //     ref.current!.play();
+  //   }
 
-    setPlaying(!playing);
-  };
+  //   setPlaying(!playing);
+  // };
 
   return (
     <footer className="px-4 fixed bottom-0 max-w-screen-xl w-full bg-zinc-900">
@@ -27,7 +27,7 @@ export default function Footer() {
           © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE
         </p>
 
-        {currentUser && (
+        {/* {currentUser && (
           <div className="py-4">
             <FontAwesomeIcon
               icon={`${playing ? "circle-pause" : "circle-play"}`}
@@ -41,7 +41,7 @@ export default function Footer() {
             </span>
             <audio src="/music.mp3" controls={false} ref={ref} loop={true} />
           </div>
-        )}
+        )} */}
       </div>
     </footer>
   );
