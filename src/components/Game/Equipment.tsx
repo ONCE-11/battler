@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Title from "./Title";
+import Title from "../Title";
 
 const Equipment = () => {
   return (

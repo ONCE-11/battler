@@ -2,7 +2,6 @@ import { atom } from "jotai";
 import { User } from "@supabase/supabase-js";
 import { CharacterWithAbilities } from "./types/custom";
 import { Scene } from "./types/custom";
-// import { supabase } from "./utilities";
 
 interface MessageType {
   type?: "info" | "error";

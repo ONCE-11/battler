@@ -31,6 +31,7 @@ describe("Game", async function () {
     beforeEach(function () {
       store.set(characterAtom, characterMock);
       store.set(currentUserAtom, currentUserMock);
+      store.set(currentUserAtom, currentUserMock);
     });
 
     it("should display the character sheet when scene is set to character sheet", function () {

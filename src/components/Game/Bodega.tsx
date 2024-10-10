@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { supabase } from "../utils";
-import { Database } from "../types/supabase";
-import Title from "./Title";
-import Button from "./Button";
+import { supabase } from "../../utils";
+import { Database } from "../../types/supabase";
+import Title from "../Title";
+import Button from "../Button";
 import { atom, useAtom, useSetAtom, useAtomValue } from "jotai";
-import { currentUserAtom, messageAtom } from "../atoms";
+import { currentUserAtom, messageAtom } from "../../atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const itemsAtom = atom<Database["public"]["Tables"]["items"]["Row"][]>([]);
