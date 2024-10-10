@@ -3,7 +3,12 @@ import { CharacterWithAbilities, Scene } from "../../types/custom";
 import CharacterSheet from "./CharacterSheet";
 import Battle from "./Battle";
 import Beef from "./Beef";
-import { characterAtom, currentUserAtom, gamePageAtom } from "../../atoms.js";
+import {
+  characterAtom,
+  currentUserAtom,
+  gamePageAtom,
+  loadingAtom,
+} from "../../atoms.js";
 import { useEffect } from "react";
 import NewCharacter from "./NewCharacter";
 import { User } from "@supabase/supabase-js";
@@ -16,6 +21,8 @@ export default function Game() {
   const currentUser = useAtomValue(currentUserAtom);
   const [character, setCharacter] = useAtom(characterAtom);
   const [fight, setFight] = useAtom(fightAtom);
+  const [loading, setLoading] = useAtom(loadingAtom);
+
   let componentToRender;
 
   if (!currentUser) {
@@ -65,6 +72,10 @@ export default function Game() {
 
         setFight(fightWithPlayers);
         setGamePage(Scene.Battle);
+
+        console.log("loading finished");
+
+        setTimeout(() => setLoading(false), 500);
       } catch (error) {
         console.error(error);
       }
@@ -101,5 +112,5 @@ export default function Game() {
     }
   }
 
-  return componentToRender;
+  return loading ? "LOADING..." : componentToRender;
 }

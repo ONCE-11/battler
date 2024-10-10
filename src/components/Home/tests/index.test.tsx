@@ -1,7 +1,12 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { screen, render } from "@testing-library/react";
 import { createStore, Provider } from "jotai";
-import { characterAtom, currentUserAtom, loggedInAtom } from "../../../atoms";
+import {
+  characterAtom,
+  currentUserAtom,
+  loadingAtom,
+  loggedInAtom,
+} from "../../../atoms";
 import Home from "..";
 import { characterMock, currentUserMock } from "../../Game/tests/testUtils";
 
@@ -24,6 +29,7 @@ describe("Home", function () {
     beforeEach(function () {
       store.set(currentUserAtom, currentUserMock);
       store.set(loggedInAtom, true);
+      store.set(loadingAtom, false);
     });
 
     it("should display new character when character does not exist", function () {

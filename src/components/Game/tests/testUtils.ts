@@ -1,5 +1,6 @@
 import { User } from "@supabase/supabase-js";
 import { CharacterWithAbilities } from "../../../types/custom";
+import { FightWithPlayers } from "../types";
 
 export const characterMock = {
   id: "",
@@ -43,3 +44,14 @@ export const characterMock = {
 export const currentUserMock = {
   id: "some-sort-of-id",
 } as User;
+
+export const fightWithPlayersMock = {
+  id: "",
+  player1_id: characterMock.id,
+  player2_id: characterMock.id,
+  player1: characterMock,
+  player2: characterMock,
+  game_over: false,
+  current_turn_player_id: characterMock.id,
+  turn: 1,
+} as FightWithPlayers;

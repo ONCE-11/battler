@@ -2,13 +2,12 @@ import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import { loadingAtom, messageAtom } from "./atoms";
+import { messageAtom } from "./atoms";
 import useAuth from "./hooks/useAuth";
 import { useEffect } from "react";
 import Footer from "./components/Footer";
 
 const Layout = () => {
-  const loading = useAtomValue(loadingAtom);
   const message = useAtomValue(messageAtom);
 
   const { fetchSession } = useAuth();
@@ -30,13 +29,9 @@ const Layout = () => {
         </main>
       )}
 
-      {loading ? (
-        "LOADING"
-      ) : (
-        <main className="mt-4 mx-4 mb-16">
-          <Outlet />
-        </main>
-      )}
+      <main className="mt-4 mx-4 mb-16">
+        <Outlet />
+      </main>
 
       <Footer />
     </div>

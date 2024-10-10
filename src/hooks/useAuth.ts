@@ -1,17 +1,11 @@
 import { supabase } from "../utils";
 import { useSetAtom } from "jotai";
-import {
-  loadingAtom,
-  messageAtom,
-  loggedInAtom,
-  currentUserAtom,
-} from "../atoms";
+import { messageAtom, loggedInAtom, currentUserAtom } from "../atoms";
 
 const useAuth = () => {
   const setLoggedIn = useSetAtom(loggedInAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setMessage = useSetAtom(messageAtom);
-  const setLoading = useSetAtom(loadingAtom);
 
   const login = async (
     email: string,
@@ -68,8 +62,6 @@ const useAuth = () => {
       setCurrentUser(session.user);
       setLoggedIn(true);
     }
-
-    setLoading(false);
   };
 
   return { logout, login, fetchSession };

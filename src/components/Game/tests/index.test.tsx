@@ -6,15 +6,22 @@ import {
   gamePageAtom,
   characterAtom,
   currentUserAtom,
+  loadingAtom,
 } from "../../../atoms.ts";
 import { Scene } from "../../../types/custom.ts";
-import { characterMock, currentUserMock } from "./testUtils.ts";
+import {
+  characterMock,
+  currentUserMock,
+  fightWithPlayersMock,
+} from "./testUtils.ts";
+import { fightAtom } from "../atoms.ts";
 
 describe("Game", async function () {
   const store = createStore();
 
   beforeEach(function () {
     store.set(currentUserAtom, currentUserMock);
+    store.set(loadingAtom, false);
   });
 
   it("should display the new character scene when no characters exist", function () {
@@ -31,7 +38,7 @@ describe("Game", async function () {
     beforeEach(function () {
       store.set(characterAtom, characterMock);
       store.set(currentUserAtom, currentUserMock);
-      store.set(currentUserAtom, currentUserMock);
+      store.set(fightAtom, fightWithPlayersMock);
     });
 
     it("should display the character sheet when scene is set to character sheet", function () {
@@ -93,7 +100,7 @@ describe("Game", async function () {
         </Provider>
       );
 
-      expect(screen.getByText("Battle")).toBeInTheDocument();
+      expect(screen.getByText("P1's Turn")).toBeInTheDocument();
     });
   });
 });
