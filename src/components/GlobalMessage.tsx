@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 import { messageAtom } from "../atoms";
 
-const GlobalMessage = () => {
+export default function GlobalMessage() {
   const [{ type, text }, setMessage] = useAtom(messageAtom);
 
   const handleClick = () => {
@@ -22,6 +22,4 @@ const GlobalMessage = () => {
       </button>
     </h2>
   );
-};
-
-export default GlobalMessage;
+}

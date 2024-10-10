@@ -9,7 +9,7 @@ type ClearButtonProps = PropsWithChildren<{
   className: string;
 }>;
 
-const ClearButton: FC<ClearButtonProps> = ({
+const ClearButton: FC<ClearButtonProps> = function ({
   text,
   handleClick,
   additionalCssClasses,
@@ -17,7 +17,7 @@ const ClearButton: FC<ClearButtonProps> = ({
   disabled,
   children,
   className,
-}) => {
+}) {
   return (
     <button
       className={`bg-zinc-900 border border-purple-500 shadow-md shadow-black py-2 px-4 text-zinc-50 font-bold rounded active:shadow-inner active:bg-purple-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-purple-600 hover:text-zinc-50 ${additionalCssClasses?.join(

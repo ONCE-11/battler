@@ -3,7 +3,7 @@ import { PropsWithChildren } from "react";
 import { useSetAtom, useAtomValue } from "jotai";
 import { messageAtom, loggedInAtom } from "../atoms";
 
-export const ProtectedRoute = ({ children }: PropsWithChildren) => {
+export default function ProtectedRoute({ children }: PropsWithChildren) {
   const loggedIn = useAtomValue(loggedInAtom);
   const setMessage = useSetAtom(messageAtom);
   const location = useLocation();
@@ -19,4 +19,4 @@ export const ProtectedRoute = ({ children }: PropsWithChildren) => {
   }
 
   return children;
-};
+}

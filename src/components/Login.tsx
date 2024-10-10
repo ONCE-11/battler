@@ -8,7 +8,7 @@ import { messageAtom, loggedInAtom } from "../atoms";
 const emailAtom = atom("");
 const passwordAtom = atom("");
 
-const LoginForm = () => {
+export default function LoginForm() {
   const [email, setEmail] = useAtom(emailAtom);
   const [password, setPassword] = useAtom(passwordAtom);
   const setMessage = useSetAtom(messageAtom);
@@ -64,6 +64,4 @@ const LoginForm = () => {
       </form>
     </>
   );
-};
-
-export default LoginForm;
+}

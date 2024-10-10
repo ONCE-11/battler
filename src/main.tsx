@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Layout from "./Layout.tsx";
 import LoginForm from "./components/Login.tsx";
-import { ProtectedRoute } from "./components/ProtectedRoute.tsx";
+import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import { Provider } from "jotai";
 import Home from "./components/Home/index.tsx";
 import Game from "./components/Game/index.tsx";

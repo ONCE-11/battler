@@ -5,7 +5,7 @@ import { currentUserAtom } from "../atoms";
 
 const playingAtom = atom<boolean>(false);
 
-const Footer = () => {
+export default function Footer() {
   const ref = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useAtom(playingAtom);
   const currentUser = useAtomValue(currentUserAtom);
@@ -45,6 +45,4 @@ const Footer = () => {
       </div>
     </footer>
   );
-};
-
-export default Footer;
+}

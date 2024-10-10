@@ -3,7 +3,7 @@ import { FC, PropsWithChildren } from "react";
 // TODO: adjust this, this seems dirty
 type TitleProps = PropsWithChildren<{ text?: string; className?: string }>;
 
-const Title: FC<TitleProps> = ({ text, children, className }) => {
+const Title: FC<TitleProps> = function ({ text, children, className }) {
   return (
     <h1
       className={`text-4xl font-bold py-4${className ? ` ${className}` : ""}`}
