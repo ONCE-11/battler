@@ -6,17 +6,11 @@ import { CharacterWithAbilities } from "../../../types/custom";
 import Player from "./Player";
 import { Tables } from "../../../types/supabase";
 import { FightWithPlayers } from "../types.js";
-import { SetStateAction } from "jotai/vanilla";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import { fightAtom } from "../atoms.js";
-
-type SetAtom<Args extends any[], Result> = (...args: Args) => Result;
 
 type BattleProps = {
   fight: FightWithPlayers;
   character: CharacterWithAbilities;
-  fightAtom: typeof fightAtom;
-  setFight: SetAtom<[SetStateAction<FightWithPlayers | undefined>], void>;
 };
 
 type RealtimePayloadData = {
@@ -38,12 +32,6 @@ export default function Battle({ fight, character }: BattleProps) {
   const [player1, setPlayer1] = useState(fight.player1);
   const [player2, setPlayer2] = useState(fight.player2);
 
-  // const [player1, setPlayer1] = useAtom(
-  //   useMemo(() => atom<CharacterWithAbilities>(fight.player1), [fight.player1])
-  // );
-  // const [player2, setPlayer2] = useAtom(
-  //   useMemo(() => atom<CharacterWithAbilities>(fight.player2), [fight.player2])
-  // );
   const setTurn = useSetAtom(useMemo(() => atom(fight.turn), [fight.turn]));
   const [gameOver, setGameOver] = useAtom(
     useMemo(() => atom(fight.game_over), [fight.game_over])

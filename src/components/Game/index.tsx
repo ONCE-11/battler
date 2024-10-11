@@ -104,8 +104,6 @@ export default function Game() {
           <Battle
             fight={fight}
             character={character}
-            fightAtom={fightAtom}
-            setFight={setFight}
           />
         );
         break;
