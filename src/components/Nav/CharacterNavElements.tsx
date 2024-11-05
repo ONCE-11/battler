@@ -2,7 +2,7 @@ import { Scene } from "../../types/custom";
 import { RemoveUnderlinesFn } from "./types";
 import { useNavigate } from "react-router-dom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { gamePageAtom } from "../../atoms";
+import { sceneAtom } from "../../atoms";
 import NavItem from "./NavItem";
 import {
   characterSheetUnderlinedAtom,
@@ -20,7 +20,7 @@ export default function CharacterNavElements({
   sharedCssClasses,
   removeUnderlines,
 }: CharacterNavElementsProps) {
-  const setGamePage = useSetAtom(gamePageAtom);
+  const setGamePage = useSetAtom(sceneAtom);
   const [characterSheetUnderlined, setCharacterSheetUnderlined] = useAtom(
     characterSheetUnderlinedAtom
   );
