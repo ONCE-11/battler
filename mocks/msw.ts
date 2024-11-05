@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 import { setupServer } from "msw/node";
 import { http, HttpResponse } from "msw";
-import { characterMock, fightWithPlayersMock } from "./db";
+import { fightWithPlayersMock } from "./db";
 
 const { VITE_SUPABASE_URL } = import.meta.env;
 
