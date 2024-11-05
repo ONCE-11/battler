@@ -50,10 +50,7 @@ const useAuth = () => {
       error,
     } = await supabase.auth.getSession();
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+    if (error) console.error(error);
 
     if (!session) {
       setLoggedIn(false);

@@ -8,7 +8,7 @@ import {
   loggedInAtom,
 } from "../../../atoms";
 import Home from "..";
-import { characterMock, currentUserMock } from "../../Game/tests/testUtils";
+import { characterMock, currentUserMock } from "../../../../mocks/db";
 
 describe("Home", function () {
   const store = createStore();

@@ -13,5 +13,5 @@ export const messageAtom = atom<MessageType>({});
 export const loggedInAtom = atom(false);
 export const currentUserAtom = atom<User>();
 export const currentCharacterAtom = atom<CharacterWithAbilities>();
-export const gamePageAtom = atom<Scene>(Scene.CharacterSheet);
+export const sceneAtom = atom<Scene>();
 export const characterAtom = atom<CharacterWithAbilities>();
