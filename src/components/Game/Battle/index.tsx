@@ -1,14 +1,12 @@
 import { atom, useSetAtom } from "jotai";
-import Title from "../../Title";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../../../utils";
-import { CharacterWithAbilities, Scene } from "../../../types/custom";
+import { CharacterWithAbilities } from "../../../types/custom";
 import Player from "./Player";
 import { Tables } from "../../../types/supabase";
 import { FightWithPlayers } from "../types.js";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
-import Button from "../../Button.js";
-import { sceneAtom } from "../../../atoms.js";
+import BattleTitle from "./BattleTitle.js";
 
 type BattleProps = {
   fight: FightWithPlayers;
@@ -38,7 +36,6 @@ export default function Battle({ fight, character }: BattleProps) {
     fight.current_turn_player_id
   );
   const [winnerId, setWinnerId] = useState(fight.winner_id);
-  const setScene = useSetAtom(sceneAtom);
 
   useEffect(function () {
     if (character.id === fight.player1_id) {
@@ -121,37 +118,13 @@ export default function Battle({ fight, character }: BattleProps) {
 
   return (
     <>
-      {gameOver ? (
-        <>
-          <Title className="flex justify-between">
-            {winnerId === character.id ? (
-              <>
-                <span>You win!</span>
-                <Button
-                  handleClick={() => setScene(Scene.Beef)}
-                  className={`text-xl`}
-                >
-                  Take your W
-                </Button>
-              </>
-            ) : (
-              <>
-                <span>You lost!</span>
-                <Button
-                  handleClick={() => setScene(Scene.NewCharacter)}
-                  className={`text-xl`}
-                >
-                  Dip out
-                </Button>
-              </>
-            )}
-          </Title>
-        </>
-      ) : (
-        <Title>
-          {currentTurnPlayerId === player1.id ? "P1's Turn" : "P2's Turn"}
-        </Title>
-      )}
+      <BattleTitle
+        gameOver={gameOver}
+        winnerId={winnerId}
+        player1Id={player1.id}
+        currentTurnPlayerId={currentTurnPlayerId}
+        characterId={character.id}
+      />
       <div>
         {player1 && player2 && (
           <>
