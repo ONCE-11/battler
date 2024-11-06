@@ -56,7 +56,7 @@ export default function NewCharacter() {
       <Title>New Character</Title>
       <Button
         text="Go"
-        additionalCssClasses={["mt-4"]}
+        className="mt-4"
         handleClick={(_e) => handleClick(currentUser)}
       />
     </>

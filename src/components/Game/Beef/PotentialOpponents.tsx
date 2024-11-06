@@ -87,7 +87,7 @@ export default function PotentialOpponents() {
               {!character.fighting && (
                 <span className="text-right">
                   <Button
-                    additionalCssClasses={["text-right"]}
+                    className="text-right"
                     handleClick={() => startBeefin(character, id)}
                   >
                     <FontAwesomeIcon icon={["fas", "face-angry"]} />{" "}

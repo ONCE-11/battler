@@ -56,11 +56,7 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
         />
-        <Button
-          text="Login"
-          additionalCssClasses={["mt-8"]}
-          handleClick={handleClick}
-        />
+        <Button text="Login" className="mt-8" handleClick={handleClick} />
       </form>
     </>
   );
