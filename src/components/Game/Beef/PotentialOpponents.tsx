@@ -57,9 +57,11 @@ export default function PotentialOpponents() {
     });
 
     if (error) {
-      console.error(new Error(error.message, {
-        cause: JSON.stringify(error),
-      }));
+      console.error(
+        new Error(error.message, {
+          cause: JSON.stringify(error),
+        })
+      );
       return;
     }
 
