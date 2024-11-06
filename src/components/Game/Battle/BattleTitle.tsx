@@ -1,9 +1,10 @@
 import { useSetAtom } from "jotai";
 import Button from "../../Button";
 import Title from "../../Title";
-import { sceneAtom } from "../../../atoms";
+import { characterAtom, sceneAtom } from "../../../atoms";
 import { CharacterWithAbilities, Scene } from "../../../types/custom";
 import { FightWithPlayers } from "../types";
+import { fightAtom } from "../atoms";
 
 type BattleTitleProps = {
   gameOver: FightWithPlayers["game_over"];
@@ -21,6 +22,19 @@ export default function BattleTitle({
   winnerId,
 }: BattleTitleProps) {
   const setScene = useSetAtom(sceneAtom);
+  const setFight = useSetAtom(fightAtom);
+  const setCharacter = useSetAtom(characterAtom);
+
+  function handleWinClick() {
+    setFight(null);
+    setScene(Scene.Beef);
+  }
+
+  function handleLossClick() {
+    setFight(null);
+    setCharacter(null);
+    setScene(Scene.NewCharacter);
+  }
 
   return gameOver ? (
     <>
@@ -28,20 +42,14 @@ export default function BattleTitle({
         {winnerId === characterId ? (
           <>
             <span>You win!</span>
-            <Button
-              handleClick={() => setScene(Scene.Beef)}
-              className={`text-xl`}
-            >
+            <Button handleClick={handleWinClick} className={`text-xl`}>
               Take your W
             </Button>
           </>
         ) : (
           <>
             <span>You lost!</span>
-            <Button
-              handleClick={() => setScene(Scene.NewCharacter)}
-              className={`text-xl`}
-            >
+            <Button handleClick={handleLossClick} className={`text-xl`}>
               Dip out
             </Button>
           </>

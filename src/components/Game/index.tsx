@@ -11,10 +11,11 @@ import {
 } from "../../atoms.js";
 import { useEffect, useState } from "react";
 import NewCharacter from "./NewCharacter";
-import { User } from "@supabase/supabase-js";
+import { RealtimePostgresInsertPayload, User } from "@supabase/supabase-js";
 import { supabase } from "../../utils";
 import { FightWithPlayers } from "./types.js";
 import { fightAtom } from "./atoms.js";
+import { Tables } from "../../types/supabase.js";
 
 const NO_ROWS_RETURNED = "PGRST116";
 
@@ -58,7 +59,7 @@ export default function Game() {
           throw fetchCharacterError;
         }
 
-        console.log({ characterWithAbilities });
+        // console.log({ characterWithAbilities });
 
         setCharacter(characterWithAbilities);
       }
@@ -70,16 +71,37 @@ export default function Game() {
 
   useEffect(
     function () {
-      console.log({ character });
+      // console.log({ character });
 
       if (!character) {
-        console.log("new char");
+        // console.log("new char");
         setScene(Scene.NewCharacter);
       } else if (character.fighting) {
-        console.log("fighting");
+        // console.log("fighting");
         setScene(Scene.Battle);
       } else {
         console.log("char sheet");
+
+        // o: to capture the realtime event where a fight is initiated with your current character
+        supabase
+          .channel(`fight initiation`)
+          .on(
+            "postgres_changes",
+            {
+              event: "INSERT",
+              schema: "public",
+              table: "fights",
+              filter: `player2_id=eq.${character.id}`,
+            },
+            async (
+              payload: RealtimePostgresInsertPayload<Tables<"fights">>
+            ) => {
+              console.log(`fight initiation`, payload);
+              setScene(Scene.Battle);
+            }
+          )
+          .subscribe();
+
         setScene(Scene.CharacterSheet);
       }
     },
@@ -129,7 +151,7 @@ export default function Game() {
               throw fetchFightError;
             }
 
-            console.log({ fightWithPlayers });
+            // console.log({ fightWithPlayers });
 
             setFight(fightWithPlayers);
 
@@ -137,7 +159,7 @@ export default function Game() {
           }
 
           fetchFight(character.id, function (newFight) {
-            console.log({ newFight });
+            // console.log({ newFight });
 
             if (!newFight) {
               console.error(
@@ -147,7 +169,7 @@ export default function Game() {
               );
               return;
             } else {
-              console.log("setComponent");
+              // console.log("setComponent");
               setComponent(
                 <Battle fight={newFight} characterId={character.id} />
               );
@@ -160,7 +182,7 @@ export default function Game() {
 
   useEffect(
     function () {
-      console.log("Loading");
+      // console.log("Loading");
       setLoading(false);
     },
     [component]

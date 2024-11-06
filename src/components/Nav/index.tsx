@@ -83,7 +83,7 @@ const Nav = () => {
                 <NavItem
                   sharedCssClasses={sharedCssClasses}
                   handleClick={handleNewCharacterClick}
-                  icon="user"
+                  icon="user-plus"
                   underlined={newCharacterUnderlined}
                   testId="new-character"
                 >

@@ -14,4 +14,4 @@ export const loggedInAtom = atom(false);
 export const currentUserAtom = atom<User>();
 export const currentCharacterAtom = atom<CharacterWithAbilities>();
 export const sceneAtom = atom<Scene>();
-export const characterAtom = atom<CharacterWithAbilities>();
+export const characterAtom = atom<CharacterWithAbilities | null>(null);
