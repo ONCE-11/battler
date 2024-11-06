@@ -1,16 +1,16 @@
 import { useSetAtom } from "jotai";
-import { Tables } from "../../../types/supabase";
 import Button from "../../Button";
 import Title from "../../Title";
 import { sceneAtom } from "../../../atoms";
-import { Scene } from "../../../types/custom";
+import { CharacterWithAbilities, Scene } from "../../../types/custom";
+import { FightWithPlayers } from "../types";
 
 type BattleTitleProps = {
-  gameOver: Tables<"fights">["game_over"];
-  player1Id: Tables<"characters">["id"];
-  currentTurnPlayerId: Tables<"characters">["id"];
-  characterId: Tables<"characters">["id"];
-  winnerId: Tables<"fights">["winner_id"];
+  gameOver: FightWithPlayers["game_over"];
+  player1Id: CharacterWithAbilities["id"];
+  currentTurnPlayerId: FightWithPlayers["current_turn_player_id"];
+  characterId: CharacterWithAbilities["id"];
+  winnerId: FightWithPlayers["winner_id"];
 };
 
 export default function BattleTitle({

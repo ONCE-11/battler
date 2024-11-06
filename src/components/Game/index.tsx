@@ -140,7 +140,6 @@ export default function Game() {
             console.log({ newFight });
 
             if (!newFight) {
-              // console.log("dsfsdfsdfs");
               console.error(
                 new Error(
                   `There is no fight associated with character with id of "${character.id}"`
@@ -149,7 +148,9 @@ export default function Game() {
               return;
             } else {
               console.log("setComponent");
-              setComponent(<Battle fight={newFight} character={character} />);
+              setComponent(
+                <Battle fight={newFight} characterId={character.id} />
+              );
             }
           });
       }

@@ -10,7 +10,7 @@ import BattleTitle from "./BattleTitle.js";
 
 type BattleProps = {
   fight: FightWithPlayers;
-  character: CharacterWithAbilities;
+  characterId: CharacterWithAbilities["id"];
 };
 
 type RealtimePayloadData = {
@@ -24,7 +24,7 @@ type RealtimePayloadData = {
   };
 };
 
-export default function Battle({ fight, character }: BattleProps) {
+export default function Battle({ fight, characterId }: BattleProps) {
   const [player1, setPlayer1] = useState(fight.player1);
   const [player2, setPlayer2] = useState(fight.player2);
 
@@ -38,7 +38,7 @@ export default function Battle({ fight, character }: BattleProps) {
   const [winnerId, setWinnerId] = useState(fight.winner_id);
 
   useEffect(function () {
-    if (character.id === fight.player1_id) {
+    if (characterId === fight.player1_id) {
       setPlayer2Disabled(true);
     } else {
       setPlayer1Disabled(true);
@@ -123,7 +123,7 @@ export default function Battle({ fight, character }: BattleProps) {
         winnerId={winnerId}
         player1Id={player1.id}
         currentTurnPlayerId={currentTurnPlayerId}
-        characterId={character.id}
+        characterId={characterId}
       />
       <div>
         {player1 && player2 && (
