@@ -4,6 +4,7 @@ import Button from "../../Button";
 import ClearButton from "../../ClearButton";
 import { supabase } from "../../../utils";
 import { Tables } from "../../../types/supabase";
+import { useState } from "react";
 
 type PlayerProps = {
   player: CharacterWithAbilities;
@@ -40,7 +41,19 @@ function Player({
     ability3,
   } = player;
 
-  const useAbility = async (abilitySlot: number) => {
+  const [loadingAbility1, setLoadingAbility1] = useState(false);
+  const [loadingAbility2, setLoadingAbility2] = useState(false);
+  const [loadingAbility3, setLoadingAbility3] = useState(false);
+
+  async function useAbility(abilitySlot: number) {
+    const loaders = [
+      setLoadingAbility1,
+      setLoadingAbility2,
+      setLoadingAbility3,
+    ];
+
+    loaders[abilitySlot - 1](true);
+
     const { error } = await supabase.functions.invoke("useAbility", {
       body: {
         abilityNumber: abilitySlot,
@@ -53,7 +66,9 @@ function Player({
     if (error) {
       console.error(error);
     }
-  };
+
+    loaders[abilitySlot - 1](false);
+  }
 
   return (
     <section className={`${hidden && "hidden"}`}>
@@ -108,21 +123,21 @@ function Player({
         className="mt-4 py-4 w-full"
         handleClick={(_e) => useAbility(1)}
       >
-        {ability1.name}
+        {loadingAbility1 ? <FontAwesomeIcon icon="circle-notch" className="fa-spin" /> : ability1.name}
       </ClearButton>
       <ClearButton
         disabled={disabled}
         className="mt-4 py-4 w-full"
         handleClick={(_e) => useAbility(2)}
       >
-        {ability2.name}
+        {loadingAbility2 ? <FontAwesomeIcon icon="circle-notch" className="fa-spin" /> : ability2.name}
       </ClearButton>
       <Button
         disabled={disabled}
         className="my-4 py-4 w-full"
         handleClick={(_e) => useAbility(3)}
       >
-        {ability3.name}
+        {loadingAbility3 ? <FontAwesomeIcon icon="circle-notch" className="fa-spin" /> : ability3.name}
       </Button>
     </section>
   );
