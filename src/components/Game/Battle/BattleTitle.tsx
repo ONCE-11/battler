@@ -1,4 +1,4 @@
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import Button from "../../Button";
 import Title from "../../Title";
 import { characterAtom, sceneAtom } from "../../../atoms";
@@ -23,10 +23,11 @@ export default function BattleTitle({
 }: BattleTitleProps) {
   const setScene = useSetAtom(sceneAtom);
   const setFight = useSetAtom(fightAtom);
-  const setCharacter = useSetAtom(characterAtom);
+  const [character, setCharacter] = useAtom(characterAtom);
 
   function handleWinClick() {
     setFight(null);
+    setCharacter({ ...character, fighting: false } as CharacterWithAbilities);
     setScene(Scene.Beef);
   }
 

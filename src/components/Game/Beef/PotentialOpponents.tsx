@@ -2,50 +2,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../Button";
 import { supabase } from "../../../utils";
 import { CharacterWithAbilities, Scene } from "../../../types/custom";
-import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
-import { characterAtom, currentUserAtom, sceneAtom } from "../../../atoms";
-import { useEffect } from "react";
-import { User } from "@supabase/supabase-js";
+import { useAtom, useSetAtom } from "jotai";
+import { characterAtom, sceneAtom } from "../../../atoms";
 
-const potentialOpponentsAtom = atom<CharacterWithAbilities[]>([]);
+type PotentialOpponentsProps = {
+  potentialOpponents: CharacterWithAbilities[];
+};
 
-export default function PotentialOpponents() {
-  const [potentialOpponents, setPotentialOpponents] = useAtom(
-    potentialOpponentsAtom
-  );
+export default function PotentialOpponents({
+  potentialOpponents,
+}: PotentialOpponentsProps) {
   const setScene = useSetAtom(sceneAtom);
-  const currentUser = useAtomValue(currentUserAtom);
   const [character, setCharacter] = useAtom(characterAtom);
-
-  if (!currentUser) {
-    console.error("Current user is not defined");
-    return;
-  }
 
   if (!character) {
     console.error("Character is not defined");
     return;
   }
-
-  useEffect(function () {
-    async function fetchData(currentUser: User) {
-      const { data: potentialOpponents, error: fetchCharactersError } =
-        await supabase
-          .from("characters")
-          .select("*")
-          .not("user_id", "eq", currentUser.id)
-          .eq("alive", true)
-          .eq("fighting", false)
-          .returns<CharacterWithAbilities[]>();
-
-      if (fetchCharactersError) throw fetchCharactersError;
-
-      console.log({ potentialOpponents });
-      setPotentialOpponents(potentialOpponents);
-    }
-
-    fetchData(currentUser);
-  }, []);
 
   async function startBeefin(
     character: CharacterWithAbilities,
