@@ -16,6 +16,7 @@ type PlayerProps = {
   fightId: Tables<"fights">["id"];
   hidden?: boolean;
   disabled: boolean;
+  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function Player({
@@ -27,6 +28,7 @@ function Player({
   fightId,
   hidden,
   disabled,
+  setDisabled,
 }: PlayerProps) {
   const {
     avatar_url,
@@ -41,18 +43,20 @@ function Player({
     ability3,
   } = player;
 
-  const [loadingAbility1, setLoadingAbility1] = useState(false);
-  const [loadingAbility2, setLoadingAbility2] = useState(false);
-  const [loadingAbility3, setLoadingAbility3] = useState(false);
+  const [abilityLoading1, setAbilityLoading1] = useState(false);
+  const [abilityLoading2, setAbilityLoading2] = useState(false);
+  const [abilityLoading3, setAbilityLoading3] = useState(false);
 
   async function useAbility(abilitySlot: number) {
-    const loaders = [
-      setLoadingAbility1,
-      setLoadingAbility2,
-      setLoadingAbility3,
+    const abilityLoadingFunctions = [
+      setAbilityLoading1,
+      setAbilityLoading2,
+      setAbilityLoading3,
     ];
 
-    loaders[abilitySlot - 1](true);
+    setDisabled(true);
+
+    abilityLoadingFunctions[abilitySlot - 1](true);
 
     const { error } = await supabase.functions.invoke("useAbility", {
       body: {
@@ -67,7 +71,7 @@ function Player({
       console.error(error);
     }
 
-    loaders[abilitySlot - 1](false);
+    abilityLoadingFunctions[abilitySlot - 1](false);
   }
 
   return (
@@ -123,21 +127,33 @@ function Player({
         className="mt-4 py-4 w-full"
         handleClick={(_e) => useAbility(1)}
       >
-        {loadingAbility1 ? <FontAwesomeIcon icon="circle-notch" className="fa-spin" /> : ability1.name}
+        {abilityLoading1 ? (
+          <FontAwesomeIcon icon="circle-notch" className="fa-spin" />
+        ) : (
+          ability1.name
+        )}
       </ClearButton>
       <ClearButton
         disabled={disabled}
         className="mt-4 py-4 w-full"
         handleClick={(_e) => useAbility(2)}
       >
-        {loadingAbility2 ? <FontAwesomeIcon icon="circle-notch" className="fa-spin" /> : ability2.name}
+        {abilityLoading2 ? (
+          <FontAwesomeIcon icon="circle-notch" className="fa-spin" />
+        ) : (
+          ability2.name
+        )}
       </ClearButton>
       <Button
         disabled={disabled}
         className="my-4 py-4 w-full"
         handleClick={(_e) => useAbility(3)}
       >
-        {loadingAbility3 ? <FontAwesomeIcon icon="circle-notch" className="fa-spin" /> : ability3.name}
+        {abilityLoading3 ? (
+          <FontAwesomeIcon icon="circle-notch" className="fa-spin" />
+        ) : (
+          ability3.name
+        )}
       </Button>
     </section>
   );

@@ -70,6 +70,21 @@ export default function Battle({ fight, characterId }: BattleProps) {
 
     setTimeout(() => {
       setTurn(turn);
+
+      // we are doing this because we disable the currently attacking player's
+      //  action buttons whenever they act
+      if (
+        characterId === player_1.id &&
+        player_1.id === current_turn_player_id
+      ) {
+        setPlayer1Disabled(false);
+      } else if (
+        characterId === player_2.id &&
+        player_2.id === current_turn_player_id
+      ) {
+        setPlayer2Disabled(false);
+      }
+
       setCurrentTurnPlayerId(current_turn_player_id);
       setWinnerId(winner_id);
       setGameOver(game_over);
@@ -136,6 +151,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
               opponentId={player2.id}
               fightId={fight.id}
               disabled={gameOver || player1Disabled}
+              setDisabled={setPlayer1Disabled}
             />
             <Player
               player={player2}
@@ -146,6 +162,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
               opponentId={player1.id}
               fightId={fight.id}
               disabled={gameOver || player2Disabled}
+              setDisabled={setPlayer2Disabled}
             />
           </>
         )}
