@@ -65,29 +65,46 @@ export default function Battle({ fight, characterId }: BattleProps) {
       p2_current_health: player_2.current_health,
     });
 
-    setPlayer1({ ...player_1 });
-    setPlayer2({ ...player_2 });
+    // we assume the previous player is currently seen at this
+    //  point so we update that player first
+    if (player_1.id === current_turn_player_id) {
+      setPlayer2({ ...player_2 });
+    } else {
+      setPlayer1({ ...player_1 });
+    }
 
     setTimeout(() => {
       setTurn(turn);
 
-      // we are doing this because we disable the currently attacking player's
-      //  action buttons whenever they act
-      if (
-        characterId === player_1.id &&
-        player_1.id === current_turn_player_id
-      ) {
-        setPlayer1Disabled(false);
-      } else if (
-        characterId === player_2.id &&
-        player_2.id === current_turn_player_id
-      ) {
-        setPlayer2Disabled(false);
-      }
-
+      
       setCurrentTurnPlayerId(current_turn_player_id);
-      setWinnerId(winner_id);
-      setGameOver(game_over);
+      
+      setTimeout(() => {
+        // we assume we are looking at the current player now
+        //  so we update their information
+        if (player_1.id === current_turn_player_id) {
+          setPlayer1({ ...player_1 });
+        } else {
+          setPlayer2({ ...player_2 });
+        }
+        
+        setWinnerId(winner_id);
+        setGameOver(game_over);
+
+        // we are doing this because we disable the currently attacking player's
+        //  action buttons whenever they act
+        if (
+          characterId === player_1.id &&
+          player_1.id === current_turn_player_id
+        ) {
+          setPlayer1Disabled(false);
+        } else if (
+          characterId === player_2.id &&
+          player_2.id === current_turn_player_id
+        ) {
+          setPlayer2Disabled(false);
+        }
+      }, 1000);
     }, 1000);
   }
 
