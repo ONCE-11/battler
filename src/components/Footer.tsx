@@ -3,6 +3,9 @@
 // import { useRef } from "react";
 // import { currentUserAtom } from "../atoms";
 
+import { useState } from "react";
+import Button from "./Button";
+
 // const playingAtom = atom<boolean>(false);
 
 export default function Footer() {
@@ -20,12 +23,28 @@ export default function Footer() {
   //   setPlaying(!playing);
   // };
 
+  const [isFullScreen, setIsFullScreen] = useState(false);
+
+  function handleClick() {
+    if (isFullScreen) {
+      document.exitFullscreen();
+      setIsFullScreen(false);
+    } else {
+      document.body.requestFullscreen();
+      setIsFullScreen(true);
+    }
+  }
+
   return (
     <footer className="px-4 fixed bottom-0 max-w-screen-xl w-full bg-zinc-900">
       <div className="border-t flex justify-between">
         <p className="py-4">
           © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE
         </p>
+
+        <Button handleClick={handleClick}>
+          {isFullScreen ? "Close Fullscreen" : "Go Fullscreen"}
+        </Button>
 
         {/* {currentUser && (
           <div className="py-4">
