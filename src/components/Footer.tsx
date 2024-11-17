@@ -5,6 +5,7 @@
 
 import { useState } from "react";
 import Button from "./Button";
+import ClearButton from "./ClearButton";
 
 // const playingAtom = atom<boolean>(false);
 
@@ -42,9 +43,9 @@ export default function Footer() {
           © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE
         </p>
 
-        <Button handleClick={handleClick}>
+        <ClearButton handleClick={handleClick}>
           {isFullScreen ? "Close Fullscreen" : "Go Fullscreen"}
-        </Button>
+        </ClearButton>
 
         {/* {currentUser && (
           <div className="py-4">

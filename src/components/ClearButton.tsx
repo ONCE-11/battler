@@ -6,7 +6,7 @@ type ClearButtonProps = PropsWithChildren<{
   additionalCssClasses?: string[];
   type?: "button" | "submit";
   disabled?: boolean;
-  className: string;
+  className?: string;
 }>;
 
 const ClearButton: FC<ClearButtonProps> = function ({
