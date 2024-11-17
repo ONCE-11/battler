@@ -16,7 +16,8 @@ type PlayerProps = {
   fightId: Tables<"fights">["id"];
   hidden?: boolean;
   disabled: boolean;
-  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  disableAbilities: () => void;
+  setBattleStatusToAttacking: () => void;
 };
 
 function Player({
@@ -28,7 +29,8 @@ function Player({
   fightId,
   hidden,
   disabled,
-  setDisabled,
+  disableAbilities,
+  setBattleStatusToAttacking,
 }: PlayerProps) {
   const {
     avatar_url,
@@ -54,7 +56,8 @@ function Player({
       setAbilityLoading3,
     ];
 
-    setDisabled(true);
+    disableAbilities();
+    setBattleStatusToAttacking();
 
     abilityLoadingFunctions[abilitySlot - 1](true);
 

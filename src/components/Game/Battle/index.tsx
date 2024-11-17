@@ -7,6 +7,7 @@ import { Tables } from "../../../types/supabase";
 import { FightWithPlayers } from "../types.js";
 import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
 import BattleTitle from "./BattleTitle.js";
+import { BattleStatus } from "./types.js";
 
 type BattleProps = {
   fight: FightWithPlayers;
@@ -36,6 +37,11 @@ export default function Battle({ fight, characterId }: BattleProps) {
     fight.current_turn_player_id
   );
   const [winnerId, setWinnerId] = useState(fight.winner_id);
+  const [battleStatus, setBattleStatus] = useState(
+    fight.current_turn_player_id === fight.player1.id
+      ? BattleStatus.Player1Turn
+      : BattleStatus.Player2Turn
+  );
 
   useEffect(function () {
     if (characterId === fight.player1_id) {
@@ -75,21 +81,35 @@ export default function Battle({ fight, characterId }: BattleProps) {
 
     setTimeout(() => {
       setTurn(turn);
-
-      
       setCurrentTurnPlayerId(current_turn_player_id);
-      
+
+      if (player_1.id === current_turn_player_id) {
+        setBattleStatus(BattleStatus.Player2Defending);
+      } else {
+        setBattleStatus(BattleStatus.Player1Defending);
+      }
+
       setTimeout(() => {
         // we assume we are looking at the current player now
         //  so we update their information
         if (player_1.id === current_turn_player_id) {
           setPlayer1({ ...player_1 });
+          setBattleStatus(BattleStatus.Player1Turn);
         } else {
           setPlayer2({ ...player_2 });
+          setBattleStatus(BattleStatus.Player2Turn);
         }
-        
-        setWinnerId(winner_id);
-        setGameOver(game_over);
+
+        if (game_over) {
+          setWinnerId(winner_id);
+          setGameOver(game_over);
+
+          if (player_1.id === winnerId) {
+            setBattleStatus(BattleStatus.Player1Wins);
+          } else {
+            setBattleStatus(BattleStatus.Player2Wins);
+          }
+        } 
 
         // we are doing this because we disable the currently attacking player's
         //  action buttons whenever they act
@@ -151,11 +171,9 @@ export default function Battle({ fight, characterId }: BattleProps) {
   return (
     <>
       <BattleTitle
-        gameOver={gameOver}
         winnerId={winnerId}
-        player1Id={player1.id}
-        currentTurnPlayerId={currentTurnPlayerId}
         characterId={characterId}
+        battleStatus={battleStatus}
       />
       <div>
         {player1 && player2 && (
@@ -168,7 +186,10 @@ export default function Battle({ fight, characterId }: BattleProps) {
               opponentId={player2.id}
               fightId={fight.id}
               disabled={gameOver || player1Disabled}
-              setDisabled={setPlayer1Disabled}
+              disableAbilities={() => setPlayer1Disabled(true)}
+              setBattleStatusToAttacking={() =>
+                setBattleStatus(BattleStatus.Player1Attacking)
+              }
             />
             <Player
               player={player2}
@@ -179,7 +200,10 @@ export default function Battle({ fight, characterId }: BattleProps) {
               opponentId={player1.id}
               fightId={fight.id}
               disabled={gameOver || player2Disabled}
-              setDisabled={setPlayer2Disabled}
+              disableAbilities={() => setPlayer2Disabled(true)}
+              setBattleStatusToAttacking={() =>
+                setBattleStatus(BattleStatus.Player2Attacking)
+              }
             />
           </>
         )}
