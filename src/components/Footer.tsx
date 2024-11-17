@@ -4,7 +4,6 @@
 // import { currentUserAtom } from "../atoms";
 
 import { useState } from "react";
-import Button from "./Button";
 import ClearButton from "./ClearButton";
 
 // const playingAtom = atom<boolean>(false);
