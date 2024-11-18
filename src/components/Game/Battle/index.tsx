@@ -83,10 +83,11 @@ export default function Battle({ fight, characterId }: BattleProps) {
       setTurn(turn);
       setCurrentTurnPlayerId(current_turn_player_id);
 
+      // at this point the current player should be in its defending status
       if (player_1.id === current_turn_player_id) {
-        setBattleStatus(BattleStatus.Player2Defending);
-      } else {
         setBattleStatus(BattleStatus.Player1Defending);
+      } else {
+        setBattleStatus(BattleStatus.Player2Defending);
       }
 
       setTimeout(() => {
