@@ -16,6 +16,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+
+  body::backdrop {
+    /* TODO: should use tailwind variable somehow here */
+    background-color: rgb(24, 24, 27);
+  }
 }
 
 /* body {
