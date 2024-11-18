@@ -109,7 +109,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
           } else {
             setBattleStatus(BattleStatus.Player2Wins);
           }
-        } 
+        }
 
         // we are doing this because we disable the currently attacking player's
         //  action buttons whenever they act
@@ -142,6 +142,8 @@ export default function Battle({ fight, characterId }: BattleProps) {
         async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
           console.log(`player 1 action`, payload);
 
+          setBattleStatus(BattleStatus.Player1Attacking);
+
           updateStates(payload);
         }
       )
@@ -161,6 +163,8 @@ export default function Battle({ fight, characterId }: BattleProps) {
         },
         async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
           console.log(`player 2 action`, payload);
+
+          setBattleStatus(BattleStatus.Player2Attacking);
 
           updateStates(payload);
         }
@@ -187,9 +191,6 @@ export default function Battle({ fight, characterId }: BattleProps) {
               fightId={fight.id}
               disabled={gameOver || player1Disabled}
               disableAbilities={() => setPlayer1Disabled(true)}
-              setBattleStatusToAttacking={() =>
-                setBattleStatus(BattleStatus.Player1Attacking)
-              }
             />
             <Player
               player={player2}
@@ -201,9 +202,6 @@ export default function Battle({ fight, characterId }: BattleProps) {
               fightId={fight.id}
               disabled={gameOver || player2Disabled}
               disableAbilities={() => setPlayer2Disabled(true)}
-              setBattleStatusToAttacking={() =>
-                setBattleStatus(BattleStatus.Player2Attacking)
-              }
             />
           </>
         )}

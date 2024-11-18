@@ -17,7 +17,6 @@ type PlayerProps = {
   hidden?: boolean;
   disabled: boolean;
   disableAbilities: () => void;
-  setBattleStatusToAttacking: () => void;
 };
 
 function Player({
@@ -30,8 +29,8 @@ function Player({
   hidden,
   disabled,
   disableAbilities,
-  setBattleStatusToAttacking,
-}: PlayerProps) {
+}: 
+PlayerProps) {
   const {
     avatar_url,
     max_health,
@@ -57,7 +56,6 @@ function Player({
     ];
 
     disableAbilities();
-    setBattleStatusToAttacking();
 
     abilityLoadingFunctions[abilitySlot - 1](true);
 
