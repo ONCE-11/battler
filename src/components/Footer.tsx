@@ -25,12 +25,16 @@ export default function Footer() {
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
+  // we do this to execute code when the browser kicks us out of fullscreen
   useEffect(function () {
     function handleFullScreenChange() {
-      closeFullScreen();
+      if (isFullScreen) {
+        setIsFullScreen(false);
+      } else {
+        setIsFullScreen(true);
+      }
     }
 
-    // we do this to execute code when the browser kicks us out of fullscreen
     document.body.addEventListener("fullscreenchange", handleFullScreenChange);
 
     return () =>
@@ -40,16 +44,6 @@ export default function Footer() {
       );
   }, []);
 
-  function goFullScreen() {
-    document.body.requestFullscreen();
-    setIsFullScreen(true);
-  }
-
-  function closeFullScreen() {
-    document.exitFullscreen();
-    setIsFullScreen(false);
-  }
-
   return (
     <footer className="px-4 fixed bottom-0 max-w-screen-xl w-full bg-zinc-900">
       <div className="flex justify-between items-center px-2">
@@ -58,13 +52,13 @@ export default function Footer() {
         </p>
         {isFullScreen ? (
           <FontAwesomeIcon
-            onClick={closeFullScreen}
+            onClick={() => document.exitFullscreen()}
             icon="down-left-and-up-right-to-center"
             className=" text-purple-500"
           />
         ) : (
           <FontAwesomeIcon
-            onClick={goFullScreen}
+            onClick={() => document.body.requestFullscreen()}
             icon="up-right-and-down-left-from-center"
             className=" text-white"
           />
