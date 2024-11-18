@@ -23,18 +23,17 @@ export default function Footer() {
   //   setPlaying(!playing);
   // };
 
-  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isFullScreen, setFullScreen] = useState(false);
 
   // we do this to execute code when the browser kicks us out of fullscreen
   useEffect(function () {
     function handleFullScreenChange() {
-      if (isFullScreen) {
-        setIsFullScreen(false);
+      if (document.fullscreenElement) {
+        setFullScreen(true);
       } else {
-        setIsFullScreen(true);
+        setFullScreen(false);
       }
     }
-
     document.body.addEventListener("fullscreenchange", handleFullScreenChange);
 
     return () =>
