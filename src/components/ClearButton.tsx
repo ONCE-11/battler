@@ -18,9 +18,10 @@ const ClearButton: FC<ClearButtonProps> = function ({
   children,
   className,
 }) {
+  //  hover:bg-purple-600 hover:text-zinc-50
   return (
     <button
-      className={`bg-zinc-900 border border-purple-500 shadow-md shadow-black py-2 px-4 text-zinc-50 font-bold rounded active:shadow-inner active:bg-purple-700 disabled:cursor-not-allowed disabled:bg-slate-400 hover:bg-purple-600 hover:text-zinc-50 ${additionalCssClasses?.join(
+      className={`bg-zinc-900 border border-purple-500 shadow-md shadow-black py-2 px-4 text-zinc-50 font-bold rounded active:shadow-inner active:bg-purple-700 disabled:cursor-not-allowed disabled:bg-slate-400 ${additionalCssClasses?.join(
         ""
       )} ${className}`}
       onClick={handleClick}
