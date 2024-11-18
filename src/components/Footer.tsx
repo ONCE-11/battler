@@ -3,7 +3,7 @@
 // import { useRef } from "react";
 // import { currentUserAtom } from "../atoms";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // const playingAtom = atom<boolean>(false);
@@ -24,6 +24,21 @@ export default function Footer() {
   // };
 
   const [isFullScreen, setIsFullScreen] = useState(false);
+
+  useEffect(function () {
+    function handleFullScreenChange() {
+      closeFullScreen();
+    }
+
+    // we do this to execute code when the browser kicks us out of fullscreen
+    document.body.addEventListener("fullscreenchange", handleFullScreenChange);
+
+    return () =>
+      document.body.removeEventListener(
+        "fullscreenchange",
+        handleFullScreenChange
+      );
+  }, []);
 
   function goFullScreen() {
     document.body.requestFullscreen();
