@@ -4,7 +4,7 @@
 // import { currentUserAtom } from "../atoms";
 
 import { useState } from "react";
-import ClearButton from "./ClearButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // const playingAtom = atom<boolean>(false);
 
@@ -25,26 +25,35 @@ export default function Footer() {
 
   const [isFullScreen, setIsFullScreen] = useState(false);
 
-  function handleClick() {
-    if (isFullScreen) {
-      document.exitFullscreen();
-      setIsFullScreen(false);
-    } else {
-      document.body.requestFullscreen();
-      setIsFullScreen(true);
-    }
+  function goFullScreen() {
+    document.body.requestFullscreen();
+    setIsFullScreen(true);
+  }
+
+  function closeFullScreen() {
+    document.exitFullscreen();
+    setIsFullScreen(false);
   }
 
   return (
     <footer className="px-4 fixed bottom-0 max-w-screen-xl w-full bg-zinc-900">
-      <div className="border-t flex justify-between">
+      <div className="flex justify-between items-center">
         <p className="py-4">
           © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE
         </p>
-
-        <ClearButton handleClick={handleClick}>
-          {isFullScreen ? "Close Fullscreen" : "Go Fullscreen"}
-        </ClearButton>
+        {isFullScreen ? (
+          <FontAwesomeIcon
+            onClick={closeFullScreen}
+            icon="down-left-and-up-right-to-center"
+            className=" text-purple-500"
+          />
+        ) : (
+          <FontAwesomeIcon
+            onClick={goFullScreen}
+            icon="up-right-and-down-left-from-center"
+            className=" text-white"
+          />
+        )}
 
         {/* {currentUser && (
           <div className="py-4">
