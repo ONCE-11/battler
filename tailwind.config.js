@@ -4,7 +4,8 @@ export default {
   theme: {
     extend: {
       screens: {
-        short: { raw: "(max-height: 775px)" },
+        short: { raw: "(max-height: 693px)" },
+        medium: { raw: "(min-height: 694px) and (max-height: 765px)" },
       },
     },
   },

@@ -122,7 +122,7 @@ function Player({
           </h2>
         </div>
       </div>
-      <section className="short:flex">
+      <section className="short:flex medium:flex">
         <ClearButton
           disabled={disabled}
           className="mt-4 py-4 w-full pr-4 b-truncate"
@@ -136,7 +136,7 @@ function Player({
         </ClearButton>
         <ClearButton
           disabled={disabled}
-          className="mt-4 py-4 w-full b-truncate short:ml-4"
+          className="mt-4 py-4 w-full b-truncate short:ml-4 medium:ml-4"
           handleClick={(_e) => useAbility(2)}
         >
           {abilityLoading2 ? (
