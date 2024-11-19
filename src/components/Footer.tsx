@@ -22,7 +22,7 @@ export default function Footer() {
 
   // we do this to execute code when the browser kicks us out of fullscreen
   useEffect(function () {
-    let wakeLock: WakeLockSentinel;
+    let wakeLock: WakeLockSentinel | null = null;
 
     async function handleFullScreenChange() {
       if (document.fullscreenElement) {
@@ -39,7 +39,10 @@ export default function Footer() {
 
         setFullScreen(true);
       } else {
-        if ("wakeLock" in navigator) await wakeLock.release();
+        if ("wakeLock" in navigator && wakeLock) {
+          await wakeLock.release();
+          wakeLock = null;
+        }
         setFullScreen(false);
       }
     }
