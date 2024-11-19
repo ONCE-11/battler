@@ -27,20 +27,51 @@ export default function Footer() {
 
   // we do this to execute code when the browser kicks us out of fullscreen
   useEffect(function () {
-    function handleFullScreenChange() {
+    let wakeLock: WakeLockSentinel;
+
+    async function handleFullScreenChange() {
       if (document.fullscreenElement) {
+        // works only if feature is available in the browser
+        if ("wakeLock" in navigator) {
+          try {
+            wakeLock = await navigator.wakeLock.request("screen");
+          } catch (error) {
+            if (error instanceof Error) {
+              console.error(`${error.name}, ${error.message}`);
+            }
+          }
+        }
+
         setFullScreen(true);
       } else {
+        if ("wakeLock" in navigator) await wakeLock.release();
         setFullScreen(false);
       }
     }
-    document.body.addEventListener("fullscreenchange", handleFullScreenChange);
 
-    return () =>
+    async function handleVisibilityChange(event: Event) {
+      event.preventDefault();
+
+      if ("wakeLock" in navigator) {
+        if (!document.hidden) {
+          wakeLock = await navigator.wakeLock.request("screen");
+        }
+      }
+    }
+
+    document.body.addEventListener("fullscreenchange", handleFullScreenChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
       document.body.removeEventListener(
         "fullscreenchange",
         handleFullScreenChange
       );
+      document.body.removeEventListener(
+        "visibilitychange",
+        handleVisibilityChange
+      );
+    };
   }, []);
 
   return (
