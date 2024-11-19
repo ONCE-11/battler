@@ -29,8 +29,7 @@ function Player({
   hidden,
   disabled,
   disableAbilities,
-}: 
-PlayerProps) {
+}: PlayerProps) {
   const {
     avatar_url,
     max_health,
@@ -98,7 +97,7 @@ PlayerProps) {
             style={{ width: `${healthPercentage}%` }}
           ></div>
         </div>
-        <div className="overflow-clip rounded-lg mt-2 relative shadow-md shadow-black">
+        <div className="overflow-clip rounded-lg mt-2 relative shadow-md shadow-black short:h-64">
           {isCurrentPlayer && (
             <span
               className={`absolute text-white z-10 top-0 font-bold text-xl ${
@@ -123,28 +122,30 @@ PlayerProps) {
           </h2>
         </div>
       </div>
-      <ClearButton
-        disabled={disabled}
-        className="mt-4 py-4 w-full"
-        handleClick={(_e) => useAbility(1)}
-      >
-        {abilityLoading1 ? (
-          <FontAwesomeIcon icon="circle-notch" className="fa-spin" />
-        ) : (
-          ability1.name
-        )}
-      </ClearButton>
-      <ClearButton
-        disabled={disabled}
-        className="mt-4 py-4 w-full"
-        handleClick={(_e) => useAbility(2)}
-      >
-        {abilityLoading2 ? (
-          <FontAwesomeIcon icon="circle-notch" className="fa-spin" />
-        ) : (
-          ability2.name
-        )}
-      </ClearButton>
+      <section className="short:flex">
+        <ClearButton
+          disabled={disabled}
+          className="mt-4 py-4 w-full pr-4 b-truncate"
+          handleClick={(_e) => useAbility(1)}
+        >
+          {abilityLoading1 ? (
+            <FontAwesomeIcon icon="circle-notch" className="fa-spin" />
+          ) : (
+            ability1.name
+          )}
+        </ClearButton>
+        <ClearButton
+          disabled={disabled}
+          className="mt-4 py-4 w-full b-truncate short:ml-4"
+          handleClick={(_e) => useAbility(2)}
+        >
+          {abilityLoading2 ? (
+            <FontAwesomeIcon icon="circle-notch" className="fa-spin" />
+          ) : (
+            ability2.name
+          )}
+        </ClearButton>
+      </section>
       <Button
         disabled={disabled}
         className="my-4 py-4 w-full"
