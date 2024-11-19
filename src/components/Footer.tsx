@@ -49,13 +49,10 @@ export default function Footer() {
       }
     }
 
-    async function handleVisibilityChange(event: Event) {
-      event.preventDefault();
-
-      if ("wakeLock" in navigator) {
-        if (!document.hidden) {
-          wakeLock = await navigator.wakeLock.request("screen");
-        }
+    async function handleVisibilityChange() {
+      // we remove the wake lock when the browser is out of focus
+      if (document.hidden && "wakeLock" in navigator && wakeLock) {
+        await wakeLock.release();
       }
     }
 
@@ -67,28 +64,31 @@ export default function Footer() {
         "fullscreenchange",
         handleFullScreenChange
       );
-      document.body.removeEventListener(
-        "visibilitychange",
-        handleVisibilityChange
-      );
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
   return (
     <footer className="px-4 fixed bottom-0 max-w-screen-xl w-full bg-zinc-900">
       <div className="flex justify-between items-center px-2">
-        <p className="py-4">
-          © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE
+        <p className="py-4 text-xs">
+          {/* © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE */}
+          &nbsp;
         </p>
         {isFullScreen ? (
           <FontAwesomeIcon
-            onClick={() => document.exitFullscreen()}
+            onClick={() =>
+              document.fullscreenEnabled && document.exitFullscreen()
+            }
             icon="down-left-and-up-right-to-center"
             className=" text-purple-500"
           />
         ) : (
           <FontAwesomeIcon
-            onClick={() => document.body.requestFullscreen()}
+            onClick={() =>
+              document.fullscreenEnabled &&
+              document.body.requestFullscreen({ navigationUI: "hide" })
+            }
             icon="up-right-and-down-left-from-center"
             className=" text-white"
           />
