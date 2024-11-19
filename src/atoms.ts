@@ -15,3 +15,4 @@ export const currentUserAtom = atom<User>();
 export const currentCharacterAtom = atom<CharacterWithAbilities>();
 export const sceneAtom = atom<Scene>();
 export const characterAtom = atom<CharacterWithAbilities | null>(null);
+export const suspendedAtom = atom(true);
