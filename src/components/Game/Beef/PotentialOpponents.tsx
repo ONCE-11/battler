@@ -2,8 +2,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../Button";
 import { supabase } from "../../../utils";
 import { CharacterWithAbilities, Scene } from "../../../types/custom";
-import { useAtom, useSetAtom } from "jotai";
-import { characterAtom, sceneAtom } from "../../../atoms";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { audioAtom, characterAtom, sceneAtom } from "../../../atoms";
 
 type PotentialOpponentsProps = {
   potentialOpponents: CharacterWithAbilities[];
@@ -14,6 +14,7 @@ export default function PotentialOpponents({
 }: PotentialOpponentsProps) {
   const setScene = useSetAtom(sceneAtom);
   const [character, setCharacter] = useAtom(characterAtom);
+  const audio = useAtomValue(audioAtom);
 
   if (!character) {
     console.error("Character is not defined");
@@ -45,8 +46,10 @@ export default function PotentialOpponents({
         ? { ...priorCharacter, fighting: true }
         : { ...character, fighting: true };
     });
-
     setScene(Scene.Battle);
+
+    audio.currentTime = 0;
+    audio.play();
   }
 
   return (

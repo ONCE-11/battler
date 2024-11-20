@@ -1,42 +1,20 @@
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { atom, useAtom } from "jotai";
-// import { useRef } from "react";
-// import { currentUserAtom } from "../atoms";
-
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { currentUserAtom } from "../atoms";
-import { useAtomValue } from "jotai";
+import { audioOnAtom, audioAtom, currentUserAtom } from "../atoms";
+import { useAtom, useAtomValue } from "jotai";
 
 export default function Footer() {
-  const audioTest = new Audio("/music.mp3");
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audio = useAtomValue(audioAtom);
   const [isFullScreen, setFullScreen] = useState(false);
-  const [audioOn, setAudioOn] = useState(false);
+  const [audioOn, setAudioOn] = useAtom(audioOnAtom);
   const currentUser = useAtomValue(currentUserAtom);
-
-  const handleAudioToggle = () => {
-    // if (audioOn && audioRef.current) {
-    //   audioRef.current.pause();
-    // } else if (!audioOn && audioRef.current) {
-    //   audioRef.current.play();
-    // }
-
-    setAudioOn(!audioOn);
-    // audioTest.play();
-  };
 
   useEffect(
     function () {
-      if (audioOn && audioRef.current) {
-        console.log("audio on");
-        // audioRef.current.play();
-        // if (!audioRef.current.paused) audioRef.current.play();
-        audioRef.current.volume = 1;
-      } else if (!audioOn && audioRef.current) {
-        // audioRef.current.pause();
-        audioRef.current.volume = 0;
-        console.log("audio off");
+      if (!audioOn) {
+        audio.volume = 0;
+      } else if (audioOn) {
+        audio.volume = 1;
       }
     },
     [audioOn]
@@ -45,15 +23,6 @@ export default function Footer() {
   // we do this to execute code when the browser kicks us out of fullscreen
   useEffect(function () {
     let wakeLock: WakeLockSentinel;
-
-    // audioTest.play();
-
-    if (audioRef.current) {
-      // audioRef.current.play();
-    }
-
-    // console.log("dsfsd");
-    // setAudioOn(audioOn);
 
     async function handleFullScreenChange() {
       if (document.fullscreenElement) {
@@ -75,22 +44,13 @@ export default function Footer() {
       }
     }
 
-    async function handleVisibilityChange() {
-      // we remove the wake lock when the browser is out of focus
-      if (document.hidden && "wakeLock" in navigator && wakeLock) {
-        await wakeLock.release();
-      }
-    }
-
     document.body.addEventListener("fullscreenchange", handleFullScreenChange);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       document.body.removeEventListener(
         "fullscreenchange",
         handleFullScreenChange
       );
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
 
@@ -101,22 +61,12 @@ export default function Footer() {
           {/* © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE */}
           &nbsp;
         </p>
-        <button className="mr-4" onClick={() => audioRef.current?.play()}>
-          Play
-        </button>
         {currentUser && (
           <div className="py-4">
             <FontAwesomeIcon
               icon={`${audioOn ? "volume-high" : "volume-xmark"}`}
               className={`mr-4${audioOn ? " text-purple-500" : ""}`}
-              onClick={handleAudioToggle}
-            />
-            <audio
-              src="/battle.mp3"
-              controls={false}
-              ref={audioRef}
-              loop={true}
-              autoPlay={true}
+              onClick={() => setAudioOn(!audioOn)}
             />
           </div>
         )}

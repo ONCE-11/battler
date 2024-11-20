@@ -2,20 +2,44 @@ import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
 import { useAtom, useAtomValue } from "jotai";
-import { messageAtom, suspendedAtom } from "./atoms";
+import { audioOnAtom, messageAtom } from "./atoms";
 import useAuth from "./hooks/useAuth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Footer from "./components/Footer";
 import Button from "./components/Button";
 
 const Layout = () => {
   const message = useAtomValue(messageAtom);
-  const [suspended, setSuspended] = useAtom(suspendedAtom);
+  const [suspended, setSuspended] = useState(false);
+  const [audioOn, setAudioOn] = useAtom(audioOnAtom);
+  const [resumeAudio, setResumeAudio] = useState(audioOn);
 
   const { fetchSession } = useAuth();
 
+  async function handleVisibilityChange() {
+    if (document.hidden) {
+      // this prevents audioOn being out of sync
+      setAudioOn((previousAudioOn) => {
+        setResumeAudio(previousAudioOn);
+
+        return false;
+      });
+      setSuspended(true);
+    }
+  }
+
+  function handleResume() {
+    setAudioOn(resumeAudio);
+    setSuspended(false);
+  }
+
   useEffect(() => {
     fetchSession();
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
   return (
@@ -44,7 +68,7 @@ const Layout = () => {
           style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
         >
           <p className="mb-4">App Suspended</p>
-          <Button handleClick={() => setSuspended(false)}>Resume</Button>
+          <Button handleClick={handleResume}>Resume</Button>
         </div>
       )}
     </>

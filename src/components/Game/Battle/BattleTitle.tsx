@@ -1,7 +1,7 @@
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Button from "../../Button";
 import Title from "../../Title";
-import { characterAtom, sceneAtom } from "../../../atoms";
+import { audioAtom, characterAtom, sceneAtom } from "../../../atoms";
 import { CharacterWithAbilities, Scene } from "../../../types/custom";
 import { FightWithPlayers } from "../types";
 import { fightAtom } from "../atoms";
@@ -21,17 +21,20 @@ export default function BattleTitle({
   const setScene = useSetAtom(sceneAtom);
   const setFight = useSetAtom(fightAtom);
   const [character, setCharacter] = useAtom(characterAtom);
+  const audio = useAtomValue(audioAtom);
 
   function handleWinClick() {
     setFight(null);
     setCharacter({ ...character, fighting: false } as CharacterWithAbilities);
     setScene(Scene.Beef);
+    audio.pause();
   }
 
   function handleLossClick() {
     setFight(null);
     setCharacter(null);
     setScene(Scene.NewCharacter);
+    audio.pause();
   }
 
   switch (battleStatus) {
