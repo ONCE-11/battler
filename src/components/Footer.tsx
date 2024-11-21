@@ -13,8 +13,10 @@ export default function Footer() {
     function () {
       if (!audioOn) {
         audio.volume = 0;
-      } else if (audioOn) {
+        localStorage.setItem("audioOn", "false");
+      } else {
         audio.volume = 1;
+        localStorage.setItem("audioOn", "true");
       }
     },
     [audioOn]
