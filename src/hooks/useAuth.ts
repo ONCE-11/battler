@@ -25,9 +25,7 @@ const useAuth = () => {
       setLoggedIn(true);
       setCurrentUser(data.user);
 
-      if (callback) {
-        callback();
-      }
+      if (callback) callback();
     }
   };
 
@@ -44,7 +42,7 @@ const useAuth = () => {
     }
   };
 
-  const fetchSession = async () => {
+  const fetchSession = async (callback?: () => void) => {
     const {
       data: { session },
       error,
@@ -52,12 +50,14 @@ const useAuth = () => {
 
     if (error) console.error(error);
 
-    if (!session) {
-      setLoggedIn(false);
-    } else {
+    if (session) {
       // console.log({ user: session.user });
       setCurrentUser(session.user);
       setLoggedIn(true);
+
+      if (callback) callback();
+    } else {
+      setLoggedIn(false);
     }
   };
 

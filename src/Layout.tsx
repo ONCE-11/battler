@@ -34,7 +34,7 @@ const Layout = () => {
   }
 
   useEffect(() => {
-    fetchSession();
+    fetchSession(() => setSuspended(true));
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
