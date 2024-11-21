@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../Button";
-import { supabase } from "../../../utils";
+import { supabase, switchAudioSource } from "../../../utils";
 import { CharacterWithAbilities, Music, Scene } from "../../../types/custom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { audioAtom, characterAtom, sceneAtom } from "../../../atoms";
@@ -47,9 +47,8 @@ export default function PotentialOpponents({
         : { ...character, fighting: true };
     });
     setScene(Scene.Battle);
-
-    audio.src = Music.Battle;
-    audio.load();
+    
+    switchAudioSource(audio, Music.Battle);
   }
 
   return (

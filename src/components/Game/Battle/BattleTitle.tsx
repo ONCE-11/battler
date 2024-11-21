@@ -6,6 +6,7 @@ import { CharacterWithAbilities, Music, Scene } from "../../../types/custom";
 import { FightWithPlayers } from "../types";
 import { fightAtom } from "../atoms";
 import { BattleStatus } from "./types";
+import { switchAudioSource } from "../../../utils";
 
 type BattleTitleProps = {
   characterId: CharacterWithAbilities["id"];
@@ -27,16 +28,14 @@ export default function BattleTitle({
     setFight(null);
     setCharacter({ ...character, fighting: false } as CharacterWithAbilities);
     setScene(Scene.Beef);
-    audio.src = Music.Default;
-    audio.load();
+    switchAudioSource(audio, Music.Default);
   }
 
   function handleLossClick() {
     setFight(null);
     setCharacter(null);
     setScene(Scene.NewCharacter);
-    audio.src = Music.Default;
-    audio.load();
+    switchAudioSource(audio, Music.Default);
   }
 
   switch (battleStatus) {
