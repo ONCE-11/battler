@@ -49,7 +49,7 @@ export default function PotentialOpponents({
     setScene(Scene.Battle);
 
     audio.src = Music.Battle;
-    audio.play();
+    audio.load();
   }
 
   return (

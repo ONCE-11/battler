@@ -16,4 +16,13 @@ export const currentCharacterAtom = atom<CharacterWithAbilities>();
 export const sceneAtom = atom<Scene>();
 export const characterAtom = atom<CharacterWithAbilities | null>(null);
 export const audioOnAtom = atom(localStorage.getItem("audioOn") === "true");
-export const audioAtom = atom<HTMLAudioElement>(new Audio());
+
+const audio = new Audio();
+
+audio.addEventListener("loadeddata", () => {
+  audio.play();
+});
+
+audio.loop = true;
+
+export const audioAtom = atom<HTMLAudioElement>(audio);

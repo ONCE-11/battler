@@ -1,11 +1,17 @@
 import { supabase } from "../utils";
-import { useSetAtom } from "jotai";
-import { messageAtom, loggedInAtom, currentUserAtom } from "../atoms";
+import { useAtomValue, useSetAtom } from "jotai";
+import {
+  messageAtom,
+  loggedInAtom,
+  currentUserAtom,
+  audioAtom,
+} from "../atoms";
 
 const useAuth = () => {
   const setLoggedIn = useSetAtom(loggedInAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setMessage = useSetAtom(messageAtom);
+  const audio = useAtomValue(audioAtom);
 
   const login = async (
     email: string,
@@ -39,6 +45,7 @@ const useAuth = () => {
       setMessage({ type: "info", text: "You have logged out successfully" });
       setLoggedIn(false);
       setCurrentUser(undefined);
+      audio.pause();
     }
   };
 

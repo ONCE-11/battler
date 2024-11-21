@@ -28,7 +28,7 @@ export default function BattleTitle({
     setCharacter({ ...character, fighting: false } as CharacterWithAbilities);
     setScene(Scene.Beef);
     audio.src = Music.Default;
-    audio.play();
+    audio.load();
   }
 
   function handleLossClick() {
@@ -36,7 +36,7 @@ export default function BattleTitle({
     setCharacter(null);
     setScene(Scene.NewCharacter);
     audio.src = Music.Default;
-    audio.play();
+    audio.load();
   }
 
   switch (battleStatus) {
