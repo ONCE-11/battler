@@ -5,7 +5,10 @@ import { CharacterWithAbilities } from "../../../types/custom";
 import Player from "./Player";
 import { Tables } from "../../../types/supabase";
 import { FightWithPlayers } from "../types.js";
-import { RealtimePostgresInsertPayload } from "@supabase/supabase-js";
+import {
+  RealtimeChannel,
+  RealtimePostgresInsertPayload,
+} from "@supabase/supabase-js";
 import BattleTitle from "./BattleTitle.js";
 import { BattleStatus } from "./types.js";
 
@@ -50,8 +53,20 @@ export default function Battle({ fight, characterId }: BattleProps) {
       setPlayer1Disabled(true);
     }
 
-    initiatePlayer1RealtimeUpdates(fight.player1.id);
-    initiatePlayer2RealtimeUpdates(fight.player2.id);
+    const player1ActionsChannel = createPlayers1ActionsChannel(
+      fight.player1.id
+    );
+    const player2ActionsChannel = createPlayers2ActionsChannel(
+      fight.player2.id
+    );
+
+    player1ActionsChannel.subscribe();
+    player2ActionsChannel.subscribe();
+
+    return () => {
+      player1ActionsChannel.unsubscribe();
+      player2ActionsChannel.unsubscribe();
+    };
   }, []);
 
   function updateStates(
@@ -129,48 +144,42 @@ export default function Battle({ fight, characterId }: BattleProps) {
     }, 1000);
   }
 
-  function initiatePlayer1RealtimeUpdates(id: string) {
-    supabase
-      .channel(`player 1 actions`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "actions",
-          filter: `initiator=eq.${id}`,
-        },
-        async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
-          console.log(`player 1 action`, payload);
+  function createPlayers1ActionsChannel(id: string): RealtimeChannel {
+    return supabase.channel(`player 1 actions`).on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "actions",
+        filter: `initiator=eq.${id}`,
+      },
+      async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
+        console.log(`player 1 action`, payload);
 
-          setBattleStatus(BattleStatus.Player1Attacking);
+        setBattleStatus(BattleStatus.Player1Attacking);
 
-          updateStates(payload);
-        }
-      )
-      .subscribe();
+        updateStates(payload);
+      }
+    );
   }
 
-  function initiatePlayer2RealtimeUpdates(id: string) {
-    supabase
-      .channel(`player 2 actions`)
-      .on(
-        "postgres_changes",
-        {
-          event: "INSERT",
-          schema: "public",
-          table: "actions",
-          filter: `initiator=eq.${id}`,
-        },
-        async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
-          console.log(`player 2 action`, payload);
+  function createPlayers2ActionsChannel(id: string): RealtimeChannel {
+    return supabase.channel(`player 2 actions`).on(
+      "postgres_changes",
+      {
+        event: "INSERT",
+        schema: "public",
+        table: "actions",
+        filter: `initiator=eq.${id}`,
+      },
+      async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
+        console.log(`player 2 action`, payload);
 
-          setBattleStatus(BattleStatus.Player2Attacking);
+        setBattleStatus(BattleStatus.Player2Attacking);
 
-          updateStates(payload);
-        }
-      )
-      .subscribe();
+        updateStates(payload);
+      }
+    );
   }
 
   return (

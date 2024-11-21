@@ -79,30 +79,33 @@ export default function Game() {
       } else if (character.fighting) {
         // console.log("fighting");
         setScene(Scene.Battle);
+
+        // TODO: the following is probably bad... fix this when you have the time
+        // this is done to appease the typescript type checker
+        return () => {};
       } else {
         console.log("char sheet");
 
         // o: to capture the realtime event where a fight is initiated with your current character
-        supabase
-          .channel(`fight initiation`)
-          .on(
-            "postgres_changes",
-            {
-              event: "INSERT",
-              schema: "public",
-              table: "fights",
-              filter: `player2_id=eq.${character.id}`,
-            },
-            async (
-              payload: RealtimePostgresInsertPayload<Tables<"fights">>
-            ) => {
-              console.log(`fight initiation`, payload);
-              setScene(Scene.Battle);
-            }
-          )
-          .subscribe();
+        const fightInitiatorChannel = supabase.channel(`fight initiation`).on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "fights",
+            filter: `player2_id=eq.${character.id}`,
+          },
+          async (payload: RealtimePostgresInsertPayload<Tables<"fights">>) => {
+            console.log(`fight initiation`, payload);
+            setScene(Scene.Battle);
+          }
+        );
+
+        fightInitiatorChannel.subscribe();
 
         setScene(Scene.CharacterSheet);
+
+        return () => fightInitiatorChannel.unsubscribe();
       }
     },
     [character?.id]
