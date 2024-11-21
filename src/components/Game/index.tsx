@@ -9,7 +9,6 @@ import {
   sceneAtom,
   loadingAtom,
   audioAtom,
-  audioOnAtom,
 } from "../../atoms.js";
 import { useEffect, useState } from "react";
 import NewCharacter from "./NewCharacter";
@@ -29,7 +28,6 @@ export default function Game() {
   const [loading, setLoading] = useAtom(loadingAtom);
   const [component, setComponent] = useState<JSX.Element | undefined>();
   const audio = useAtomValue(audioAtom);
-  const audioOn = useAtomValue(audioOnAtom);
 
   if (!currentUser) {
     console.error("Current user is not defined");
