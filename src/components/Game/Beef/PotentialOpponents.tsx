@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../../Button";
 import { supabase } from "../../../utils";
-import { CharacterWithAbilities, Scene } from "../../../types/custom";
+import { CharacterWithAbilities, Music, Scene } from "../../../types/custom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { audioAtom, characterAtom, sceneAtom } from "../../../atoms";
 
@@ -48,7 +48,7 @@ export default function PotentialOpponents({
     });
     setScene(Scene.Battle);
 
-    audio.currentTime = 0;
+    audio.src = Music.Battle;
     audio.play();
   }
 

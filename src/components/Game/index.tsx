@@ -1,5 +1,5 @@
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { CharacterWithAbilities, Scene } from "../../types/custom";
+import { CharacterWithAbilities, Music, Scene } from "../../types/custom";
 import CharacterSheet from "./CharacterSheet";
 import Battle from "./Battle";
 import Beef from "./Beef";
@@ -8,6 +8,7 @@ import {
   currentUserAtom,
   sceneAtom,
   loadingAtom,
+  audioAtom,
 } from "../../atoms.js";
 import { useEffect, useState } from "react";
 import NewCharacter from "./NewCharacter";
@@ -26,6 +27,7 @@ export default function Game() {
   const setFight = useSetAtom(fightAtom);
   const [loading, setLoading] = useAtom(loadingAtom);
   const [component, setComponent] = useState<JSX.Element | undefined>();
+  const audio = useAtomValue(audioAtom);
 
   if (!currentUser) {
     console.error("Current user is not defined");
@@ -53,6 +55,7 @@ export default function Game() {
         if (fetchCharacterError) {
           if (fetchCharacterError.code === NO_ROWS_RETURNED) {
             console.log("No character found");
+            audio.src = Music.Default;
             return;
           }
 
@@ -60,6 +63,12 @@ export default function Game() {
         }
 
         // console.log({ characterWithAbilities });
+
+        if (characterWithAbilities.fighting) {
+          audio.src = Music.Battle;
+        } else {
+          audio.src = Music.Default;
+        }
 
         setCharacter(characterWithAbilities);
       }

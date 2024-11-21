@@ -2,7 +2,7 @@ import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Button from "../../Button";
 import Title from "../../Title";
 import { audioAtom, characterAtom, sceneAtom } from "../../../atoms";
-import { CharacterWithAbilities, Scene } from "../../../types/custom";
+import { CharacterWithAbilities, Music, Scene } from "../../../types/custom";
 import { FightWithPlayers } from "../types";
 import { fightAtom } from "../atoms";
 import { BattleStatus } from "./types";
@@ -27,14 +27,16 @@ export default function BattleTitle({
     setFight(null);
     setCharacter({ ...character, fighting: false } as CharacterWithAbilities);
     setScene(Scene.Beef);
-    audio.pause();
+    audio.src = Music.Default;
+    audio.play();
   }
 
   function handleLossClick() {
     setFight(null);
     setCharacter(null);
     setScene(Scene.NewCharacter);
-    audio.pause();
+    audio.src = Music.Default;
+    audio.play();
   }
 
   switch (battleStatus) {
