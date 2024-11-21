@@ -33,3 +33,8 @@ export enum Scene {
   Beef,
   Battle,
 }
+
+export enum Music {
+  Battle = "battle.mp3",
+  Default = "music.mp3",
+}
