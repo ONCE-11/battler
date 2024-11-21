@@ -67,7 +67,7 @@ const Layout = () => {
           className="z-50 w-full h-full absolute left-0 top-0 flex justify-center items-center flex-col"
           style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
         >
-          <p className="mb-4">App Suspended</p>
+          <p className="mb-4">Game Suspended</p>
           <Button handleClick={handleResume}>Resume</Button>
         </div>
       )}
