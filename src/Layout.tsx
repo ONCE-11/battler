@@ -2,28 +2,30 @@ import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
 import { Outlet } from "react-router-dom";
 import { useAtomValue } from "jotai";
-import { audioAtom, messageAtom } from "./atoms";
+import { messageAtom } from "./atoms";
 import useAuth from "./hooks/useAuth";
 import { useEffect, useState } from "react";
 import Footer from "./components/Footer";
 import Button from "./components/Button";
+import { useAudio } from "./hooks/useAudio";
 
 const Layout = () => {
   const message = useAtomValue(messageAtom);
   const [suspended, setSuspended] = useState(false);
-  const audio = useAtomValue(audioAtom);
+  const { playAudio, pauseAudio } = useAudio();
 
   const { fetchSession } = useAuth();
 
   async function handleVisibilityChange() {
     if (document.hidden) {
-      audio.pause();
+      pauseAudio();
       setSuspended(true);
     }
   }
 
   function handleResume() {
-    audio.play();
+    console.log("handleResume");
+    playAudio();
     setSuspended(false);
   }
 

@@ -1,26 +1,13 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { audioOnAtom, audioAtom, currentUserAtom } from "../atoms";
-import { useAtom, useAtomValue } from "jotai";
+import { currentUserAtom } from "../atoms";
+import { useAtomValue } from "jotai";
+import { useAudio } from "../hooks/useAudio";
 
 export default function Footer() {
-  const audio = useAtomValue(audioAtom);
   const [isFullScreen, setFullScreen] = useState(false);
-  const [audioOn, setAudioOn] = useAtom(audioOnAtom);
+  const { audioMuted, toggleMute } = useAudio();
   const currentUser = useAtomValue(currentUserAtom);
-
-  useEffect(
-    function () {
-      if (!audioOn) {
-        audio.volume = 0;
-        localStorage.setItem("audioOn", "false");
-      } else {
-        audio.volume = 1;
-        localStorage.setItem("audioOn", "true");
-      }
-    },
-    [audioOn]
-  );
 
   // we do this to execute code when the browser kicks us out of fullscreen
   useEffect(function () {
@@ -69,9 +56,9 @@ export default function Footer() {
         {currentUser && (
           <div className="py-4">
             <FontAwesomeIcon
-              icon={`${audioOn ? "volume-high" : "volume-xmark"}`}
-              className={`mr-4${audioOn ? " text-purple-500" : ""}`}
-              onClick={() => setAudioOn(!audioOn)}
+              icon={`${audioMuted ? "volume-xmark" : "volume-high"}`}
+              className={`mr-4${audioMuted ? "" : " text-purple-500"}`}
+              onClick={toggleMute}
             />
           </div>
         )}

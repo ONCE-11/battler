@@ -1,21 +1,44 @@
 import { useAtomValue } from "jotai";
 import Title from "../Title";
 import { characterAtom } from "../../atoms";
+import { useEffect, useState } from "react";
+import { fetchImage } from "../../utils";
+const { VITE_SUPABASE_URL, VITE_ENV } = import.meta.env;
 
 export default function CharacterSheet() {
   const character = useAtomValue(characterAtom);
+  const [avatarUrl, setAvatarUrl] = useState<string>();
 
   if (!character) {
     console.error("Character is not defined");
     return;
   }
 
+  useEffect(function () {
+    // to bypass warning screen when downloading image using free ngrok
+    if (VITE_ENV === "development") {
+      let blobUrl: string;
+
+      fetchImage(
+        `${VITE_SUPABASE_URL}${character.avatar_path}`,
+        (imageBlob) => {
+          blobUrl = URL.createObjectURL(imageBlob);
+          setAvatarUrl(blobUrl);
+        }
+      );
+
+      return () => URL.revokeObjectURL(blobUrl);
+    } else {
+      setAvatarUrl(`${VITE_SUPABASE_URL}${character.avatar_path}`);
+    }
+  }, []);
+
   return (
     <>
       <Title>
         <img
           className="h-20 grayscale rounded-lg inline-block"
-          src={character.avatar_url}
+          src={avatarUrl}
         />
         <span className="inline-block ml-2" data-testid="character">
           {character.name}

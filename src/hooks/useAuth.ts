@@ -1,17 +1,13 @@
 import { supabase } from "../utils";
-import { useAtomValue, useSetAtom } from "jotai";
-import {
-  messageAtom,
-  loggedInAtom,
-  currentUserAtom,
-  audioAtom,
-} from "../atoms";
+import { useSetAtom } from "jotai";
+import { messageAtom, loggedInAtom, currentUserAtom } from "../atoms";
+import { useAudio } from "./useAudio";
 
 const useAuth = () => {
   const setLoggedIn = useSetAtom(loggedInAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setMessage = useSetAtom(messageAtom);
-  const audio = useAtomValue(audioAtom);
+  const { pauseAudio, playAudio } = useAudio();
 
   const login = async (
     email: string,
@@ -24,12 +20,16 @@ const useAuth = () => {
     });
 
     if (error) {
-      setMessage({ type: "error", text: error.message });
+      setMessage({
+        type: "error",
+        text: `${error?.status} - ${error.message}`,
+      });
       console.error(error.message);
     } else {
       setMessage({ type: "info", text: "You have logged in successfully" });
       setLoggedIn(true);
       setCurrentUser(data.user);
+      playAudio();
 
       if (callback) callback();
     }
@@ -45,7 +45,7 @@ const useAuth = () => {
       setMessage({ type: "info", text: "You have logged out successfully" });
       setLoggedIn(false);
       setCurrentUser(undefined);
-      audio.pause();
+      pauseAudio();
     }
   };
 

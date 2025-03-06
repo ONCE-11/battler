@@ -8,15 +8,15 @@ import {
   currentUserAtom,
   sceneAtom,
   loadingAtom,
-  audioAtom,
 } from "../../atoms.js";
 import { useEffect, useState } from "react";
 import NewCharacter from "./NewCharacter";
 import { RealtimePostgresInsertPayload, User } from "@supabase/supabase-js";
-import { supabase, switchAudioSource } from "../../utils";
+import { supabase } from "../../utils";
 import { FightWithPlayers } from "./types.js";
 import { fightAtom } from "./atoms.js";
 import { Tables } from "../../types/supabase.js";
+import { useAudio } from "../../hooks/useAudio.js";
 
 const NO_ROWS_RETURNED = "PGRST116";
 
@@ -27,7 +27,7 @@ export default function Game() {
   const setFight = useSetAtom(fightAtom);
   const [loading, setLoading] = useAtom(loadingAtom);
   const [component, setComponent] = useState<JSX.Element | undefined>();
-  const audio = useAtomValue(audioAtom);
+  const { loadAudioFromSrc, switchAudioSrc } = useAudio();
 
   if (!currentUser) {
     console.error("Current user is not defined");
@@ -55,7 +55,7 @@ export default function Game() {
         if (fetchCharacterError) {
           if (fetchCharacterError.code === NO_ROWS_RETURNED) {
             console.log("No character found");
-            audio.src = Music.Default;
+            loadAudioFromSrc(Music.Default);
             return;
           }
 
@@ -67,10 +67,13 @@ export default function Game() {
         // currently causes an error when user has not interacted with the
         //  document
         if (characterWithAbilities.fighting) {
-          switchAudioSource(audio, Music.Battle);
+          console.log("battle music");
+          loadAudioFromSrc(Music.Battle);
         } else {
-          switchAudioSource(audio, Music.Default);
+          console.log("default music");
+          loadAudioFromSrc(Music.Default);
         }
+
 
         setCharacter(characterWithAbilities);
       }
@@ -108,6 +111,8 @@ export default function Game() {
           },
           async (payload: RealtimePostgresInsertPayload<Tables<"fights">>) => {
             console.log(`fight initiation`, payload);
+
+            switchAudioSrc(Music.Battle);
             setScene(Scene.Battle);
           }
         );
@@ -119,7 +124,7 @@ export default function Game() {
         return () => fightInitiatorChannel.unsubscribe();
       }
     },
-    [character?.id]
+    [character?.id, character?.fighting]
   );
 
   useEffect(

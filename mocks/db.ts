@@ -13,6 +13,7 @@ export const characterMock: CharacterWithAbilities = {
   max_health: 100,
   current_health: 100,
   avatar_url: "",
+  avatar_path: "",
   created_at: "",
   name: "Rocky Balboa",
   ability1: {

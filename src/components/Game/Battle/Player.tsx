@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { CharacterWithAbilities } from "../../../types/custom";
 import Button from "../../Button";
 import ClearButton from "../../ClearButton";
-import { supabase } from "../../../utils";
+import { fetchImage, supabase } from "../../../utils";
 import { Tables } from "../../../types/supabase";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type PlayerProps = {
   player: CharacterWithAbilities;
@@ -19,6 +19,8 @@ type PlayerProps = {
   disableAbilities: () => void;
 };
 
+const { VITE_SUPABASE_URL, VITE_ENV } = import.meta.env;
+
 function Player({
   player,
   reverse,
@@ -31,7 +33,6 @@ function Player({
   disableAbilities,
 }: PlayerProps) {
   const {
-    avatar_url,
     max_health,
     current_health,
     attack,
@@ -41,11 +42,29 @@ function Player({
     ability1,
     ability2,
     ability3,
+    avatar_path,
   } = player;
 
   const [abilityLoading1, setAbilityLoading1] = useState(false);
   const [abilityLoading2, setAbilityLoading2] = useState(false);
   const [abilityLoading3, setAbilityLoading3] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string>();
+
+  useEffect(function () {
+    // to bypass warning screen when downloading image using free ngrok
+    if (VITE_ENV === "development") {
+      let blobUrl: string;
+
+      fetchImage(`${VITE_SUPABASE_URL}${avatar_path}`, (imageBlob) => {
+        blobUrl = URL.createObjectURL(imageBlob);
+        setAvatarUrl(blobUrl);
+      });
+
+      return () => URL.revokeObjectURL(blobUrl);
+    } else {
+      setAvatarUrl(`${VITE_SUPABASE_URL}${avatar_path}`);
+    }
+  }, []);
 
   async function useAbility(abilitySlot: number) {
     const abilityLoadingFunctions = [
@@ -111,7 +130,7 @@ function Player({
             className={`${reverse ? "-scale-x-100 " : ""}${
               !alive ? "sepia" : "grayscale"
             } w-full z-0`}
-            src={avatar_url}
+            src={avatarUrl}
           />
           <h2
             className={`text-white capitalize text-l absolute bottom-2 ${
