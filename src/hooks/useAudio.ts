@@ -14,7 +14,7 @@ audioDefault.src = Music.Default;
 audioDefault.loop = true;
 
 audioBattle.src = Music.Battle;
-audioDefault.loop = true;
+audioBattle.loop = true;
 
 let audioSrc = audioDefault;
 
