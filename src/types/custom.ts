@@ -38,3 +38,5 @@ export enum Music {
   Battle = "battle.mp3",
   Default = "music.mp3",
 }
+
+export type SetAtom<Args extends any[], Result> = (...args: Args) => Result;

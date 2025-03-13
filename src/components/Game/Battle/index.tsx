@@ -40,7 +40,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
   const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState(
     fight.current_turn_player_id
   );
-  const [winnerId, setWinnerId] = useState(fight.winner_id);
+  const [winner, setWinner] = useState<CharacterWithAbilities | null>(null);
   const [battleStatus, setBattleStatus] = useState(
     fight.current_turn_player_id === fight.player1.id
       ? BattleStatus.Player1Turn
@@ -69,6 +69,18 @@ export default function Battle({ fight, characterId }: BattleProps) {
       player2ActionsChannel.unsubscribe();
     };
   }, []);
+
+  function assignWinningPlayer(
+    winner_id: FightWithPlayers["winner_id"],
+    player_1: CharacterWithAbilities,
+    player_2: CharacterWithAbilities
+  ) {
+    if (winner_id === player_1.id) {
+      setWinner(player_1);
+    } else {
+      setWinner(player_2);
+    }
+  }
 
   function updateStates(
     payload: RealtimePostgresInsertPayload<RealtimePayloadData>
@@ -130,10 +142,10 @@ export default function Battle({ fight, characterId }: BattleProps) {
         }
 
         if (game_over) {
-          setWinnerId(winner_id);
+          assignWinningPlayer(winner_id, player_1, player_2);
           setGameOver(game_over);
 
-          if (player_1.id === winnerId) {
+          if (player_1.id === winner_id) {
             setBattleStatus(BattleStatus.Player1Wins);
           } else {
             setBattleStatus(BattleStatus.Player2Wins);
@@ -198,9 +210,9 @@ export default function Battle({ fight, characterId }: BattleProps) {
   return (
     <>
       <BattleTitle
-        winnerId={winnerId}
         characterId={characterId}
         battleStatus={battleStatus}
+        winner={winner}
       />
       <div>
         {player1 && player2 && (

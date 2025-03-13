@@ -74,7 +74,6 @@ export default function Game() {
           loadAudioFromSrc(Music.Default);
         }
 
-
         setCharacter(characterWithAbilities);
       }
 
@@ -190,7 +189,10 @@ export default function Game() {
             } else {
               // console.log("setComponent");
               setComponent(
-                <Battle fight={newFight} characterId={character.id} />
+                <Battle
+                  fight={newFight}
+                  characterId={character.id}
+                />
               );
             }
           });

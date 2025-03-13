@@ -1,32 +1,31 @@
-import { useAtom, useSetAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import Button from "../../Button";
 import Title from "../../Title";
 import { characterAtom, sceneAtom } from "../../../atoms";
 import { CharacterWithAbilities, Music, Scene } from "../../../types/custom";
-import { FightWithPlayers } from "../types";
 import { fightAtom } from "../atoms";
 import { BattleStatus } from "./types";
 import { useAudio } from "../../../hooks/useAudio";
 
 type BattleTitleProps = {
   characterId: CharacterWithAbilities["id"];
-  winnerId: FightWithPlayers["winner_id"];
   battleStatus: BattleStatus;
+  winner: CharacterWithAbilities | null;
 };
 
 export default function BattleTitle({
   characterId,
-  winnerId,
   battleStatus,
+  winner,
 }: BattleTitleProps) {
   const setScene = useSetAtom(sceneAtom);
   const setFight = useSetAtom(fightAtom);
-  const [character, setCharacter] = useAtom(characterAtom);
+  const setCharacter = useSetAtom(characterAtom);
   const { switchAudioSrc } = useAudio();
 
   function handleWinClick() {
     setFight(null);
-    setCharacter({ ...character, fighting: false } as CharacterWithAbilities);
+    setCharacter({ ...winner, fighting: false } as CharacterWithAbilities);
     setScene(Scene.Beef);
     switchAudioSrc(Music.Default);
   }
@@ -55,7 +54,7 @@ export default function BattleTitle({
     case BattleStatus.Player2Wins:
       return (
         <Title className="flex justify-between">
-          {winnerId === characterId ? (
+          {winner?.id === characterId ? (
             <>
               <span>You win!</span>
               <Button handleClick={handleWinClick} className={`text-xl`}>
