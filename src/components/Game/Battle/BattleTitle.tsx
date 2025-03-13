@@ -58,14 +58,14 @@ export default function BattleTitle({
             <>
               <span>You win!</span>
               <Button handleClick={handleWinClick} className={`text-xl`}>
-                Take your W
+                Dip
               </Button>
             </>
           ) : (
             <>
               <span>You lost!</span>
               <Button handleClick={handleLossClick} className={`text-xl`}>
-                Dip out
+                Dip
               </Button>
             </>
           )}
