@@ -70,103 +70,20 @@ export default function Battle({ fight, characterId }: BattleProps) {
     };
   }, []);
 
-  function assignWinningPlayer(
+  function setFightToGameOver(
     winner_id: FightWithPlayers["winner_id"],
     player_1: CharacterWithAbilities,
     player_2: CharacterWithAbilities
   ) {
     if (winner_id === player_1.id) {
       setWinner(player_1);
+      setBattleStatus(BattleStatus.Player1Wins);
     } else {
       setWinner(player_2);
-    }
-  }
-
-  function updateStates(
-    payload: RealtimePostgresInsertPayload<RealtimePayloadData>
-  ) {
-    const {
-      player_1,
-      player_2,
-      turn,
-      game_over,
-      current_turn_player_id,
-      winner_id,
-      missed,
-    } = payload.new.metadata;
-
-    console.log({
-      p1_current_health: player_1.current_health,
-      p2_current_health: player_2.current_health,
-    });
-
-    // we assume the previous player is currently seen at this
-    //  point so we update that player first
-    if (player_1.id === current_turn_player_id) {
-      setPlayer2({ ...player_2 });
-    } else {
-      setPlayer1({ ...player_1 });
+      setBattleStatus(BattleStatus.Player2Wins);
     }
 
-    setTimeout(() => {
-      setTurn(turn);
-      setCurrentTurnPlayerId(current_turn_player_id);
-
-      if (player_1.id === current_turn_player_id) {
-        // check if player 2 missed
-        if (!missed) {
-          // at this point player 1 should be in its defending state
-          setBattleStatus(BattleStatus.Player1Defending);
-        } else {
-          setBattleStatus(BattleStatus.Player2Missed);
-        }
-      } else {
-        // check if player 1 missed
-        if (!missed) {
-          // at this point player 2 should be in its defending state
-          setBattleStatus(BattleStatus.Player2Defending);
-        } else {
-          setBattleStatus(BattleStatus.Player1Missed);
-        }
-      }
-
-      setTimeout(() => {
-        // we assume we are looking at the current player now
-        //  so we update their information
-        if (player_1.id === current_turn_player_id) {
-          setPlayer1({ ...player_1 });
-          setBattleStatus(BattleStatus.Player1Turn);
-        } else {
-          setPlayer2({ ...player_2 });
-          setBattleStatus(BattleStatus.Player2Turn);
-        }
-
-        if (game_over) {
-          assignWinningPlayer(winner_id, player_1, player_2);
-          setGameOver(game_over);
-
-          if (player_1.id === winner_id) {
-            setBattleStatus(BattleStatus.Player1Wins);
-          } else {
-            setBattleStatus(BattleStatus.Player2Wins);
-          }
-        }
-
-        // we are doing this because we disable the currently attacking player's
-        //  action buttons whenever they act
-        if (
-          characterId === player_1.id &&
-          player_1.id === current_turn_player_id
-        ) {
-          setPlayer1Disabled(false);
-        } else if (
-          characterId === player_2.id &&
-          player_2.id === current_turn_player_id
-        ) {
-          setPlayer2Disabled(false);
-        }
-      }, 1000);
-    }, 1000);
+    setGameOver(true);
   }
 
   function createPlayers1ActionsChannel(id: string): RealtimeChannel {
@@ -181,9 +98,45 @@ export default function Battle({ fight, characterId }: BattleProps) {
       async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
         console.log(`player 1 action`, payload);
 
-        setBattleStatus(BattleStatus.Player1Attacking);
+        const {
+          player_1,
+          player_2,
+          turn,
+          game_over,
+          current_turn_player_id,
+          winner_id,
+          missed,
+        } = payload.new.metadata;
 
-        updateStates(payload);
+        console.log({
+          p1_current_health: player_1.current_health,
+          p2_current_health: player_2.current_health,
+        });
+
+        setBattleStatus(BattleStatus.Player1Attacking);
+        setPlayer1({ ...player_1 });
+
+        setTimeout(() => {
+          setTurn(turn);
+          setCurrentTurnPlayerId(current_turn_player_id);
+
+          if (missed) {
+            setBattleStatus(BattleStatus.Player1Missed);
+          } else {
+            setBattleStatus(BattleStatus.Player2Defending);
+          }
+
+          setTimeout(() => {
+            setPlayer2({ ...player_2 });
+            setBattleStatus(BattleStatus.Player2Turn);
+
+            if (game_over) {
+              setFightToGameOver(winner_id, player_1, player_2);
+            }
+
+            setPlayer2Disabled(player_2.id !== characterId);
+          }, 1000);
+        }, 1000);
       }
     );
   }
@@ -200,9 +153,45 @@ export default function Battle({ fight, characterId }: BattleProps) {
       async (payload: RealtimePostgresInsertPayload<RealtimePayloadData>) => {
         console.log(`player 2 action`, payload);
 
-        setBattleStatus(BattleStatus.Player2Attacking);
+        const {
+          player_1,
+          player_2,
+          turn,
+          game_over,
+          current_turn_player_id,
+          winner_id,
+          missed,
+        } = payload.new.metadata;
 
-        updateStates(payload);
+        console.log({
+          p1_current_health: player_1.current_health,
+          p2_current_health: player_2.current_health,
+        });
+
+        setBattleStatus(BattleStatus.Player2Attacking);
+        setPlayer2({ ...player_2 });
+
+        setTimeout(() => {
+          setTurn(turn);
+          setCurrentTurnPlayerId(current_turn_player_id);
+
+          if (missed) {
+            setBattleStatus(BattleStatus.Player2Missed);
+          } else {
+            setBattleStatus(BattleStatus.Player1Defending);
+          }
+
+          setTimeout(() => {
+            setPlayer1({ ...player_1 });
+            setBattleStatus(BattleStatus.Player1Turn);
+
+            if (game_over) {
+              setFightToGameOver(winner_id, player_1, player_2);
+            }
+
+            setPlayer1Disabled(player_1.id !== characterId);
+          }, 1000);
+        }, 1000);
       }
     );
   }
