@@ -29,6 +29,8 @@ type RealtimePayloadData = {
   };
 };
 
+const ATTACK_TIMEOUT_DELAY = 1000;
+
 export default function Battle({ fight, characterId }: BattleProps) {
   const [player1, setPlayer1] = useState(fight.player1);
   const [player2, setPlayer2] = useState(fight.player2);
@@ -135,8 +137,8 @@ export default function Battle({ fight, characterId }: BattleProps) {
             }
 
             setPlayer2Disabled(player_2.id !== characterId);
-          }, 1000);
-        }, 1000);
+          }, ATTACK_TIMEOUT_DELAY);
+        }, ATTACK_TIMEOUT_DELAY);
       }
     );
   }
@@ -190,8 +192,8 @@ export default function Battle({ fight, characterId }: BattleProps) {
             }
 
             setPlayer1Disabled(player_1.id !== characterId);
-          }, 1000);
-        }, 1000);
+          }, ATTACK_TIMEOUT_DELAY);
+        }, ATTACK_TIMEOUT_DELAY);
       }
     );
   }
