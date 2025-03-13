@@ -9,6 +9,8 @@ export enum BattleStatus {
   Player2Wins,
   Player1Defending,
   Player2Defending,
+  Player1Missed,
+  Player2Missed,
 }
 
 export const musicPlayer = atom<HTMLAudioElement>();

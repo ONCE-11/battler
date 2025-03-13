@@ -25,6 +25,7 @@ type RealtimePayloadData = {
     winner_id: Tables<"fights">["winner_id"];
     game_over: Tables<"fights">["game_over"];
     current_turn_player_id: Tables<"fights">["current_turn_player_id"];
+    missed: boolean;
   };
 };
 
@@ -79,6 +80,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
       game_over,
       current_turn_player_id,
       winner_id,
+      missed,
     } = payload.new.metadata;
 
     console.log({
@@ -98,11 +100,22 @@ export default function Battle({ fight, characterId }: BattleProps) {
       setTurn(turn);
       setCurrentTurnPlayerId(current_turn_player_id);
 
-      // at this point the current player should be in its defending status
       if (player_1.id === current_turn_player_id) {
-        setBattleStatus(BattleStatus.Player1Defending);
+        // check if player 2 missed
+        if (!missed) {
+          // at this point player 1 should be in its defending state
+          setBattleStatus(BattleStatus.Player1Defending);
+        } else {
+          setBattleStatus(BattleStatus.Player2Missed);
+        }
       } else {
-        setBattleStatus(BattleStatus.Player2Defending);
+        // check if player 1 missed
+        if (!missed) {
+          // at this point player 2 should be in its defending state
+          setBattleStatus(BattleStatus.Player2Defending);
+        } else {
+          setBattleStatus(BattleStatus.Player1Missed);
+        }
       }
 
       setTimeout(() => {

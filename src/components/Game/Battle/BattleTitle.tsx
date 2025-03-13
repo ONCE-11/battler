@@ -47,6 +47,10 @@ export default function BattleTitle({
       return <Title>P1 Defends</Title>;
     case BattleStatus.Player2Defending:
       return <Title>P2 Defends</Title>;
+    case BattleStatus.Player1Missed:
+      return <Title>P1 Missed</Title>;
+    case BattleStatus.Player2Missed:
+      return <Title>P2 Missed</Title>;
     case BattleStatus.Player1Wins:
     case BattleStatus.Player2Wins:
       return (
