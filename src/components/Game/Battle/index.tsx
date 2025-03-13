@@ -37,8 +37,8 @@ export default function Battle({ fight, characterId }: BattleProps) {
 
   const setTurn = useSetAtom(useMemo(() => atom(fight.turn), [fight.turn]));
   const [gameOver, setGameOver] = useState(fight.game_over);
-  const [player1Disabled, setPlayer1Disabled] = useState(false);
-  const [player2Disabled, setPlayer2Disabled] = useState(false);
+  const [player1Disabled, setPlayer1Disabled] = useState(true);
+  const [player2Disabled, setPlayer2Disabled] = useState(true);
   const [currentVisiblePlayerId, setCurrentVisiblePlayerId] = useState(
     fight.current_turn_player_id
   );
@@ -50,10 +50,16 @@ export default function Battle({ fight, characterId }: BattleProps) {
   );
 
   useEffect(function () {
-    if (characterId === fight.player1_id) {
-      setPlayer2Disabled(true);
-    } else {
-      setPlayer1Disabled(true);
+    if (
+      characterId === fight.player1_id &&
+      fight.current_turn_player_id === fight.player1_id
+    ) {
+      setPlayer1Disabled(false);
+    } else if (
+      characterId === fight.player2_id &&
+      fight.current_turn_player_id === fight.player2_id
+    ) {
+      setPlayer2Disabled(false);
     }
 
     const player1ActionsChannel = createPlayers1ActionsChannel(
@@ -107,6 +113,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
           game_over,
           winner_id,
           missed,
+          current_turn_player_id,
         } = payload.new.metadata;
 
         console.log({
@@ -129,13 +136,23 @@ export default function Battle({ fight, characterId }: BattleProps) {
 
           setTimeout(() => {
             setPlayer2({ ...player_2 });
-            setBattleStatus(BattleStatus.Player2Turn);
 
             if (game_over) {
               setFightToGameOver(winner_id, player_1, player_2);
-            }
+            } else if (current_turn_player_id === player_2.id) {
+              setPlayer2Disabled(player_2.id !== characterId);
+              setBattleStatus(BattleStatus.Player2Turn);
+            } else {
+              // player 1 has skipped a turn
+              setBattleStatus(BattleStatus.Player1SkipsTurn);
 
-            setPlayer2Disabled(player_2.id !== characterId);
+              setTimeout(() => {
+                // now that we know player 1 has skipped, we switch back to player 1
+                setPlayer1Disabled(player_1.id !== characterId);
+                setCurrentVisiblePlayerId(player_1.id);
+                setBattleStatus(BattleStatus.Player1Turn);
+              }, ATTACK_TIMEOUT_DELAY);
+            }
           }, ATTACK_TIMEOUT_DELAY);
         }, ATTACK_TIMEOUT_DELAY);
       }
@@ -161,6 +178,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
           game_over,
           winner_id,
           missed,
+          current_turn_player_id,
         } = payload.new.metadata;
 
         console.log({
@@ -183,13 +201,24 @@ export default function Battle({ fight, characterId }: BattleProps) {
 
           setTimeout(() => {
             setPlayer1({ ...player_1 });
-            setBattleStatus(BattleStatus.Player1Turn);
 
             if (game_over) {
               setFightToGameOver(winner_id, player_1, player_2);
-            }
+            } else if (current_turn_player_id === player_1.id) {
+              // we check if player 2 skipped a turn
+              setPlayer1Disabled(player_1.id !== characterId);
+              setBattleStatus(BattleStatus.Player1Turn);
+            } else {
+              // player 2 has skipped a turn
+              setBattleStatus(BattleStatus.Player2SkipsTurn);
 
-            setPlayer1Disabled(player_1.id !== characterId);
+              setTimeout(() => {
+                // now that we know player 2 has skipped, we switch back to player 2
+                setPlayer2Disabled(player_2.id !== characterId);
+                setCurrentVisiblePlayerId(player_2.id);
+                setBattleStatus(BattleStatus.Player2Turn);
+              }, ATTACK_TIMEOUT_DELAY);
+            }
           }, ATTACK_TIMEOUT_DELAY);
         }, ATTACK_TIMEOUT_DELAY);
       }

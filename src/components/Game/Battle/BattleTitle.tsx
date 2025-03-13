@@ -50,6 +50,10 @@ export default function BattleTitle({
       return <Title>P1 Missed</Title>;
     case BattleStatus.Player2Missed:
       return <Title>P2 Missed</Title>;
+    case BattleStatus.Player1SkipsTurn:
+      return <Title>P1 Attacks Again</Title>;
+    case BattleStatus.Player2SkipsTurn:
+      return <Title>P2 Attacks Again</Title>;
     case BattleStatus.Player1Wins:
     case BattleStatus.Player2Wins:
       return (
