@@ -39,7 +39,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
   const [gameOver, setGameOver] = useState(fight.game_over);
   const [player1Disabled, setPlayer1Disabled] = useState(false);
   const [player2Disabled, setPlayer2Disabled] = useState(false);
-  const [currentTurnPlayerId, setCurrentTurnPlayerId] = useState(
+  const [currentVisiblePlayerId, setCurrentVisiblePlayerId] = useState(
     fight.current_turn_player_id
   );
   const [winner, setWinner] = useState<CharacterWithAbilities | null>(null);
@@ -105,7 +105,6 @@ export default function Battle({ fight, characterId }: BattleProps) {
           player_2,
           turn,
           game_over,
-          current_turn_player_id,
           winner_id,
           missed,
         } = payload.new.metadata;
@@ -120,7 +119,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
 
         setTimeout(() => {
           setTurn(turn);
-          setCurrentTurnPlayerId(current_turn_player_id);
+          setCurrentVisiblePlayerId(player_2.id);
 
           if (missed) {
             setBattleStatus(BattleStatus.Player1Missed);
@@ -160,7 +159,6 @@ export default function Battle({ fight, characterId }: BattleProps) {
           player_2,
           turn,
           game_over,
-          current_turn_player_id,
           winner_id,
           missed,
         } = payload.new.metadata;
@@ -175,7 +173,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
 
         setTimeout(() => {
           setTurn(turn);
-          setCurrentTurnPlayerId(current_turn_player_id);
+          setCurrentVisiblePlayerId(player_1.id);
 
           if (missed) {
             setBattleStatus(BattleStatus.Player2Missed);
@@ -211,7 +209,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
             <Player
               player={player1}
               isCurrentPlayer={true}
-              hidden={currentTurnPlayerId !== player1.id}
+              hidden={currentVisiblePlayerId !== player1.id}
               healthPercentage={100}
               opponentId={player2.id}
               fightId={fight.id}
@@ -223,7 +221,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
               reverse={true}
               healthPercentage={100}
               isCurrentPlayer={false}
-              hidden={currentTurnPlayerId !== player2.id}
+              hidden={currentVisiblePlayerId !== player2.id}
               opponentId={player1.id}
               fightId={fight.id}
               disabled={gameOver || player2Disabled}
