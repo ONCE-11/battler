@@ -62,12 +62,10 @@ export default function Battle({ fight, characterId }: BattleProps) {
       setPlayer2Disabled(false);
     }
 
-    const player1ActionsChannel = createPlayers1ActionsChannel(
-      fight.player1.id
-    );
-    const player2ActionsChannel = createPlayers2ActionsChannel(
-      fight.player2.id
-    );
+    const [player1ActionsChannel, player1Timeouts] =
+      createPlayers1ActionsChannel(fight.player1.id);
+    const [player2ActionsChannel, player2Timeouts] =
+      createPlayers2ActionsChannel(fight.player2.id);
 
     player1ActionsChannel.subscribe();
     player2ActionsChannel.subscribe();
@@ -75,6 +73,9 @@ export default function Battle({ fight, characterId }: BattleProps) {
     return () => {
       player1ActionsChannel.unsubscribe();
       player2ActionsChannel.unsubscribe();
+
+      player1Timeouts.forEach((timeout) => clearTimeout(timeout));
+      player2Timeouts.forEach((timeout) => clearTimeout(timeout));
     };
   }, []);
 
@@ -94,8 +95,12 @@ export default function Battle({ fight, characterId }: BattleProps) {
     setGameOver(true);
   }
 
-  function createPlayers1ActionsChannel(id: string): RealtimeChannel {
-    return supabase.channel(`player 1 actions`).on(
+  function createPlayers1ActionsChannel(
+    id: string
+  ): [RealtimeChannel, NodeJS.Timeout[]] {
+    const timeouts: NodeJS.Timeout[] = [];
+
+    const channel = supabase.channel(`player 1 actions`).on(
       "postgres_changes",
       {
         event: "INSERT",
@@ -124,7 +129,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
         setBattleStatus(BattleStatus.Player1Attacking);
         setPlayer1({ ...player_1 });
 
-        setTimeout(() => {
+        const playerSwitchTimeout = setTimeout(() => {
           setTurn(turn);
           setCurrentVisiblePlayerId(player_2.id);
 
@@ -134,7 +139,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
             setBattleStatus(BattleStatus.Player2Defending);
           }
 
-          setTimeout(() => {
+          const damageTimeout = setTimeout(() => {
             setPlayer2({ ...player_2 });
 
             if (game_over) {
@@ -146,21 +151,33 @@ export default function Battle({ fight, characterId }: BattleProps) {
               // player 1 has skipped a turn
               setBattleStatus(BattleStatus.Player1SkipsTurn);
 
-              setTimeout(() => {
+              const switchBackTimeout = setTimeout(() => {
                 // now that we know player 1 has skipped, we switch back to player 1
                 setPlayer1Disabled(player_1.id !== characterId);
                 setCurrentVisiblePlayerId(player_1.id);
                 setBattleStatus(BattleStatus.Player1Turn);
               }, ATTACK_TIMEOUT_DELAY);
+
+              timeouts.push(switchBackTimeout);
             }
           }, ATTACK_TIMEOUT_DELAY);
+
+          timeouts.push(damageTimeout);
         }, ATTACK_TIMEOUT_DELAY);
+
+        timeouts.push(playerSwitchTimeout);
       }
     );
+
+    return [channel, timeouts];
   }
 
-  function createPlayers2ActionsChannel(id: string): RealtimeChannel {
-    return supabase.channel(`player 2 actions`).on(
+  function createPlayers2ActionsChannel(
+    id: string
+  ): [RealtimeChannel, NodeJS.Timeout[]] {
+    const timeouts: NodeJS.Timeout[] = [];
+
+    const channel = supabase.channel(`player 2 actions`).on(
       "postgres_changes",
       {
         event: "INSERT",
@@ -189,7 +206,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
         setBattleStatus(BattleStatus.Player2Attacking);
         setPlayer2({ ...player_2 });
 
-        setTimeout(() => {
+        const playerSwitchTimeout = setTimeout(() => {
           setTurn(turn);
           setCurrentVisiblePlayerId(player_1.id);
 
@@ -199,7 +216,7 @@ export default function Battle({ fight, characterId }: BattleProps) {
             setBattleStatus(BattleStatus.Player1Defending);
           }
 
-          setTimeout(() => {
+          const damageTimeout = setTimeout(() => {
             setPlayer1({ ...player_1 });
 
             if (game_over) {
@@ -212,17 +229,25 @@ export default function Battle({ fight, characterId }: BattleProps) {
               // player 2 has skipped a turn
               setBattleStatus(BattleStatus.Player2SkipsTurn);
 
-              setTimeout(() => {
+              const switchBackTimeout = setTimeout(() => {
                 // now that we know player 2 has skipped, we switch back to player 2
                 setPlayer2Disabled(player_2.id !== characterId);
                 setCurrentVisiblePlayerId(player_2.id);
                 setBattleStatus(BattleStatus.Player2Turn);
               }, ATTACK_TIMEOUT_DELAY);
+
+              timeouts.push(switchBackTimeout);
             }
           }, ATTACK_TIMEOUT_DELAY);
+
+          timeouts.push(damageTimeout);
         }, ATTACK_TIMEOUT_DELAY);
+
+        timeouts.push(playerSwitchTimeout);
       }
     );
+
+    return [channel, timeouts];
   }
 
   return (
