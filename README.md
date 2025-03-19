@@ -1,6 +1,6 @@
 # 🐮 Beef
 
-Beef is a turn based PvP multiplayer game where your goal is to fight other players your knowledge of your player's kit. The application offers a grittier twist on the turn based RPGs with a variety of randomly-(ish) generated characters from lesser represented backgrounds and items thematic to New York City neighborhoods. This is still very much a work in progress but intended to offer an alternative to what has already been produced in the past within this space. The game is currently in an alpha stage.
+Beef is a turn based PvP multiplayer game where your goal is to fight other players using your knowledge of your generated player's kit. The application offers a grittier twist on the turn based RPGs with a variety of randomly-(ish) generated characters from lesser represented backgrounds and items thematic to New York City neighborhoods. This is still very much a work in progress but intended to offer an alternative to what has already been produced in the past within this space. The game is currently in an alpha stage.
 
 ## 🧑‍💻 Tech
 
