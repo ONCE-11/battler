@@ -4,6 +4,7 @@ import useAuth from "../hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { atom, useAtom, useAtomValue, useSetAtom } from "jotai";
 import { messageAtom, loggedInAtom } from "../atoms";
+import ClearButton from "./ClearButton";
 
 const emailAtom = atom("");
 const passwordAtom = atom("");
@@ -17,14 +18,18 @@ export default function LoginForm() {
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const handleClick = async () => {
+  async function handleLogin() {
     // choose where to go after login with callback
     if (state?.redirectPath) {
       login(email, password, () => navigate(state.redirectPath));
     } else {
       login(email, password, () => navigate("/"));
     }
-  };
+  }
+
+  async function handleCancel() {
+    navigate("/");
+  }
 
   if (loggedIn) {
     setMessage({
@@ -38,13 +43,13 @@ export default function LoginForm() {
 
   return (
     <>
-      <Title text="Enter your credentials" />
-      <form>
+      <Title text="Login" className="pb-10" />
+      <form className="mt-6">
         <input
           type="text"
           name="email"
           placeholder="Email"
-          className="block text-2xl px-4 py-2 text-zinc-950"
+          className="block text-lg px-4 py-4 text-zinc-950 w-full rounded"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
         />
@@ -52,11 +57,22 @@ export default function LoginForm() {
           type="password"
           name="password"
           placeholder="Password"
-          className="block text-2xl mt-8 px-4 py-2 text-zinc-950"
+          className="block text-lg mt-8 px-4 py-4 text-zinc-950 w-full rounded"
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
         />
-        <Button text="Login" className="mt-8" handleClick={handleClick} />
+        <div className="flex justify-between">
+          <ClearButton
+            text="Cancel"
+            className="mt-8 mr-4 w-full"
+            handleClick={handleCancel}
+          />
+          <Button
+            text="Login"
+            className="mt-8 w-full"
+            handleClick={handleLogin}
+          />
+        </div>
       </form>
     </>
   );
