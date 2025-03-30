@@ -116,7 +116,7 @@ function Player({
             style={{ width: `${healthPercentage}%` }}
           ></div>
         </div>
-        <div className="overflow-clip rounded-lg mt-2 relative shadow-md shadow-black short:h-64">
+        <div className="overflow-clip rounded-lg mt-2 relative shadow-md shadow-black h-[36vh]">
           {isCurrentPlayer && (
             <span
               className={`absolute text-white z-10 top-0 font-bold text-xl ${
@@ -141,7 +141,7 @@ function Player({
           </h2>
         </div>
       </div>
-      <section className="short:flex medium:flex tallish:flex">
+      <section className="short:flex medium:flex">
         <ClearButton
           disabled={disabled}
           className="mt-4 py-4 w-full pr-4 b-truncate"
@@ -155,7 +155,7 @@ function Player({
         </ClearButton>
         <ClearButton
           disabled={disabled}
-          className="mt-4 py-4 w-full b-truncate short:ml-4 medium:ml-4 tallish:ml-4"
+          className="mt-4 py-4 w-full b-truncate short:ml-4 medium:ml-4"
           handleClick={(_e) => useAbility(2)}
         >
           {abilityLoading2 ? (
