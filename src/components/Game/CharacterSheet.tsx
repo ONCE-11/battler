@@ -44,7 +44,7 @@ export default function CharacterSheet() {
           {character.name}
         </span>
       </Title>
-      <div className="rounded b">
+      <div className="rounded-sm b">
         <ul>
           <h2 className="text-2xl">Attributes</h2>
           <li>Attack: {character.attack}</li>

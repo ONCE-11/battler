@@ -49,7 +49,7 @@ export default function LoginForm() {
           type="text"
           name="email"
           placeholder="Email"
-          className="block text-lg px-4 py-4 text-zinc-950 w-full rounded"
+          className="block text-lg px-4 py-4 text-zinc-950 w-full rounded-sm bg-white"
           value={email}
           onChange={(e) => setEmail(e.currentTarget.value)}
         />
@@ -57,7 +57,7 @@ export default function LoginForm() {
           type="password"
           name="password"
           placeholder="Password"
-          className="block text-lg mt-8 px-4 py-4 text-zinc-950 w-full rounded"
+          className="block text-lg mt-8 px-4 py-4 text-zinc-950 w-full rounded-sm bg-white"
           value={password}
           onChange={(e) => setPassword(e.currentTarget.value)}
         />

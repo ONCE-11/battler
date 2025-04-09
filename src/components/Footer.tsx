@@ -47,7 +47,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="px-4 fixed bottom-0 max-w-screen-xl w-full bg-zinc-900">
+    <footer className="px-4 fixed bottom-0 max-w-(--breakpoint-xl) w-full bg-zinc-900">
       <div className="flex justify-end items-center px-2">
         <p className="py-4 text-xs">
           {/* © 2024 <span className="text-purple-500 font-bold">¡</span>ONCE */}

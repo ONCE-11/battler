@@ -41,7 +41,7 @@ const Layout = () => {
   return (
     <>
       {/* TODO: change this to using tailwind */}
-      <div className="max-w-screen-xl relative mx-auto">
+      <div className="max-w-(--breakpoint-xl) relative mx-auto">
         <header className="m-4">
           <Nav />
         </header>

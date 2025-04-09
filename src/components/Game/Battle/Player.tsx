@@ -112,7 +112,7 @@ function Player({
             </li>
           </ul>
           <div
-            className="w-full bg-black rounded h-2 shadow-md shadow-black"
+            className="w-full bg-black rounded-sm h-2 shadow-md shadow-black"
             style={{ width: `${healthPercentage}%` }}
           ></div>
         </div>
