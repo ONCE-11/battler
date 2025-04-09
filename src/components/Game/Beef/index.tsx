@@ -1,20 +1,21 @@
 import Title from "../../Title";
 import PotentialOpponents from "./PotentialOpponents";
 import PastBeef from "./PastBeef";
-import Button from "../../Button";
 import { User } from "@supabase/supabase-js";
 import { supabase } from "../../../utils";
 import { CharacterWithAbilities } from "../../../types/custom";
 import { useEffect, useState } from "react";
 import { useAtomValue } from "jotai";
 import { currentUserAtom } from "../../../atoms";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Button from "../../Button";
 
 export default function Beef() {
   const [potentialOpponents, setPotentialOpponents] = useState<
     CharacterWithAbilities[]
   >([]);
-
   const currentUser = useAtomValue(currentUserAtom);
+  const [loading, setLoading] = useState(false);
 
   if (!currentUser) {
     console.error("Current user is not defined");
@@ -26,6 +27,8 @@ export default function Beef() {
   }, []);
 
   async function fetchData(currentUserId: User["id"]) {
+    setLoading(true);
+
     const { data: potentialOpponents, error: fetchCharactersError } =
       await supabase
         .from("characters")
@@ -39,6 +42,8 @@ export default function Beef() {
 
     console.log({ potentialOpponents });
     setPotentialOpponents(potentialOpponents);
+
+    setLoading(false);
   }
 
   return (
@@ -51,9 +56,26 @@ export default function Beef() {
         >
           Refresh
         </Button>
+        {/* <FontAwesomeIcon
+          icon={"rotate-right"}
+          className={`text-purple-500 text-lg${loading ? " fa-spin" : ""}`}
+          onClick={() => fetchData(currentUser.id)}
+        /> */}
       </Title>
-      <PotentialOpponents potentialOpponents={potentialOpponents} />
-      <PastBeef />
+      {loading ? (
+        <div className="flex relative">
+          <FontAwesomeIcon
+            icon={"rotate-right"}
+            className={"text-purple-500 text-lg fa-spin"}
+            onClick={() => fetchData(currentUser.id)}
+          />
+        </div>
+      ) : (
+        <>
+          <PotentialOpponents potentialOpponents={potentialOpponents} />
+          <PastBeef />
+        </>
+      )}
     </>
   );
 }
