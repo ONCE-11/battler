@@ -56,20 +56,13 @@ export default function Beef() {
         >
           Refresh
         </Button>
-        {/* <FontAwesomeIcon
-          icon={"rotate-right"}
-          className={`text-purple-500 text-lg${loading ? " fa-spin" : ""}`}
-          onClick={() => fetchData(currentUser.id)}
-        /> */}
       </Title>
       {loading ? (
-        <div className="flex relative">
-          <FontAwesomeIcon
-            icon={"rotate-right"}
-            className={"text-purple-500 text-lg fa-spin"}
-            onClick={() => fetchData(currentUser.id)}
-          />
-        </div>
+        <FontAwesomeIcon
+          icon={"circle-notch"}
+          className={"text-purple-500 text-lg fa-spin"}
+          onClick={() => fetchData(currentUser.id)}
+        />
       ) : (
         <>
           <PotentialOpponents potentialOpponents={potentialOpponents} />
