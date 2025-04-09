@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { currentUserAtom } from "../atoms";
+import { currentUserAtom, loggedInAtom } from "../atoms";
 import { useAtomValue } from "jotai";
 import { useAudio } from "../hooks/useAudio";
 
@@ -8,6 +8,7 @@ export default function Footer() {
   const [isFullScreen, setFullScreen] = useState(false);
   const { audioMuted, toggleMute } = useAudio();
   const currentUser = useAtomValue(currentUserAtom);
+  const loggedIn = useAtomValue(loggedInAtom);
 
   // we do this to execute code when the browser kicks us out of fullscreen
   useEffect(function () {
@@ -46,7 +47,7 @@ export default function Footer() {
     };
   }, []);
 
-  return (
+  return loggedIn ? (
     <footer className="px-4 fixed bottom-0 max-w-(--breakpoint-xl) w-full bg-zinc-900">
       <div className="flex justify-end items-center px-2">
         <p className="py-4 text-xs">
@@ -83,21 +84,23 @@ export default function Footer() {
         )}
 
         {/* {currentUser && (
-          <div className="py-4">
-            <FontAwesomeIcon
-              icon={`${playing ? "circle-pause" : "circle-play"}`}
-              className="mr-4 text-purple-500"
-            />
-            <span
-              className="b-truncate w-40 sm:w-auto inline-block active:underline hover:underline hover:cursor-pointer"
-              onClick={handleClick}
-            >
-              Nightfall / Future Bass Music : SoulProdMusic
-            </span>
-            <audio src="/music.mp3" controls={false} ref={ref} loop={true} />
-          </div>
-        )} */}
+        <div className="py-4">
+          <FontAwesomeIcon
+            icon={`${playing ? "circle-pause" : "circle-play"}`}
+            className="mr-4 text-purple-500"
+          />
+          <span
+            className="b-truncate w-40 sm:w-auto inline-block active:underline hover:underline hover:cursor-pointer"
+            onClick={handleClick}
+          >
+            Nightfall / Future Bass Music : SoulProdMusic
+          </span>
+          <audio src="/music.mp3" controls={false} ref={ref} loop={true} />
+        </div>
+      )} */}
       </div>
     </footer>
+  ) : (
+    ""
   );
 }

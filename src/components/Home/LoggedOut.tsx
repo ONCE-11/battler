@@ -1,12 +1,10 @@
 import Title from "../Title";
 
 export default function LoggedOut() {
-  const classes = "my-4 text-xl";
-
   return (
     <>
       <Title text="Beef?" />
-      <p className={classes}>
+      <p className="my-4 text-xl">
         In the future, most of humanity is dead and all that is left is the
         thrill of the fight. Everyone is on edge and they need resources in
         order to make it one more day. Your currency is chelitos (ch) and you

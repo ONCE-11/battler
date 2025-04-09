@@ -43,7 +43,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <Title text="Login" className="pb-10" />
+      <Title text="Login" className="text-5xl pb-10" />
       <form className="mt-6">
         <input
           type="text"
@@ -64,12 +64,12 @@ export default function LoginForm() {
         <div className="flex justify-between">
           <ClearButton
             text="Cancel"
-            className="mt-8 mr-4 w-full"
+            className="mt-8 mr-4 w-full py-4"
             handleClick={handleCancel}
           />
           <Button
             text="Login"
-            className="mt-8 w-full"
+            className="mt-8 w-full py-4"
             handleClick={handleLogin}
           />
         </div>

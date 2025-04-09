@@ -10,7 +10,7 @@ export default function GlobalMessage() {
 
   return (
     <h2
-      className={`text-xl p-4  rounded relative shadow-black shadow-lg ${
+      className={`p-4 text-sm rounded relative shadow-black shadow-lg ${
         type === "info"
           ? "text-zinc-50 bg-purple-700"
           : "text-red-700 bg-red-300"
