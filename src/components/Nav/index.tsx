@@ -21,7 +21,7 @@ const Nav = () => {
   const navigate = useNavigate();
   const sharedCssClasses = "m-0 inline-block";
   const character = useAtomValue(characterAtom);
-  const setGamePage = useSetAtom(sceneAtom);
+  const setScene = useSetAtom(sceneAtom);
 
   // underline atoms
   const [newCharacterUnderlined, setNewCharacterUnderlined] = useAtom(
@@ -48,7 +48,7 @@ const Nav = () => {
   function handleNewCharacterClick() {
     removeUnderlines();
     setNewCharacterUnderlined(true);
-    setGamePage(Scene.NewCharacter);
+    setScene(Scene.NewCharacter);
     navigate("/");
   }
 

@@ -1,3 +1,4 @@
+import { PostgrestError, Session } from "@supabase/supabase-js";
 import { Tables } from "./supabase";
 import { MouseEvent } from "react";
 
@@ -40,3 +41,9 @@ export enum Music {
 }
 
 export type SetAtom<Args extends any[], Result> = (...args: Args) => Result;
+
+export type GameLoaderObject = {
+  session: Session | null;
+  character: CharacterWithAbilities | null;
+  error: PostgrestError | null;
+};

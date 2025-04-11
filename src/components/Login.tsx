@@ -20,26 +20,30 @@ export default function LoginForm() {
 
   async function handleLogin() {
     // choose where to go after login with callback
-    if (state?.redirectPath) {
-      login(email, password, () => navigate(state.redirectPath));
-    } else {
-      login(email, password, () => navigate("/"));
-    }
+    // if (state?.redirectPath) {
+    //   login(email, password, () => navigate(state.redirectPath));
+    // } else {
+    login(email, password, () => {
+      console.log("navigating to game");
+      navigate("/game");
+    });
+    // }
   }
 
   async function handleCancel() {
     navigate("/");
   }
 
-  if (loggedIn) {
-    setMessage({
-      type: "error",
-      text: "You are already logged in",
-    });
+  // if (loggedIn) {
+  // setMessage({
+  //   type: "info",
+  //   text: "You are already logged in",
+  // });
+  // setMessage({});
 
-    // user is already authenticated
-    navigate("/");
-  }
+  // user is already authenticated
+  //   navigate("/game");
+  // }
 
   return (
     <>

@@ -9,14 +9,18 @@ export default function ProtectedRoute({ children }: PropsWithChildren) {
   const location = useLocation();
 
   if (!loggedIn) {
-    setMessage({
-      type: "error",
-      text: "You must be logged in to access this page",
-    });
+    console.log("not logged in");
+
+    // setMessage({
+    //   type: "error",
+    //   text: "You must be logged in to access this page",
+    // });
 
     // user is not authenticated
     return <Navigate to="/login" state={{ redirectPath: location.pathname }} />;
   }
+
+  console.log("logged in");
 
   return children;
 }

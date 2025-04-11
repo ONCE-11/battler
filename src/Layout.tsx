@@ -1,36 +1,73 @@
 import Nav from "./components/Nav";
 import GlobalMessage from "./components/GlobalMessage";
-import { Outlet } from "react-router-dom";
-import { useAtomValue } from "jotai";
-import { messageAtom } from "./atoms";
+import { Outlet, useLoaderData, useNavigation } from "react-router-dom";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import {
+  characterAtom,
+  currentUserAtom,
+  loadingAtom,
+  loggedInAtom,
+  messageAtom,
+  sceneAtom,
+} from "./atoms";
 import useAuth from "./hooks/useAuth";
 import { useEffect, useState } from "react";
 import Footer from "./components/Footer";
 import Button from "./components/Button";
 import { useAudio } from "./hooks/useAudio";
+import { Session } from "@supabase/supabase-js";
+import { GameLoaderObject, Music, Scene } from "./types/custom";
 
 const Layout = () => {
   const message = useAtomValue(messageAtom);
   const [suspended, setSuspended] = useState(false);
   const { playAudio, pauseAudio } = useAudio();
+  // const [loading, setLoading] = useAtom(loadingAtom);
+  const { state } = useNavigation();
+  const setCurrentUser = useSetAtom(currentUserAtom);
+  const setLoggedIn = useSetAtom(loggedInAtom);
+  const setCharacter = useSetAtom(characterAtom);
+  const [scene, setScene] = useAtom(sceneAtom);
 
   const { fetchSession } = useAuth();
+  const { session, character } = useLoaderData() as GameLoaderObject;
 
-  async function handleVisibilityChange() {
-    if (document.hidden) {
-      pauseAudio();
-      setSuspended(true);
+  console.log({ session: session });
+
+  if (session) {
+    setLoggedIn(true);
+
+    if (!character) {
+      setScene(Scene.NewCharacter);
+    } else if (character.fighting) {
+      setScene(Scene.Battle);
+    } else if (!scene) {
+      setScene(Scene.CharacterSheet);
     }
+  } else {
+    setLoggedIn(false);
   }
 
+  setCurrentUser(session?.user);
+  setCharacter(character);
+
   function handleResume() {
-    console.log("handleResume");
     playAudio();
     setSuspended(false);
   }
 
   useEffect(() => {
-    fetchSession(() => setSuspended(true));
+    async function handleVisibilityChange() {
+      if (document.hidden) {
+        pauseAudio();
+        setSuspended(true);
+      }
+    }
+
+    // setLoading(true);
+    // console.log("fetching session");
+
+    // fetchSession(() => setSuspended(true));
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
@@ -53,7 +90,7 @@ const Layout = () => {
         )}
 
         <main className="mt-4 mx-4 mb-16">
-          <Outlet />
+          {state === "loading" ? "Loading..." : <Outlet />}
         </main>
 
         <Footer />

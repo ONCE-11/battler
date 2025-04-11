@@ -2,12 +2,14 @@ import { supabase } from "../utils";
 import { useSetAtom } from "jotai";
 import { messageAtom, loggedInAtom, currentUserAtom } from "../atoms";
 import { useAudio } from "./useAudio";
+import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
   const setLoggedIn = useSetAtom(loggedInAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
   const setMessage = useSetAtom(messageAtom);
   const { pauseAudio, playAudio } = useAudio();
+  const navigate = useNavigate();
 
   const login = async (
     email: string,
@@ -20,16 +22,16 @@ const useAuth = () => {
     });
 
     if (error) {
-      setMessage({
-        type: "error",
-        text: `${error?.status} - ${error.message}`,
-      });
+      // setMessage({
+      //   type: "error",
+      //   text: `${error?.status} - ${error.message}`,
+      // });
       console.error(error.message);
     } else {
-      setMessage({ type: "info", text: "You have logged in successfully" });
-      setLoggedIn(true);
-      setCurrentUser(data.user);
-      playAudio();
+      // setMessage({ type: "info", text: "You have logged in successfully" });
+      // setLoggedIn(true);
+      // setCurrentUser(data.user);
+      // playAudio();
 
       if (callback) callback();
     }
@@ -43,9 +45,10 @@ const useAuth = () => {
       console.error(error.message);
     } else {
       setMessage({ type: "info", text: "You have logged out successfully" });
-      setLoggedIn(false);
-      setCurrentUser(undefined);
+      // setLoggedIn(false);
+      // setCurrentUser(undefined);
       pauseAudio();
+      navigate("/");
     }
   };
 
@@ -68,7 +71,18 @@ const useAuth = () => {
     }
   };
 
-  return { logout, login, fetchSession };
+  const fetchUserSession = async () => {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession();
+
+    if (error) console.error(error);
+
+    return session;
+  };
+
+  return { logout, login, fetchSession, fetchUserSession };
 };
 
 export default useAuth;

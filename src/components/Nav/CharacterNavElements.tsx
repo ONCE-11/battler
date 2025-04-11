@@ -1,6 +1,6 @@
 import { Scene } from "../../types/custom";
 import { RemoveUnderlinesFn } from "./types";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { sceneAtom } from "../../atoms";
 import NavItem from "./NavItem";
@@ -20,22 +20,24 @@ export default function CharacterNavElements({
   sharedCssClasses,
   removeUnderlines,
 }: CharacterNavElementsProps) {
-  const setGamePage = useSetAtom(sceneAtom);
+  const setScene = useSetAtom(sceneAtom);
   const [characterSheetUnderlined, setCharacterSheetUnderlined] = useAtom(
     characterSheetUnderlinedAtom
   );
   const [beefUnderlined, setBeefUnderlined] = useAtom(beefUnderlinedAtom);
   const [battleUnderlined, setBattleUnderlined] = useAtom(battleUnderlinedAtom);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const fight = useAtomValue(fightAtom);
 
-  console.log({ fight });
+  // console.log({ fight });
 
   function handleClick(gamePage: Scene, callbackFn: () => void) {
     removeUnderlines();
-    setGamePage(gamePage);
+    setScene(gamePage);
     callbackFn();
-    navigate("/");
+    if (pathname !== "/game") navigate("/game");
+    // navigate("/game");
   }
 
   return (
