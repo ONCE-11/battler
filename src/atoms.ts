@@ -11,7 +11,7 @@ interface MessageType {
 export const loadingAtom = atom(true);
 export const messageAtom = atom<MessageType>({});
 export const loggedInAtom = atom(false);
-export const currentUserAtom = atom<User>();
-export const currentCharacterAtom = atom<CharacterWithAbilities>();
+export const currentUserAtom = atom<User | null>();
+export const currentCharacterAtom = atom<CharacterWithAbilities | null>();
 export const sceneAtom = atom<Scene>();
-export const characterAtom = atom<CharacterWithAbilities | null>(null);
+export const characterAtom = atom<CharacterWithAbilities | null>();

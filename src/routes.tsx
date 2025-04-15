@@ -5,58 +5,38 @@ import LoginForm from "./components/Login.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Home from "./components/Home/index.tsx";
 import Game from "./components/Game/index.tsx";
-import { supabase } from "./utils.ts";
-import { CharacterWithAbilities, GameLoaderObject } from "./types/custom.ts";
+import { getCharacter, supabase } from "./utils.ts";
+import { CharacterWithAbilities, RootLoaderResponse } from "./types/custom.ts";
 
-async function layoutLoader() {
+async function rootLoader() {
   const {
     data: { session },
     error: fetchSessionError,
   } = await supabase.auth.getSession();
 
   if (session) {
-    const { data: character, error: fetchCharacterError } = await supabase
-      .from("characters")
-      .select(
-        "*, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
-      )
-      .eq("user_id", session.user.id)
-      .eq("alive", true)
-      .returns<CharacterWithAbilities[]>()
-      .single();
+    const character = await getCharacter(session.user.id);
 
     return {
       session,
       character,
-      error: fetchCharacterError,
-    } as GameLoaderObject;
+      error: null,
+    } as RootLoaderResponse;
   } else {
     return {
       session: null,
       character: null,
       error: fetchSessionError,
-    } as GameLoaderObject;
+    } as RootLoaderResponse;
   }
 }
-
-// async function fetchCharacter(userId: User["id"]): Promise<void> {
-//   const { data: characterWithAbilities, error: fetchCharacterError } =
-//     await supabase
-//       .from("characters")
-//       .select(
-//         "*, ability1:ability_1_id (*), ability2:ability_2_id (*), ability3:ability_3_id (*)"
-//       )
-//       .eq("user_id", userId)
-//       .eq("alive", true)
-//       .returns<CharacterWithAbilities[]>()
-//       .single();
-// }
 
 export default createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
-    loader: layoutLoader,
+    loader: rootLoader,
+    id: "root",
     children: [
       {
         index: true,

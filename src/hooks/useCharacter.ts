@@ -22,7 +22,7 @@ const useCharacter = () => {
     setCurrentCharacter(character);
   };
 
-  const fetchCharacterWithAbilities = async (userId: string) => {
+  const fetchCharacter = async (userId: string) => {
     const {
       data: character,
       error,
@@ -49,25 +49,25 @@ const useCharacter = () => {
     return character;
   };
 
-  const fetchCharacter = async (userId: string) => {
-    const { data: character, error } = await supabase
-      .from("characters")
-      .select("*")
-      .eq("user_id", userId)
-      .eq("alive", true)
-      .single();
+  // const fetchCharacter = async (userId: string) => {
+  //   const { data: character, error } = await supabase
+  //     .from("characters")
+  //     .select("*")
+  //     .eq("user_id", userId)
+  //     .eq("alive", true)
+  //     .single();
 
-    console.info("character info", character);
+  //   console.info("character info", character);
 
-    if (error) {
-      console.error(error);
-      return;
-    }
+  //   if (error) {
+  //     console.error(error);
+  //     return;
+  //   }
 
-    return character;
-  };
+  //   return character;
+  // };
 
-  return { createCharacter, fetchCharacterWithAbilities, fetchCharacter };
+  return { createCharacter, fetchCharacter };
 };
 
 export default useCharacter;

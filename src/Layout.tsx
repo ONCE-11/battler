@@ -15,8 +15,7 @@ import { useEffect, useState } from "react";
 import Footer from "./components/Footer";
 import Button from "./components/Button";
 import { useAudio } from "./hooks/useAudio";
-import { Session } from "@supabase/supabase-js";
-import { GameLoaderObject, Music, Scene } from "./types/custom";
+import { RootLoaderResponse, Music, Scene } from "./types/custom";
 
 const Layout = () => {
   const message = useAtomValue(messageAtom);
@@ -30,26 +29,9 @@ const Layout = () => {
   const [scene, setScene] = useAtom(sceneAtom);
 
   const { fetchSession } = useAuth();
-  const { session, character } = useLoaderData() as GameLoaderObject;
+  const { session, character } = useLoaderData() as RootLoaderResponse;
 
-  console.log({ session: session });
-
-  if (session) {
-    setLoggedIn(true);
-
-    if (!character) {
-      setScene(Scene.NewCharacter);
-    } else if (character.fighting) {
-      setScene(Scene.Battle);
-    } else if (!scene) {
-      setScene(Scene.CharacterSheet);
-    }
-  } else {
-    setLoggedIn(false);
-  }
-
-  setCurrentUser(session?.user);
-  setCharacter(character);
+  console.log({ layoutSession: session });
 
   function handleResume() {
     playAudio();
@@ -63,6 +45,25 @@ const Layout = () => {
         setSuspended(true);
       }
     }
+
+    console.log({ session });
+
+    if (session) {
+      setLoggedIn(true);
+
+      if (!character) {
+        setScene(Scene.NewCharacter);
+      } else if (character.fighting) {
+        setScene(Scene.Battle);
+      } else if (!scene) {
+        setScene(Scene.CharacterSheet);
+      }
+    } else {
+      setLoggedIn(false);
+    }
+
+    setCurrentUser(session?.user);
+    setCharacter(character);
 
     // setLoading(true);
     // console.log("fetching session");

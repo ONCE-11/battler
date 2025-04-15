@@ -35,13 +35,13 @@ export default function LoginForm() {
   }
 
   // if (loggedIn) {
-  // setMessage({
-  //   type: "info",
-  //   text: "You are already logged in",
-  // });
-  // setMessage({});
+  //   setMessage({
+  //     type: "info",
+  //     text: "You are already logged in",
+  //   });
+  //   setMessage({});
 
-  // user is already authenticated
+  //   // user is already authenticated
   //   navigate("/game");
   // }
 

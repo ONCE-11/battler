@@ -1,15 +1,24 @@
-import { supabase } from "../utils";
-import { useSetAtom } from "jotai";
-import { messageAtom, loggedInAtom, currentUserAtom } from "../atoms";
+import { getCharacter, supabase } from "../utils";
+import { useAtom, useSetAtom } from "jotai";
+import {
+  messageAtom,
+  loggedInAtom,
+  currentUserAtom,
+  currentCharacterAtom,
+  sceneAtom,
+} from "../atoms";
 import { useAudio } from "./useAudio";
 import { useNavigate } from "react-router-dom";
+import { Scene } from "../types/custom";
 
 const useAuth = () => {
   const setLoggedIn = useSetAtom(loggedInAtom);
   const setCurrentUser = useSetAtom(currentUserAtom);
+  const setCurrentCharacter = useSetAtom(currentCharacterAtom);
   const setMessage = useSetAtom(messageAtom);
   const { pauseAudio, playAudio } = useAudio();
   const navigate = useNavigate();
+  const [scene, setScene] = useAtom(sceneAtom);
 
   const login = async (
     email: string,
@@ -22,16 +31,28 @@ const useAuth = () => {
     });
 
     if (error) {
-      // setMessage({
-      //   type: "error",
-      //   text: `${error?.status} - ${error.message}`,
-      // });
+      setMessage({
+        type: "error",
+        text: `${error?.status} - ${error.message}`,
+      });
       console.error(error.message);
     } else {
-      // setMessage({ type: "info", text: "You have logged in successfully" });
-      // setLoggedIn(true);
-      // setCurrentUser(data.user);
-      // playAudio();
+      const character = await getCharacter(data.user.id);
+
+      setMessage({ type: "info", text: "You have logged in successfully" });
+      setLoggedIn(true);
+      setCurrentUser(data.user);
+      setCurrentCharacter(character);
+
+      // if (!character) {
+      //   setScene(Scene.NewCharacter);
+      // } else if (character.fighting) {
+      //   setCurrentCharacter(character);
+      //   setScene(Scene.Battle);
+      // } else if (!scene) {
+      //   setCurrentCharacter(character);
+      //   setScene(Scene.CharacterSheet);
+      // }
 
       if (callback) callback();
     }
@@ -45,8 +66,9 @@ const useAuth = () => {
       console.error(error.message);
     } else {
       setMessage({ type: "info", text: "You have logged out successfully" });
-      // setLoggedIn(false);
-      // setCurrentUser(undefined);
+      setLoggedIn(false);
+      setCurrentUser(null);
+      setCurrentCharacter(null);
       pauseAudio();
       navigate("/");
     }
